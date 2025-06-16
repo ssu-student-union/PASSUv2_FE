@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@passu/ui": "workspace:*",
+    "@tailwindcss/vite": "^4.1.10",
     "@tanstack/react-router": "^1.121.2",
     "@tanstack/react-router-devtools": "^1.121.16",
     "@tanstack/router-plugin": "^1.121.2",
