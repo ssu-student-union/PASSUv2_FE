@@ -15,10 +15,10 @@
   "license": "MIT",
   "scripts": {
     "build:styles": "tailwindcss -i ./src/styles.css -o ./dist/index.css",
-    "build:components": "tsc",
+    "build:components": "tsc --project tsconfig.build.json",
     "dev:storybook": "storybook dev -p 6006",
     "dev:styles": "tailwindcss -i ./src/styles.css -o ./dist/index.css --watch",
-    "dev:components": "tsc --watch",
+    "dev:components": "tsc --watch --project tsconfig.build.json",
     "check-types": "tsc --noEmit",
     "lint": "eslint src --max-warnings 0",
     "build-storybook": "storybook build"
