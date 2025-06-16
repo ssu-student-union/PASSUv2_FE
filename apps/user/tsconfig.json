@@ -1,0 +1,10 @@
+{
+  "extends": "@passu/typescript-config/vite.json",
+  "include": ["**/*.ts", "**/*.tsx"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}

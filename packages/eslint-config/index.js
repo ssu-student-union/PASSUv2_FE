@@ -1,19 +1,44 @@
-module.exports = {
-  env: {
-    node: true,
+// @ts-check
+
+import js from "@eslint/js";
+import globals from "globals";
+import reactHooks from "eslint-plugin-react-hooks";
+import reactRefresh from "eslint-plugin-react-refresh";
+import prettier from "eslint-config-prettier/flat";
+import tseslint from "typescript-eslint";
+export default tseslint.config(
+  { ignores: ["dist", "**/*.{cjs,js}"] },
+  js.configs.recommended,
+  tseslint.configs.eslintRecommended,
+  tseslint.configs.recommendedTypeChecked,
+  tseslint.configs.stylisticTypeChecked,
+  reactHooks.configs["recommended-latest"],
+  reactRefresh.configs.vite,
+  {
+    files: ["**/*.{ts,tsx}"],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.browser,
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+    rules: {
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          args: "all",
+          argsIgnorePattern: "^_",
+          caughtErrors: "all",
+          caughtErrorsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          ignoreRestSiblings: true,
+        },
+      ],
+      "tailwindcss/classname-order": "off",
+    },
   },
-  parser: "@typescript-eslint/parser",
-  extends: [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "prettier",
-  ],
-  plugins: ["@typescript-eslint"],
-  parserOptions: {
-    sourceType: "module",
-    ecmaVersion: 2020,
-  },
-  rules: {
-    "@typescript-eslint/no-non-null-assertion": "off",
-  },
-};
+  prettier
+);

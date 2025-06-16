@@ -1,0 +1,45 @@
+{
+  "name": "@passu/user",
+  "private": true,
+  "description": "PASSU user client application",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 3000",
+    "start": "vite --port 3000",
+    "build": "vite build && tsc",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "lint": "eslint . --max-warnings 0",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@passu/ui": "workspace:*",
+    "@tanstack/react-router": "^1.121.2",
+    "@tanstack/react-router-devtools": "^1.121.16",
+    "@tanstack/router-plugin": "^1.121.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "tailwindcss": "^4.0.6"
+  },
+  "devDependencies": {
+    "@passu/eslint-config": "workspace:*",
+    "@passu/prettier-config": "workspace:*",
+    "@passu/typescript-config": "workspace:*",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react": "^16.2.0",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@typescript-eslint/parser": "^8.34.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.29.0",
+    "eslint-plugin-better-tailwindcss": "^3.2.0",
+    "jsdom": "^26.0.0",
+    "typescript": "^5.7.2",
+    "vite": "^6.1.0",
+    "vitest": "^3.0.5",
+    "web-vitals": "^5.0.3"
+  },
+  "overrides": {
+    "@tanstack/react-router": "^1.121.2"
+  }
+}
