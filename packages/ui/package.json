@@ -2,25 +2,41 @@
   "name": "@passu/ui",
   "version": "0.1.0",
   "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "files": [
+    "dist"
+  ],
   "exports": {
-    "./*": "./src/*.tsx"
+    "./styles.css": "./dist/index.css",
+    "./*": "./dist/*.js"
   },
   "license": "MIT",
   "scripts": {
-    "lint": "eslint . --max-warnings 0",
-    "check-types": "tsc --noEmit"
+    "build:styles": "tailwindcss -i ./src/styles.css -o ./dist/index.css",
+    "build:components": "tsc",
+    "check-types": "tsc --noEmit",
+    "dev:styles": "tailwindcss -i ./src/styles.css -o ./dist/index.css --watch",
+    "dev:components": "tsc --watch",
+    "lint": "eslint src --max-warnings 0"
   },
   "dependencies": {
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
+  "peerDependencies": {
+    "react": "^19"
+  },
   "devDependencies": {
     "@passu/eslint-config": "workspace:*",
     "@passu/typescript-config": "workspace:*",
+    "@tailwindcss/cli": "^4.1.10",
     "@types/node": "^24.0.3",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "eslint": "^9.29.0",
+    "tailwindcss": "^4.1.10",
     "typescript": "5.8.3"
   }
 }
