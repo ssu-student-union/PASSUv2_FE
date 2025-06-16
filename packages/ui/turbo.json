@@ -11,7 +11,11 @@
       "outputs": ["dist/**"]
     },
     "dev": {
-      "with": ["dev:styles", "dev:components"]
+      "with": ["dev:storybook", "dev:styles", "dev:components"]
+    },
+    "dev:storybook": {
+      "cache": false,
+      "persistent": true
     },
     "dev:styles": {
       "cache": false,
