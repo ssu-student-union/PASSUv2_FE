@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn } from "storybook/test";
 
 import { Button } from "@/button";
+import { Plus } from "lucide-react";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -14,8 +15,6 @@ const meta = {
   },
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ["autodocs"],
-  // More on argTypes: https://storybook.js.org/docs/api/argtypes
-
   // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
   args: { onClick: fn() },
 } satisfies Meta<typeof Button>;
@@ -23,9 +22,24 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Primary: Story = {
   args: {
-    children: "Button",
+    variant: "default",
+    children: <>로그인</>,
+  },
+};
+
+export const Footer: Story = {
+  args: {
+    size: "footer",
+    variant: "default",
+    children: <>로그인</>,
+  },
+};
+
+export const Outline: Story = {
+  args: {
+    variant: "outline",
+    children: <>취소</>,
   },
 };
