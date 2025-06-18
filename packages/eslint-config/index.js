@@ -6,7 +6,7 @@ import reactHooks from "eslint-plugin-react-hooks";
 import prettier from "eslint-config-prettier/flat";
 import tseslint from "typescript-eslint";
 export default tseslint.config(
-  { ignores: ["dist", "**/*.{cjs,js}"] },
+  { ignores: ["dist", "**/*.{cjs,js}", "**/*.gen.ts"] },
   js.configs.recommended,
   tseslint.configs.eslintRecommended,
   tseslint.configs.recommendedTypeChecked,
