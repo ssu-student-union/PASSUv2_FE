@@ -22,7 +22,7 @@ const chipVariants = cva(
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );
 
 function Chip({
