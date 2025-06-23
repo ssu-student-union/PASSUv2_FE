@@ -2,7 +2,7 @@ export const PassuLogo = ({ className }: { className?: string }) => {
   return (
     <svg
       aria-label="PASSU 로고"
-      className={className ?? "w-26 h-6"}
+      className={className ?? "w-26"}
       role="img"
       viewBox="0 0 104 22"
       fill="none"
