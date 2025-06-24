@@ -2,14 +2,14 @@ import { Button } from "@passu/ui/button";
 import { PassuLogo } from "@passu/ui/passu-logo";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/login")({
+export const Route = createFileRoute("/login/")({
   component: Login,
 });
 
 function Login() {
   const baseUrl = window.location.origin;
   const handleAdminLogin = () => {
-    window.location.href = `https://stu.ssu.ac.kr/register/redirect?redirect=${baseUrl}/callback`;
+    window.location.href = `https://stu.ssu.ac.kr/register/redirect?redirect=${baseUrl}/login/callback`;
   };
 
   return (

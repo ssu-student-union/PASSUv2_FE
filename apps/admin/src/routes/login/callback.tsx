@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 
-export const Route = createFileRoute("/callback")({
+export const Route = createFileRoute("/login/callback")({
   component: Callback,
 });
 
