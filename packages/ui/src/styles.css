@@ -6,7 +6,7 @@ html {
 }
 
 body {
-  background-color: var(--color-background);
+  @apply bg-background;
   height: 100%;
 }
 
