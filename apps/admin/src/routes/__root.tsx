@@ -15,8 +15,12 @@ function RootLayout() {
   );
   return (
     <>
-      <div className="flex h-screen">
-        {!isHideSidebar && <SideBar />}
+      <div className="flex">
+        {!isHideSidebar && (
+          <div className={`max-w-104 min-w-80 basis-1/5`}>
+            <SideBar />
+          </div>
+        )}
         <main className="flex-1">
           <Outlet />
         </main>

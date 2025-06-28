@@ -1,2 +1,6 @@
 @import "tailwindcss";
 @import "@passu/tailwind-config";
+
+body {
+  background-color: var(--color-background);
+}
