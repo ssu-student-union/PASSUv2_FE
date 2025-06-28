@@ -1,2 +1,15 @@
 @import "tailwindcss";
 @import "@passu/tailwind-config";
+
+html {
+  height: 100%;
+}
+
+body {
+  @apply bg-background;
+  height: 100%;
+}
+
+#app {
+  height: 100%;
+}
