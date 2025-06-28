@@ -1,23 +1,30 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  useNavigate,
+  useSearch,
+} from "@tanstack/react-router";
 import { useEffect } from "react";
+import { z } from "zod";
 
 export const Route = createFileRoute("/login/callback")({
+  validateSearch: z.object({
+    accessToken: z.string(),
+  }),
   component: Callback,
 });
 
 function Callback() {
   const navigate = useNavigate();
-  const token =
-    new URLSearchParams(window.location.search).get("accessToken") ?? "";
+  const { accessToken } = useSearch({ from: Route.id });
 
   useEffect(() => {
-    if (token) {
-      localStorage.setItem("accessToken", token);
+    if (accessToken) {
+      localStorage.setItem("accessToken", accessToken);
       void navigate({ to: "/" });
     } else {
       void navigate({ to: "/login" });
     }
-  }, [navigate, token]);
+  }, [accessToken, navigate]);
   return (
     <div className="flex h-screen w-screen items-center justify-center">
       Loading...
