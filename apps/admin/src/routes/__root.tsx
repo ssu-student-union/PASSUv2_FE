@@ -1,16 +1,18 @@
 import SideBar from "@/components/\bSideBar";
-import { Outlet, createRootRoute, useLocation } from "@tanstack/react-router";
+import { Outlet, createRootRoute, useMatchRoute } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+
+const HIDE_SIDEBAR_PATHS = ["/login", "/callback", "/event/create"];
 
 export const Route = createRootRoute({
   component: RootLayout,
 });
 
 function RootLayout() {
-  const location = useLocation();
-  console.log(location);
-  const HideSidebarPaths = ["/login", "/callback", "/event/create"];
-  const isHideSidebar = HideSidebarPaths.includes(location.pathname);
+  const matchRoute = useMatchRoute();
+  const isHideSidebar = HIDE_SIDEBAR_PATHS.some((path) =>
+    matchRoute({ to: path, fuzzy: false }),
+  );
   return (
     <>
       <div className="flex h-screen">
