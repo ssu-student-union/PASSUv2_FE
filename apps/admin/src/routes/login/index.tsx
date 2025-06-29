@@ -1,3 +1,4 @@
+import { Button } from "@passu/ui/button";
 import { PassuLogo } from "@passu/ui/passu-logo";
 import { createFileRoute } from "@tanstack/react-router";
 
@@ -15,16 +16,20 @@ function Login() {
       `}
     >
       <PassuLogo className="h-auto w-120" />
-      <a
+      <Button
+        asChild
         className={`
-          flex h-19 w-124 cursor-pointer items-center justify-center
-          rounded-full border-2 text-2xl font-bold text-hover
-          hover:bg-gray-200 hover:text-hover
+          h-19 w-124 rounded-full border-2 text-2xl font-bold text-hover
+          hover:text-hover
         `}
-        href={`https://stu.ssu.ac.kr/register/redirect?redirect=${baseUrl}/login/callback`}
+        variant={"outline"}
       >
-        관리자 로그인
-      </a>
+        <a
+          href={`http://stu.ssu.ac.kr/register/redirect?redirect=${baseUrl}/login/callback`}
+        >
+          관리자 로그인
+        </a>
+      </Button>
     </div>
   );
 }
