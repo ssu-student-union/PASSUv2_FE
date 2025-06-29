@@ -15,7 +15,7 @@ function RootLayout() {
   );
   return (
     <>
-      <div className="flex h-full">
+      <div className="flex h-full bg-background">
         {!isHideSidebar && (
           <div className={`max-w-104 min-w-80 basis-1/5`}>
             <SideBar />
