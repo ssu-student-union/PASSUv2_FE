@@ -1,12 +1,13 @@
 import { SVGProps } from "react";
+import { cn } from "./utils";
 
 type PassuLogoProps = Omit<SVGProps<SVGSVGElement>, "viewBox">;
 
-export const PassuLogo = (props: PassuLogoProps) => {
+export const PassuLogo = ({ className, ...props }: PassuLogoProps) => {
   return (
     <svg
       aria-label="PASSU 로고"
-      className="w-26"
+      className={cn("w-26", className)}
       role="img"
       viewBox="0 0 104 22"
       fill="none"
