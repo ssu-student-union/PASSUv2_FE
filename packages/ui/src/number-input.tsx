@@ -25,7 +25,7 @@ function NumberInput({
   ...props
 }: NumberInputProps) {
   const [internalValue, setInternalValue] = useState<string>(
-    value?.toString() ?? defaultValue?.toString() ?? ""
+    value?.toString() ?? defaultValue?.toString() ?? "",
   );
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -105,7 +105,7 @@ function NumberInput({
         "inline-flex items-center bg-white border border-primary rounded-full h-12 overflow-hidden",
         "focus-within:ring-2 focus-within:ring-primary/20",
         disabled && "opacity-50 pointer-events-none",
-        className
+        className,
       )}
       data-slot="number-input"
     >
@@ -143,7 +143,7 @@ function NumberInput({
             // Hide native number input spinners - more comprehensive approach
             "[appearance:textfield]",
             "[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0",
-            "[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-inner-spin-button]:m-0"
+            "[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-inner-spin-button]:m-0",
           )}
           style={
             {
@@ -165,7 +165,7 @@ function NumberInput({
         }
         className={cn(
           "w-8 h-8 mx-1 rounded-full text-primary",
-          "active:scale-95"
+          "active:scale-95",
         )}
         aria-label="증가"
         tabIndex={disabled ? -1 : 0}
