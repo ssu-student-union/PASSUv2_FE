@@ -1,13 +1,18 @@
-export const PassuLogo = () => {
+import { SVGProps } from "react";
+import { cn } from "./utils";
+
+type PassuLogoProps = Omit<SVGProps<SVGSVGElement>, "viewBox">;
+
+export const PassuLogo = ({ className, ...props }: PassuLogoProps) => {
   return (
     <svg
       aria-label="PASSU 로고"
-      width="104"
-      height="22"
+      className={cn("w-26", className)}
       role="img"
       viewBox="0 0 104 22"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <g clip-path="url(#clip0_1351_1396)">
         <path
