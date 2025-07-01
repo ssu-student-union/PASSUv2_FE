@@ -36,6 +36,24 @@ export default tseslint.config(
           ignoreRestSiblings: true,
         },
       ],
+      "better-tailwindcss/no-unregistered-classes": [
+        "error",
+        {
+          ignore: [
+            "text-h1",
+            "text-h2",
+            "text-h3",
+            "text-h4",
+            "text-h5",
+            "text-h6",
+            "text-subtitle1",
+            "text-subtitle2",
+            "text-subtitle3",
+            "text-body1",
+            "text-body2",
+          ],
+        },
+      ],
     },
   },
   prettier

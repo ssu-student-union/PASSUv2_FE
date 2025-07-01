@@ -138,3 +138,61 @@
     "Pretendard", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
+
+/* typograpy  */
+@layer utilities {
+  .text-h1 {
+    font-size: 4rem;
+    font-weight: 400;
+  }
+
+  .text-h2 {
+    font-size: 2rem;
+    font-weight: 400;
+  }
+
+  .text-h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  .text-h4 {
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .text-h5 {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  .text-h6 {
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+
+  .text-subtitle1 {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .text-subtitle2 {
+    font-size: 0.875rem;
+    font-weight: 400;
+  }
+
+  .text-subtitle3 {
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .text-body1 {
+    font-size: 0.75rem;
+    font-weight: 400;
+  }
+
+  .text-body2 {
+    font-size: 0.625rem;
+    font-weight: 400;
+  }
+}
