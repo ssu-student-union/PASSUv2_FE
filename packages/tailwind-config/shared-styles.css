@@ -139,60 +139,33 @@
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-/* typograpy  */
-@layer utilities {
-  .text-h1 {
-    font-size: 4rem;
-    font-weight: 400;
-  }
+@theme inline {
+  --txt-size-h1: 4rem;
+  --txt-weight-h1: 400;
+  --txt-size-h2: 2rem;
+  --txt-weight-h2: 400;
+  --txt-size-h3: 1.5rem;
+  --txt-weight-h3: 700;
+  --txt-size-h4: 1.25rem;
+  --txt-weight-h4: 700;
+  --txt-size-h5: 1rem;
+  --txt-weight-h5: 700;
+  --txt-size-h6: 0.875rem;
+  --txt-weight-h6: 700;
+  --txt-size-subtitle1: 1rem;
+  --txt-weight-subtitle1: 400;
+  --txt-size-subtitle2: 0.875rem;
+  --txt-weight-subtitle2: 400;
+  --txt-size-subtitle3: 0.75rem;
+  --txt-weight-subtitle3: 700;
+  --txt-size-body1: 0.75rem;
+  --txt-weight-body1: 400;
+  --txt-size-body2: 0.625rem;
+  --txt-weight-body2: 400;
+}
 
-  .text-h2 {
-    font-size: 2rem;
-    font-weight: 400;
-  }
-
-  .text-h3 {
-    font-size: 1.5rem;
-    font-weight: 700;
-  }
-
-  .text-h4 {
-    font-size: 1.25rem;
-    font-weight: 700;
-  }
-
-  .text-h5 {
-    font-size: 1rem;
-    font-weight: 700;
-  }
-
-  .text-h6 {
-    font-size: 0.875rem;
-    font-weight: 700;
-  }
-
-  .text-subtitle1 {
-    font-size: 1rem;
-    font-weight: 400;
-  }
-
-  .text-subtitle2 {
-    font-size: 0.875rem;
-    font-weight: 400;
-  }
-
-  .text-subtitle3 {
-    font-size: 0.75rem;
-    font-weight: 700;
-  }
-
-  .text-body1 {
-    font-size: 0.75rem;
-    font-weight: 400;
-  }
-
-  .text-body2 {
-    font-size: 0.625rem;
-    font-weight: 400;
-  }
+/* prettier-ignore */
+@utility txt-* {
+  font-size: --value(--txt-size-*) !important;
+  font-weight: --value(--txt-weight-*) !important;
 }

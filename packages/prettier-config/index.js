@@ -7,4 +7,5 @@ export default {
   semi: true,
   useTabs: false,
   trailingComma: "all",
+  htmlWhitespaceSensitivity: "ignore",
 };
