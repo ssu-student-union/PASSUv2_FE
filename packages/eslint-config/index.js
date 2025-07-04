@@ -36,6 +36,7 @@ export default tseslint.config(
           ignoreRestSiblings: true,
         },
       ],
+      "better-tailwindcss/no-unregistered-classes": "off",
     },
   },
   prettier
