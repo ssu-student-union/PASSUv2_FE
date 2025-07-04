@@ -166,6 +166,6 @@
 
 /* prettier-ignore */
 @utility txt-* {
-  font-size: --value(--txt-size-*) !important;
-  font-weight: --value(--txt-weight-*) !important;
+  font-size: --value(--txt-size-*);
+  font-weight: --value(--txt-weight-*);
 }
