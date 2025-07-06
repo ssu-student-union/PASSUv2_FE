@@ -138,3 +138,34 @@
     "Pretendard", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
+
+@theme inline {
+  --txt-size-h1: 4rem;
+  --txt-weight-h1: 400;
+  --txt-size-h2: 2rem;
+  --txt-weight-h2: 400;
+  --txt-size-h3: 1.5rem;
+  --txt-weight-h3: 700;
+  --txt-size-h4: 1.25rem;
+  --txt-weight-h4: 700;
+  --txt-size-h5: 1rem;
+  --txt-weight-h5: 700;
+  --txt-size-h6: 0.875rem;
+  --txt-weight-h6: 700;
+  --txt-size-subtitle1: 1rem;
+  --txt-weight-subtitle1: 400;
+  --txt-size-subtitle2: 0.875rem;
+  --txt-weight-subtitle2: 400;
+  --txt-size-subtitle3: 0.75rem;
+  --txt-weight-subtitle3: 700;
+  --txt-size-body1: 0.75rem;
+  --txt-weight-body1: 400;
+  --txt-size-body2: 0.625rem;
+  --txt-weight-body2: 400;
+}
+
+/* prettier-ignore */
+@utility txt-* {
+  font-size: --value(--txt-size-*);
+  font-weight: --value(--txt-weight-*);
+}
