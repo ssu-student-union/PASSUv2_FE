@@ -15,11 +15,11 @@ export default function SideBar({ config }: SidebarProps) {
     >
       <PassuLogo className="w-full" />
 
-      <div className="flex flex-col gap-3">
+      <nav className="flex flex-col gap-3">
         {config.buttons.map((button, index) => (
           <Button
             key={index}
-            onClick={button?.onClick}
+            onClick={button.onClick}
             className={cn(
               "flex h-12 w-full gap-2 rounded-full px-6 py-4",
               button.variant === "outline" &&
@@ -30,16 +30,14 @@ export default function SideBar({ config }: SidebarProps) {
             )}
             variant={button.variant}
           >
-            <span>
-              <button.icon />
-            </span>
+            <button.icon />
             <span>{button.label}</span>
           </Button>
         ))}
-      </div>
+      </nav>
 
       {config.list && (
-        <div className={"flex w-full flex-col gap-1.5"}>
+        <section className={"flex w-full flex-col gap-1.5"}>
           <div className="txt-h5 text-gray-600">상품수령명단</div>
           <Divider className="text-gray-400" />
           <ul className="gap-1.5 txt-subtitle1 text-gray-600">
@@ -49,7 +47,7 @@ export default function SideBar({ config }: SidebarProps) {
               </li>
             ))}
           </ul>
-        </div>
+        </section>
       )}
     </aside>
   );
