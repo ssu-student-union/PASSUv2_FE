@@ -2,7 +2,7 @@ export interface SidebarButton {
   label: string;
   icon: React.ReactNode;
   variant?: "default" | "outline";
-  onClick?: () => void;
+  onClick: () => void;
 }
 
 export interface SidebarListItem {

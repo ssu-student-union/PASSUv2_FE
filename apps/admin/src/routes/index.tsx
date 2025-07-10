@@ -24,6 +24,10 @@ function App() {
         label: "로그아웃",
         icon: <LogOut />,
         variant: "outline",
+        onClick: () => {
+          // 로그아웃 로직
+          void navigate({ to: "/login" });
+        },
       },
     ],
   };
