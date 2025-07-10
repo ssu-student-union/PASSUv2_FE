@@ -16,13 +16,13 @@ function App() {
     buttons: [
       {
         label: "행사 생성",
-        icon: Plus,
+        icon: <Plus />,
         variant: "default",
         onClick: () => void navigate({ to: "/event/create" }),
       },
       {
         label: "로그아웃",
-        icon: LogOut,
+        icon: <LogOut />,
         variant: "outline",
       },
     ],

@@ -1,8 +1,7 @@
-import type { LucideIcon } from "lucide-react";
-
 export interface SidebarButton {
   label: string;
-  icon: LucideIcon;
+  icon: React.ReactNode;
+  fill?: string;
   variant?: "default" | "outline";
   onClick?: () => void;
 }

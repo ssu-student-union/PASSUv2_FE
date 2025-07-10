@@ -19,7 +19,7 @@ function ProgressPage() {
     buttons = [
       {
         label: "행사 시작",
-        icon: Play,
+        icon: <Play />,
         variant: "default",
         onClick: () => {
           setIsOngoing(true);
@@ -28,17 +28,17 @@ function ProgressPage() {
       },
       {
         label: "행사 수정",
-        icon: Pencil,
+        icon: <Pencil />,
         variant: "outline",
       },
       {
         label: "행사 목록",
-        icon: List,
+        icon: <List />,
         variant: "outline",
       },
       {
         label: "상품수령명단 다운로드",
-        icon: Download,
+        icon: <Download />,
         variant: "outline",
       },
     ];
@@ -47,13 +47,14 @@ function ProgressPage() {
     const actionButton: SidebarButton = isPaused
       ? {
           label: "행사 재개",
-          icon: Play,
+          icon: <Play />,
           variant: "default",
           onClick: () => setIsPaused(false),
         }
       : {
           label: "행사 일시정지",
-          icon: Pause,
+          icon: <Pause />,
+          fill: "var(--hover)",
           variant: "default",
           onClick: () => setIsPaused(true),
         };
@@ -62,13 +63,13 @@ function ProgressPage() {
       actionButton,
       {
         label: "행사 종료",
-        icon: Square,
+        icon: <Square fill="var(--hover)" />,
         variant: "outline",
         onClick: () => setIsOngoing(false),
       },
       {
         label: "상품수령명단 다운로드",
-        icon: Download,
+        icon: <Download />,
         variant: "outline",
       },
     ];

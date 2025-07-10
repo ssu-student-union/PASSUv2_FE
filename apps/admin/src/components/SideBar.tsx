@@ -30,7 +30,7 @@ export default function SideBar({ config }: SidebarProps) {
             )}
             variant={button.variant}
           >
-            <button.icon />
+            {button.icon}
             <span>{button.label}</span>
           </Button>
         ))}

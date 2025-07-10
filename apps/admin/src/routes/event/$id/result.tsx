@@ -12,17 +12,17 @@ function ResultPage() {
     buttons: [
       {
         label: "상품수령명단 인쇄",
-        icon: Printer,
+        icon: <Printer />,
         variant: "default",
       },
       {
         label: "상품수령명단 다운로드",
-        icon: Download,
+        icon: <Download />,
         variant: "outline",
       },
       {
         label: "행사 목록",
-        icon: List,
+        icon: <List />,
         variant: "outline",
       },
     ],
