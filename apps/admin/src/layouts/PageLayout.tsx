@@ -1,4 +1,4 @@
-import SideBar from "@/components/SideBar";
+import SideBar from "@/components/common/SideBar";
 import type { SidebarConfig } from "@/types/router";
 import type { ReactNode } from "react";
 
