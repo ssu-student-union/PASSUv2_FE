@@ -16,24 +16,26 @@ export default function SideBar({ config }: SidebarProps) {
       <PassuLogo className="w-full" />
 
       <nav className="flex flex-col gap-3">
-        {config.buttons.map((button, index) => (
-          <Button
-            key={index}
-            onClick={() => button.onClick?.()}
-            className={cn(
-              "flex h-12 w-full gap-2 rounded-full px-6 py-4",
-              button.variant === "outline" &&
-                `
-                  border-2 text-primary
-                  hover:text-primary
-                `,
-            )}
-            variant={button.variant}
-          >
-            {button.icon}
-            <span>{button.label}</span>
-          </Button>
-        ))}
+        {config.buttons.map((button, index) => {
+          const outlineClasses =
+            button.variant === "outline"
+              ? "border-2 text-primary hover:text-primary"
+              : "";
+          return (
+            <Button
+              key={index}
+              onClick={button.onClick}
+              className={cn(
+                "flex h-12 w-full gap-2 rounded-full px-6 py-4",
+                button.variant === "outline" && outlineClasses,
+              )}
+              variant={button.variant}
+            >
+              {button.icon}
+              <span>{button.label}</span>
+            </Button>
+          );
+        })}
       </nav>
 
       {config.list && (

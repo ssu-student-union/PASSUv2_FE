@@ -1,7 +1,6 @@
 export interface SidebarButton {
   label: string;
   icon: React.ReactNode;
-  fill?: string;
   variant?: "default" | "outline";
   onClick?: () => void;
 }

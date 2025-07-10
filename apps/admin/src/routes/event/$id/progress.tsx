@@ -54,7 +54,6 @@ function ProgressPage() {
       : {
           label: "행사 일시정지",
           icon: <Pause />,
-          fill: "var(--hover)",
           variant: "default",
           onClick: () => setIsPaused(true),
         };
