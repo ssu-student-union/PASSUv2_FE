@@ -19,7 +19,7 @@ export default function SideBar({ config }: SidebarProps) {
         {config.buttons.map((button, index) => (
           <Button
             key={index}
-            onClick={button.onClick}
+            onClick={() => button.onClick?.()}
             className={cn(
               "flex h-12 w-full gap-2 rounded-full px-6 py-4",
               button.variant === "outline" &&
