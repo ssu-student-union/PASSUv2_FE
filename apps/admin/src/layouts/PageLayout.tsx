@@ -1,4 +1,4 @@
-import SideBar from "@/components/common/SideBar";
+import Sidebar from "@/components/common/Sidebar";
 import type { SidebarConfig } from "@/types/router";
 import type { ReactNode } from "react";
 
@@ -10,7 +10,7 @@ interface PageLayoutProps {
 export default function PageLayout({ children, config }: PageLayoutProps) {
   return (
     <div className="flex h-full">
-      <SideBar config={config} />
+      <Sidebar config={config} />
       <main className="flex-1">{children}</main>
     </div>
   );

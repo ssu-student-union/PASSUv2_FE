@@ -7,7 +7,7 @@ interface SidebarProps {
   config: SidebarConfig;
 }
 
-export default function SideBar({ config }: SidebarProps) {
+export default function Sidebar({ config }: SidebarProps) {
   return (
     <aside
       className={`flex max-w-104 min-w-85 basis-1/5 flex-col gap-12 px-10 pt-24`}
