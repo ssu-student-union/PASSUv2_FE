@@ -1,13 +1,9 @@
-import type { SidebarConfig } from "@/types/sidebar";
+import type { SidebarProps } from "@/types/sidebar";
 import { Button } from "@passu/ui/button";
 import { Divider } from "@passu/ui/divider";
 import { PassuLogo } from "@passu/ui/passu-logo";
 
-interface SidebarProps {
-  config: SidebarConfig;
-}
-
-export default function Sidebar({ config }: SidebarProps) {
+export default function Sidebar({ buttons, list }: SidebarProps) {
   return (
     <aside
       className={`flex max-w-104 min-w-85 basis-1/5 flex-col gap-12 px-10 pt-24`}
@@ -15,7 +11,7 @@ export default function Sidebar({ config }: SidebarProps) {
       <PassuLogo className="w-full" />
 
       <nav className="flex flex-col gap-3">
-        {config.buttons.map((button, index) => {
+        {buttons.map((button, index) => {
           const outlineClass =
             button.variant === "outline"
               ? "border-2 text-primary hover:text-primary"
@@ -35,12 +31,12 @@ export default function Sidebar({ config }: SidebarProps) {
         })}
       </nav>
 
-      {config.list && (
+      {list && (
         <section className={"flex w-full flex-col gap-1.5"}>
           <div className="txt-h5 text-gray-600">상품수령명단</div>
           <Divider className="text-gray-400" />
           <ul className="gap-1.5 txt-subtitle1 text-gray-600">
-            {config.list.map((item, i) => (
+            {list.map((item, i) => (
               <li key={i}>
                 {item.date} {item.name} {item.code}
               </li>

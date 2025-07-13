@@ -1,6 +1,8 @@
+import type { ReactNode } from "react";
+
 export interface SidebarButton {
   label: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   variant?: "default" | "outline";
   onClick: () => void;
 }
@@ -11,8 +13,7 @@ export interface SidebarListItem {
   code: number;
 }
 
-export interface SidebarConfig {
-  title: string;
+export interface SidebarProps {
   buttons: SidebarButton[];
   list?: SidebarListItem[];
 }

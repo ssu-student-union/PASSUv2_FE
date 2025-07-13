@@ -1,5 +1,5 @@
 import PageLayout from "@/layouts/PageLayout";
-import type { SidebarButton, SidebarConfig } from "@/types/sidebar";
+import type { SidebarButton, SidebarListItem } from "@/types/sidebar";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Download, List, Pause, Pencil, Play, Square } from "lucide-react";
 import { useState } from "react";
@@ -85,18 +85,14 @@ function ProgressPage() {
       },
     ];
   }
-  const config: SidebarConfig = {
-    title: "행사 진행",
-    buttons,
-    list: [
-      { date: "2025.05.26 18:05:33", name: "하이하", code: 2321 },
-      { date: "2025.05.26 18:05:33", name: "하이하", code: 2321 },
-      { date: "2025.05.26 18:05:33", name: "하이하", code: 2321 },
-    ],
-  };
+  const list: SidebarListItem[] = [
+    { date: "2025.05.26 18:05:33", name: "하이하", code: 2321 },
+    { date: "2025.05.26 18:05:33", name: "하이하", code: 2321 },
+    { date: "2025.05.26 18:05:33", name: "하이하", code: 2321 },
+  ];
 
   return (
-    <PageLayout config={config}>
+    <PageLayout buttons={buttons} list={list}>
       <div>progress</div>
     </PageLayout>
   );
