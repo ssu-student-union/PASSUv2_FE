@@ -8,31 +8,32 @@ export const Route = createFileRoute("/event/$id/progress")({
   component: ProgressPage,
 });
 
+type EventStatus = "not_started" | "ongoing" | "paused" | "finished";
+
 function ProgressPage() {
   const navigate = useNavigate();
-  const [isOngoing, setIsOngoing] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
+  const [status, setStatus] = useState<EventStatus>("not_started");
 
   let buttons: SidebarButton[];
 
-  if (!isOngoing || isPaused) {
-    // ✅ 시작 전 or 일시정지
-    const firstButton: SidebarButton = !isOngoing
-      ? {
-          label: "행사 시작",
-          icon: <Play />,
-          variant: "default",
-          onClick: () => {
-            setIsOngoing(true);
-            setIsPaused(false);
-          },
-        }
-      : {
-          label: "행사 재개",
-          icon: <Play />,
-          variant: "default",
-          onClick: () => setIsPaused(false),
-        };
+  if (status === "not_started" || status === "paused") {
+    // 시작 전 or 일시정지
+    const firstButton: SidebarButton =
+      status === "paused"
+        ? {
+            label: "행사 시작",
+            icon: <Play />,
+            variant: "default",
+            onClick: () => {
+              setStatus("ongoing");
+            },
+          }
+        : {
+            label: "행사 재개",
+            icon: <Play />,
+            variant: "default",
+            onClick: () => setStatus("ongoing"),
+          };
 
     buttons = [
       firstButton,
@@ -60,19 +61,19 @@ function ProgressPage() {
       },
     ];
   } else {
-    // ✅ 진행 중
+    // 진행 중
     buttons = [
       {
         label: "행사 일시정지",
         icon: <Pause />,
         variant: "default",
-        onClick: () => setIsPaused(true),
+        onClick: () => setStatus("paused"),
       },
       {
         label: "행사 종료",
         icon: <Square fill="var(--hover)" />,
         variant: "outline",
-        onClick: () => setIsOngoing(false),
+        onClick: () => setStatus("finished"),
       },
       {
         label: "상품수령명단 다운로드",
