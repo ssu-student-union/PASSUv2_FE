@@ -16,21 +16,16 @@ export default function Sidebar({ config }: SidebarProps) {
 
       <nav className="flex flex-col gap-3">
         {config.buttons.map((button, index) => {
+          const outlineClass =
+            button.variant === "outline"
+              ? "border-2 text-primary hover:text-primary"
+              : "";
+
           return (
             <Button
               key={index}
-              onClick={button.onClick}
-              className={`
-                flex h-12 w-full gap-2 rounded-full px-6 py-4
-                ${
-                  button.variant === "outline"
-                    ? `
-                      border-2 text-primary
-                      hover:text-primary
-                    `
-                    : ""
-                }
-              `}
+              className={outlineClass}
+              size="sidebar"
               variant={button.variant}
             >
               {button.icon}

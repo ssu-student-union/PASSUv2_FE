@@ -27,13 +27,14 @@ const buttonVariants = cva(
         sm: "h-8 rounded-sm gap-1.5 px-3 text-sm has-[>svg]:px-2.5",
         lg: "h-10 rounded-md px-6 text-sm has-[>svg]:px-4",
         icon: "size-9",
+        sidebar: "h-12 w-full gap-2 rounded-full px-6 py-4",
       },
     },
     defaultVariants: {
       variant: "default",
       size: "default",
     },
-  },
+  }
 );
 
 function Button({
