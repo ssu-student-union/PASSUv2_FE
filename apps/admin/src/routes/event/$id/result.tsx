@@ -1,5 +1,5 @@
 import PageLayout from "@/layouts/PageLayout";
-import type { SidebarConfig } from "@/types/router";
+import type { SidebarConfig } from "@/types/sidebar";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Download, List, Printer } from "lucide-react";
 export const Route = createFileRoute("/event/$id/result")({

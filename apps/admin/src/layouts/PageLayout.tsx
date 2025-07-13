@@ -1,5 +1,5 @@
 import Sidebar from "@/components/common/Sidebar";
-import type { SidebarConfig } from "@/types/router";
+import type { SidebarConfig } from "@/types/sidebar";
 import type { ReactNode } from "react";
 
 interface PageLayoutProps {

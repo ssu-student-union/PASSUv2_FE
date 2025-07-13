@@ -1,5 +1,5 @@
 import PageLayout from "@/layouts/PageLayout";
-import type { SidebarButton, SidebarConfig } from "@/types/router";
+import type { SidebarButton, SidebarConfig } from "@/types/sidebar";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Download, List, Pause, Pencil, Play, Square } from "lucide-react";
 import { useState } from "react";

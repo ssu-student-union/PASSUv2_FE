@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Button } from "@passu/ui/button";
 import { PassuLogo } from "@passu/ui/passu-logo";
-import type { SidebarConfig } from "@/types/router";
+import type { SidebarConfig } from "@/types/sidebar";
 import { LogOut, Plus } from "lucide-react";
 import PageLayout from "@/layouts/PageLayout";
 

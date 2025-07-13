@@ -1,4 +1,4 @@
-import type { SidebarConfig } from "@/types/router";
+import type { SidebarConfig } from "@/types/sidebar";
 import { Button } from "@passu/ui/button";
 import { Divider } from "@passu/ui/divider";
 import { PassuLogo } from "@passu/ui/passu-logo";
