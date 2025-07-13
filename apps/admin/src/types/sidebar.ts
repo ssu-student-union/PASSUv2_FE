@@ -1,11 +1,22 @@
 import type { ReactNode } from "react";
 
-export interface SidebarButton {
-  label: string;
+export interface SidebarLinkItem {
+  type: "link";
+  to: string;
   icon: ReactNode;
+  label: string;
   variant?: "default" | "outline";
-  onClick: () => void;
 }
+
+export interface SidebarActionItem {
+  type: "action";
+  onClick: () => void;
+  icon: ReactNode;
+  label: string;
+  variant?: "default" | "outline";
+}
+
+export type SidebarButtonItem = SidebarLinkItem | SidebarActionItem;
 
 export interface SidebarListItem {
   date: string;
@@ -14,6 +25,6 @@ export interface SidebarListItem {
 }
 
 export interface SidebarProps {
-  buttons: SidebarButton[];
+  buttons: SidebarButtonItem[];
   list?: SidebarListItem[];
 }

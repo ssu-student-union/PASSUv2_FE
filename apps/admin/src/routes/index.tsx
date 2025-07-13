@@ -1,7 +1,7 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { Button } from "@passu/ui/button";
 import { PassuLogo } from "@passu/ui/passu-logo";
-import type { SidebarButton } from "@/types/sidebar";
+import type { SidebarButtonItem } from "@/types/sidebar";
 import { LogOut, Plus } from "lucide-react";
 import PageLayout from "@/layouts/PageLayout";
 
@@ -10,21 +10,21 @@ export const Route = createFileRoute("/")({
 });
 
 function App() {
-  const navigate = useNavigate();
-  const buttons: SidebarButton[] = [
+  const buttons: SidebarButtonItem[] = [
     {
+      type: "link",
       label: "행사 생성",
       icon: <Plus />,
       variant: "default",
-      onClick: () => void navigate({ to: "/event/create" }),
+      to: "/event/create",
     },
     {
+      type: "action",
       label: "로그아웃",
       icon: <LogOut />,
       variant: "outline",
       onClick: () => {
         // 로그아웃 로직
-        void navigate({ to: "/login" });
       },
     },
   ];

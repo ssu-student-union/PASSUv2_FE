@@ -1,6 +1,6 @@
 import PageLayout from "@/layouts/PageLayout";
-import type { SidebarButton, SidebarListItem } from "@/types/sidebar";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import type { SidebarButtonItem, SidebarListItem } from "@/types/sidebar";
+import { createFileRoute } from "@tanstack/react-router";
 import { Download, List, Pause, Pencil, Play, Square } from "lucide-react";
 import { useState } from "react";
 
@@ -11,16 +11,16 @@ export const Route = createFileRoute("/event/$id/progress")({
 type EventStatus = "not_started" | "ongoing" | "paused" | "finished";
 
 function ProgressPage() {
-  const navigate = useNavigate();
   const [status, setStatus] = useState<EventStatus>("not_started");
 
-  let buttons: SidebarButton[];
+  let buttons: SidebarButtonItem[];
 
   if (status === "not_started" || status === "paused") {
     // 시작 전 or 일시정지
-    const firstButton: SidebarButton =
+    const firstButton: SidebarButtonItem =
       status === "paused"
         ? {
+            type: "action",
             label: "행사 시작",
             icon: <Play />,
             variant: "default",
@@ -29,6 +29,7 @@ function ProgressPage() {
             },
           }
         : {
+            type: "action",
             label: "행사 재개",
             icon: <Play />,
             variant: "default",
@@ -38,6 +39,7 @@ function ProgressPage() {
     buttons = [
       firstButton,
       {
+        type: "action",
         label: "행사 수정",
         icon: <Pencil />,
         variant: "outline",
@@ -46,12 +48,14 @@ function ProgressPage() {
         },
       },
       {
+        type: "link",
         label: "행사 목록",
         icon: <List />,
         variant: "outline",
-        onClick: () => void navigate({ to: "/" }),
+        to: "/",
       },
       {
+        type: "action",
         label: "상품수령명단 다운로드",
         icon: <Download />,
         variant: "outline",
@@ -64,18 +68,21 @@ function ProgressPage() {
     // 진행 중
     buttons = [
       {
+        type: "action",
         label: "행사 일시정지",
         icon: <Pause />,
         variant: "default",
         onClick: () => setStatus("paused"),
       },
       {
+        type: "action",
         label: "행사 종료",
         icon: <Square fill="var(--hover)" />,
         variant: "outline",
         onClick: () => setStatus("finished"),
       },
       {
+        type: "action",
         label: "상품수령명단 다운로드",
         icon: <Download />,
         variant: "outline",

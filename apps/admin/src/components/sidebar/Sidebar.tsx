@@ -1,7 +1,13 @@
-import type { SidebarProps } from "@/types/sidebar";
-import { Button } from "@passu/ui/button";
+import type { SidebarButtonItem, SidebarListItem } from "@/types/sidebar";
 import { Divider } from "@passu/ui/divider";
 import { PassuLogo } from "@passu/ui/passu-logo";
+import SidebarButton from "./SidebarButton";
+import { Link } from "@tanstack/react-router";
+
+interface SidebarProps {
+  buttons: SidebarButtonItem[];
+  list?: SidebarListItem[];
+}
 
 export default function Sidebar({ buttons, list }: SidebarProps) {
   return (
@@ -11,24 +17,25 @@ export default function Sidebar({ buttons, list }: SidebarProps) {
       <PassuLogo className="w-full" />
 
       <nav className="flex flex-col gap-3">
-        {buttons.map((button, index) => {
-          const outlineClass =
-            button.variant === "outline"
-              ? "border-2 text-primary hover:text-primary"
-              : "";
-
-          return (
-            <Button
+        {buttons.map((item, index) =>
+          item.type === "link" ? (
+            <SidebarButton key={index} variant={item.variant} asChild>
+              <Link to={item.to}>
+                {item.icon}
+                <span>{item.label}</span>
+              </Link>
+            </SidebarButton>
+          ) : (
+            <SidebarButton
               key={index}
-              className={outlineClass}
-              size="sidebar"
-              variant={button.variant}
+              onClick={item.onClick}
+              variant={item.variant}
             >
-              {button.icon}
-              <span>{button.label}</span>
-            </Button>
-          );
-        })}
+              {item.icon}
+              <span>{item.label}</span>
+            </SidebarButton>
+          ),
+        )}
       </nav>
 
       {list && (
