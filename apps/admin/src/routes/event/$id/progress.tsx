@@ -1,106 +1,87 @@
+import Sidebar from "@/components/sidebar/Sidebar";
+import SidebarButton from "@/components/sidebar/SidebarButton";
+import { SidebarButtonGroup } from "@/components/sidebar/SidebarButtonGroup";
+import SidebarDownloadListButton from "@/components/sidebar/SidebarDownloadListButton";
+import { SidebarGoToEventList } from "@/components/sidebar/SidebarGoToEventList";
+import SidebarListSection from "@/components/sidebar/SidebarListSection";
 import PageLayout from "@/layouts/PageLayout";
-import type { SidebarButtonItem, SidebarListItem } from "@/types/sidebar";
+import type { SidebarListItem } from "@/types/sidebar";
 import { createFileRoute } from "@tanstack/react-router";
-import { Download, List, Pause, Pencil, Play, Square } from "lucide-react";
+import { Pause, Pencil, Play, Square } from "lucide-react";
 import { useState } from "react";
+
+// mock data
+const list: SidebarListItem[] = [
+  { date: "2025.05.26 18:05:33", name: "하이하", code: 2321 },
+  { date: "2025.05.26 18:05:33", name: "하이하", code: 2321 },
+  { date: "2025.05.26 18:05:33", name: "하이하", code: 2321 },
+];
 
 export const Route = createFileRoute("/event/$id/progress")({
   component: ProgressPage,
 });
 
-type EventStatus = "not_started" | "ongoing" | "paused" | "finished";
+const enum EventStatus {
+  NotStarted = "not_started",
+  Ongoing = "ongoing",
+  Paused = "paused",
+  Finished = "finished",
+}
 
 function ProgressPage() {
-  const [status, setStatus] = useState<EventStatus>("not_started");
-
-  let buttons: SidebarButtonItem[];
-
-  if (status === "not_started" || status === "paused") {
-    // 시작 전 or 일시정지
-    const firstButton: SidebarButtonItem =
-      status === "paused"
-        ? {
-            type: "action",
-            label: "행사 시작",
-            icon: <Play />,
-            variant: "default",
-            onClick: () => {
-              setStatus("ongoing");
-            },
-          }
-        : {
-            type: "action",
-            label: "행사 재개",
-            icon: <Play />,
-            variant: "default",
-            onClick: () => setStatus("ongoing"),
-          };
-
-    buttons = [
-      firstButton,
-      {
-        type: "action",
-        label: "행사 수정",
-        icon: <Pencil />,
-        variant: "outline",
-        onClick: () => {
-          // 행사 수정 로직
-        },
-      },
-      {
-        type: "link",
-        label: "행사 목록",
-        icon: <List />,
-        variant: "outline",
-        to: "/",
-      },
-      {
-        type: "action",
-        label: "상품수령명단 다운로드",
-        icon: <Download />,
-        variant: "outline",
-        onClick: () => {
-          // 다운로드 로직
-        },
-      },
-    ];
-  } else {
-    // 진행 중
-    buttons = [
-      {
-        type: "action",
-        label: "행사 일시정지",
-        icon: <Pause />,
-        variant: "default",
-        onClick: () => setStatus("paused"),
-      },
-      {
-        type: "action",
-        label: "행사 종료",
-        icon: <Square fill="var(--hover)" />,
-        variant: "outline",
-        onClick: () => setStatus("finished"),
-      },
-      {
-        type: "action",
-        label: "상품수령명단 다운로드",
-        icon: <Download />,
-        variant: "outline",
-        onClick: () => {
-          // 다운로드 로직
-        },
-      },
-    ];
-  }
-  const list: SidebarListItem[] = [
-    { date: "2025.05.26 18:05:33", name: "하이하", code: 2321 },
-    { date: "2025.05.26 18:05:33", name: "하이하", code: 2321 },
-    { date: "2025.05.26 18:05:33", name: "하이하", code: 2321 },
-  ];
+  const [status, setStatus] = useState<EventStatus>(EventStatus.NotStarted);
 
   return (
-    <PageLayout buttons={buttons} list={list}>
-      <div>progress</div>
+    <PageLayout>
+      <Sidebar>
+        <SidebarButtonGroup>
+          {status === EventStatus.NotStarted ||
+          status === EventStatus.Paused ? (
+            <>
+              <SidebarButton onClick={() => setStatus(EventStatus.Ongoing)}>
+                <Play />
+                <span>
+                  {status === EventStatus.NotStarted
+                    ? "행사 시작"
+                    : "행사 재개"}
+                </span>
+              </SidebarButton>
+
+              <SidebarButton
+                variant="outline"
+                onClick={() => {
+                  /* 수정 로직 */
+                }}
+              >
+                <Pencil />
+                <span>행사 수정</span>
+              </SidebarButton>
+
+              <SidebarGoToEventList />
+            </>
+          ) : (
+            <>
+              <SidebarButton onClick={() => setStatus(EventStatus.Paused)}>
+                <Pause />
+                <span>행사 일시정지</span>
+              </SidebarButton>
+
+              <SidebarButton
+                variant="outline"
+                onClick={() => setStatus(EventStatus.Finished)}
+              >
+                <Square className="fill-hover" />
+                <span>행사 종료</span>
+              </SidebarButton>
+            </>
+          )}
+          <SidebarDownloadListButton />
+        </SidebarButtonGroup>
+
+        <SidebarListSection list={list} />
+      </Sidebar>
+
+      <div className="flex-1">이벤트 진행 페이지</div>
     </PageLayout>
   );
 }

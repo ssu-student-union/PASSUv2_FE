@@ -1,45 +1,34 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Button } from "@passu/ui/button";
-import { PassuLogo } from "@passu/ui/passu-logo";
-import type { SidebarButtonItem } from "@/types/sidebar";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { LogOut, Plus } from "lucide-react";
 import PageLayout from "@/layouts/PageLayout";
+import Sidebar from "@/components/sidebar/Sidebar";
+import { SidebarButtonGroup } from "@/components/sidebar/SidebarButtonGroup";
+import SidebarButton from "@/components/sidebar/SidebarButton";
 
 export const Route = createFileRoute("/")({
   component: App,
 });
 
 function App() {
-  const buttons: SidebarButtonItem[] = [
-    {
-      type: "link",
-      label: "행사 생성",
-      icon: <Plus />,
-      variant: "default",
-      to: "/event/create",
-    },
-    {
-      type: "action",
-      label: "로그아웃",
-      icon: <LogOut />,
-      variant: "outline",
-      onClick: () => {
-        // 로그아웃 로직
-      },
-    },
-  ];
   return (
-    <PageLayout buttons={buttons}>
-      <header
-        className={`
-          flex min-h-screen flex-1 flex-col items-center justify-center
-          bg-[#282c34] text-[calc(10px+2vmin)] text-white
-        `}
-      >
-        <PassuLogo />
-        <p className="mb-4">Welcome to Passu Admin!</p>
-        <Button>Button</Button>
-      </header>
+    <PageLayout>
+      <Sidebar>
+        <SidebarButtonGroup>
+          <SidebarButton asChild>
+            <Link to="/event/create">
+              <Plus />
+              행사 생성
+            </Link>
+          </SidebarButton>
+
+          <SidebarButton variant="outline">
+            <LogOut />
+            로그아웃
+          </SidebarButton>
+        </SidebarButtonGroup>
+      </Sidebar>
+
+      <div className="flex-1">메인</div>
     </PageLayout>
   );
 }

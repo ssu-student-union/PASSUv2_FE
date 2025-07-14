@@ -14,16 +14,12 @@ export default function SidebarButton({
   asChild,
   children,
 }: SidebarButtonProps) {
-  const outlineClass =
-    variant === "outline" ? "border-2 text-primary hover:text-primary" : "";
-
   return (
     <Button
-      size="sidebar"
+      variantType="sidebar"
       variant={variant}
       onClick={onClick}
       asChild={asChild}
-      className={outlineClass}
     >
       {children}
     </Button>

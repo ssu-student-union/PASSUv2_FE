@@ -2,10 +2,10 @@ import type { SidebarListItem } from "@/types/sidebar";
 import { Divider } from "@passu/ui/divider";
 
 interface Props {
-  list: SidebarListItem[];
+  list?: SidebarListItem[];
 }
 
-export default function SidebarListSection({ list }: Props) {
+export default function SidebarListSection({ list = [] }: Props) {
   return (
     <section className="flex w-full flex-col gap-1.5">
       <div className="txt-h5 text-gray-600">상품수령명단</div>

@@ -9,7 +9,9 @@ interface SidebarProps {
 export default function Sidebar({ children }: SidebarProps) {
   return (
     <aside
-      className={`flex max-w-104 min-w-85 basis-1/5 flex-col gap-12 px-10 pt-24`}
+      className={`
+        flex h-full max-w-104 min-w-85 basis-1/5 flex-col gap-12 px-10 pt-24
+      `}
     >
       <PassuLogo className="w-full" />
       {children}
