@@ -30,8 +30,8 @@ const buttonVariants = cva(
         sidebar: "h-12 w-full gap-2 rounded-full px-6 py-4",
       },
       variantType: {
-        default: "",
-        sidebar: "",
+        default: null,
+        sidebar: null,
       },
     },
     compoundVariants: [
@@ -51,7 +51,7 @@ const buttonVariants = cva(
       size: "default",
       variantType: "default",
     },
-  },
+  }
 );
 
 function Button({
