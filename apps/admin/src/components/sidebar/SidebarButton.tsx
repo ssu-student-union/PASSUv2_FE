@@ -8,12 +8,12 @@ interface SidebarButtonProps {
   children: ReactNode;
 }
 
-export default function SidebarButton({
+export const SidebarButton = ({
   variant = "default",
   onClick,
   asChild,
   children,
-}: SidebarButtonProps) {
+}: SidebarButtonProps) => {
   return (
     <Button
       variantType="sidebar"
@@ -24,4 +24,4 @@ export default function SidebarButton({
       {children}
     </Button>
   );
-}
+};

@@ -4,10 +4,10 @@ interface PageLayoutProps {
   children: ReactNode;
 }
 
-export default function PageLayout({ children }: PageLayoutProps) {
+export const PageLayout = ({ children }: PageLayoutProps) => {
   return (
     <div className="flex h-full">
       <main className="flex w-full">{children}</main>
     </div>
   );
-}
+};

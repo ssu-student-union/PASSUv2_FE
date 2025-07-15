@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import SidebarButton from "./SidebarButton";
+import { SidebarButton } from "./SidebarButton";
 import { List } from "lucide-react";
 
 export const SidebarGoToEventList = () => {

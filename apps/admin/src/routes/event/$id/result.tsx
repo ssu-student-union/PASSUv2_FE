@@ -1,12 +1,13 @@
-import Sidebar from "@/components/sidebar/Sidebar";
-import SidebarButton from "@/components/sidebar/SidebarButton";
+import { Sidebar } from "@/components/sidebar/Sidebar";
+import { SidebarButton } from "@/components/sidebar/SidebarButton";
 import { SidebarButtonGroup } from "@/components/sidebar/SidebarButtonGroup";
-import SidebarDownloadListButton from "@/components/sidebar/SidebarDownloadListButton";
+import { SidebarDownloadListButton } from "@/components/sidebar/SidebarDownloadListButton";
 import { SidebarGoToEventList } from "@/components/sidebar/SidebarGoToEventList";
-import SidebarListSection from "@/components/sidebar/SidebarListSection";
-import PageLayout from "@/layouts/PageLayout";
+import { SidebarListSection } from "@/components/sidebar/SidebarListSection";
+import { PageLayout } from "@/layouts/PageLayout";
 import { createFileRoute } from "@tanstack/react-router";
 import { Printer } from "lucide-react";
+
 export const Route = createFileRoute("/event/$id/result")({
   component: ResultPage,
 });

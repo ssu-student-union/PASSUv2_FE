@@ -6,7 +6,7 @@ interface SidebarProps {
   children: ReactNode;
 }
 
-export default function Sidebar({ children }: SidebarProps) {
+export const Sidebar = ({ children }: SidebarProps) => {
   return (
     <aside
       className={`
@@ -17,4 +17,4 @@ export default function Sidebar({ children }: SidebarProps) {
       {children}
     </aside>
   );
-}
+};
