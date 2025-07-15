@@ -28,10 +28,27 @@ const buttonVariants = cva(
         lg: "h-10 rounded-md px-6 text-sm has-[>svg]:px-4",
         icon: "size-9",
       },
+      variantType: {
+        default: null,
+        sidebar: null,
+      },
     },
+    compoundVariants: [
+      {
+        variantType: "sidebar",
+        size: "default",
+        className: "h-12 w-full gap-2 rounded-full px-6 py-4",
+      },
+      {
+        variantType: "sidebar",
+        variant: "outline",
+        className: "border-2 text-primary hover:text-primary",
+      },
+    ],
     defaultVariants: {
       variant: "default",
       size: "default",
+      variantType: "default",
     },
   },
 );
@@ -40,6 +57,7 @@ function Button({
   className,
   variant,
   size,
+  variantType,
   asChild = false,
   ...props
 }: React.ComponentProps<"button"> &
@@ -51,7 +69,7 @@ function Button({
   return (
     <Comp
       data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }))}
+      className={cn(buttonVariants({ variant, size, variantType, className }))}
       {...props}
     />
   );

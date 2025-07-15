@@ -1,6 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Button } from "@passu/ui/button";
-import { PassuLogo } from "@passu/ui/passu-logo";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { LogOut, Plus } from "lucide-react";
+
+import { Sidebar } from "@/components/sidebar/Sidebar";
+import { SidebarButtonGroup } from "@/components/sidebar/SidebarButtonGroup";
+import { SidebarButton } from "@/components/sidebar/SidebarButton";
 
 export const Route = createFileRoute("/")({
   component: App,
@@ -8,17 +11,24 @@ export const Route = createFileRoute("/")({
 
 function App() {
   return (
-    <div className="text-center">
-      <header
-        className={`
-          flex min-h-screen flex-col items-center justify-center bg-[#282c34]
-          text-[calc(10px+2vmin)] text-white
-        `}
-      >
-        <PassuLogo />
-        <p className="mb-4">Welcome to Passu Admin!</p>
-        <Button>Button</Button>
-      </header>
-    </div>
+    <>
+      <Sidebar>
+        <SidebarButtonGroup>
+          <SidebarButton asChild>
+            <Link to="/event/create">
+              <Plus />
+              행사 생성
+            </Link>
+          </SidebarButton>
+
+          <SidebarButton variant="outline">
+            <LogOut />
+            로그아웃
+          </SidebarButton>
+        </SidebarButtonGroup>
+      </Sidebar>
+
+      <div className="flex-1">메인</div>
+    </>
   );
 }
