@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { LogOut, Plus } from "lucide-react";
-import { PageLayout } from "@/layouts/PageLayout";
+
 import { Sidebar } from "@/components/sidebar/Sidebar";
 import { SidebarButtonGroup } from "@/components/sidebar/SidebarButtonGroup";
 import { SidebarButton } from "@/components/sidebar/SidebarButton";
@@ -11,7 +11,7 @@ export const Route = createFileRoute("/")({
 
 function App() {
   return (
-    <PageLayout>
+    <>
       <Sidebar>
         <SidebarButtonGroup>
           <SidebarButton asChild>
@@ -29,6 +29,6 @@ function App() {
       </Sidebar>
 
       <div className="flex-1">메인</div>
-    </PageLayout>
+    </>
   );
 }

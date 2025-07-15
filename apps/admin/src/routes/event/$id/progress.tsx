@@ -4,7 +4,6 @@ import { SidebarButtonGroup } from "@/components/sidebar/SidebarButtonGroup";
 import { SidebarDownloadListButton } from "@/components/sidebar/SidebarDownloadListButton";
 import { SidebarGoToEventList } from "@/components/sidebar/SidebarGoToEventList";
 import { SidebarListSection } from "@/components/sidebar/SidebarListSection";
-import { PageLayout } from "@/layouts/PageLayout";
 import type { SidebarListItem } from "@/types/sidebar";
 import { createFileRoute } from "@tanstack/react-router";
 import { Pause, Pencil, Play, Square } from "lucide-react";
@@ -32,7 +31,7 @@ function ProgressPage() {
   const [status, setStatus] = useState<EventStatus>(EventStatus.NotStarted);
 
   return (
-    <PageLayout>
+    <>
       <Sidebar>
         <SidebarButtonGroup>
           {status === EventStatus.NotStarted ||
@@ -82,6 +81,6 @@ function ProgressPage() {
       </Sidebar>
 
       <div className="flex-1">이벤트 진행 페이지</div>
-    </PageLayout>
+    </>
   );
 }

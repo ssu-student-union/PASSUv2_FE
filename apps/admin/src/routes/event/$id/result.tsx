@@ -4,7 +4,6 @@ import { SidebarButtonGroup } from "@/components/sidebar/SidebarButtonGroup";
 import { SidebarDownloadListButton } from "@/components/sidebar/SidebarDownloadListButton";
 import { SidebarGoToEventList } from "@/components/sidebar/SidebarGoToEventList";
 import { SidebarListSection } from "@/components/sidebar/SidebarListSection";
-import { PageLayout } from "@/layouts/PageLayout";
 import { createFileRoute } from "@tanstack/react-router";
 import { Printer } from "lucide-react";
 
@@ -14,7 +13,7 @@ export const Route = createFileRoute("/event/$id/result")({
 
 function ResultPage() {
   return (
-    <PageLayout>
+    <>
       <Sidebar>
         <SidebarButtonGroup>
           <SidebarButton>
@@ -31,6 +30,6 @@ function ResultPage() {
       </Sidebar>
 
       <div className="flex-1">행사 결과</div>
-    </PageLayout>
+    </>
   );
 }
