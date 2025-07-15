@@ -1,26 +1,14 @@
 import { Button } from "@passu/ui/button";
-import { type ReactNode } from "react";
+import { type ComponentProps } from "react";
 
-interface SidebarButtonProps {
-  variant?: "default" | "outline";
-  onClick?: () => void;
-  asChild?: boolean;
-  children: ReactNode;
-}
+type SidebarButtonProps = Omit<
+  ComponentProps<typeof Button>,
+  "variantType" | "size"
+>;
 
-export const SidebarButton = ({
-  variant = "default",
-  onClick,
-  asChild,
-  children,
-}: SidebarButtonProps) => {
+export const SidebarButton = ({ children, ...props }: SidebarButtonProps) => {
   return (
-    <Button
-      variantType="sidebar"
-      variant={variant}
-      onClick={onClick}
-      asChild={asChild}
-    >
+    <Button variantType="sidebar" {...props}>
       {children}
     </Button>
   );
