@@ -6,10 +6,6 @@ type SidebarButtonProps = Omit<
   "variantType" | "size"
 >;
 
-export const SidebarButton = ({ children, ...props }: SidebarButtonProps) => {
-  return (
-    <Button variantType="sidebar" {...props}>
-      {children}
-    </Button>
-  );
+export const SidebarButton = ({ ...props }: SidebarButtonProps) => {
+  return <Button variantType="sidebar" {...props} />;
 };
