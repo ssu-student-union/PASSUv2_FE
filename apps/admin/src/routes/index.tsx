@@ -4,10 +4,40 @@ import { LogOut, Plus } from "lucide-react";
 import { Sidebar } from "@/components/sidebar/Sidebar";
 import { SidebarButtonGroup } from "@/components/sidebar/SidebarButtonGroup";
 import { SidebarButton } from "@/components/sidebar/SidebarButton";
+import { EventAccordion } from "@/components/home/EventAccordion";
 
 export const Route = createFileRoute("/")({
   component: App,
 });
+
+const upcomingEvents = [
+  {
+    name: "2025-1학기 연주회",
+    place: "슈파크 일대",
+    date: "2025/05/02",
+    time: "15:00",
+  },
+  {
+    name: "2025-1학기 예술행사",
+    place: "슈파크 일대",
+    date: "2025/05/01",
+    time: "15:00",
+  },
+];
+const completedEvents = [
+  {
+    name: "2025-1학기 예술행사",
+    place: "슈파크 일대",
+    date: "2025/05/01",
+    time: "15:00",
+  },
+  {
+    name: "2025-1학기 연주회",
+    place: "슈파크 일대",
+    date: "2025/05/01",
+    time: "15:00",
+  },
+];
 
 function App() {
   return (
@@ -28,7 +58,33 @@ function App() {
         </SidebarButtonGroup>
       </Sidebar>
 
-      <div className="flex-1">메인</div>
+      <div className="flex-1">
+        <div className={`flex h-full w-full flex-col gap-6 px-20 pt-20 pb-10`}>
+          <div className="flex items-end gap-2">
+            <span className="text-4xl font-bold">총학생회</span>
+            <span className="text-xl">님의 행사 목록</span>
+          </div>
+
+          <div
+            className={`
+              flex h-full flex-1 flex-col gap-12 overflow-y-scroll rounded-3xl
+              bg-white p-5
+            `}
+          >
+            <EventAccordion
+              title="예정된 행사"
+              events={upcomingEvents}
+              textColor="text-gray-900"
+            />
+
+            <EventAccordion
+              title="완료된 행사"
+              events={completedEvents}
+              textColor="text-gray-600"
+            />
+          </div>
+        </div>
+      </div>
     </>
   );
 }
