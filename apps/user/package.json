@@ -19,11 +19,12 @@
     "@tanstack/react-router": "^1.121.2",
     "@tanstack/react-router-devtools": "^1.121.16",
     "@tanstack/router-plugin": "^1.121.2",
+    "@tanstack/zod-adapter": "^1.128.6",
     "jotai": "^2.9.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "tailwindcss": "^4.0.6",
-    "zod": "^4.0.5"
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@passu/eslint-config": "workspace:*",

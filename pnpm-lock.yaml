@@ -120,6 +120,9 @@ importers:
       '@tanstack/router-plugin':
         specifier: ^1.121.2
         version: 1.121.16(@tanstack/react-router@1.121.16(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(vite@6.3.5(@types/node@24.0.3)(jiti@2.4.2)(lightningcss@1.30.1)(tsx@4.20.3)(yaml@2.8.0))
+      '@tanstack/zod-adapter':
+        specifier: ^1.128.6
+        version: 1.128.6(@tanstack/react-router@1.121.16(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(zod@3.25.76)
       jotai:
         specifier: ^2.9.0
         version: 2.12.5(@types/react@19.1.8)(react@19.1.0)
@@ -133,8 +136,8 @@ importers:
         specifier: ^4.0.6
         version: 4.1.10
       zod:
-        specifier: ^4.0.5
-        version: 4.0.5
+        specifier: ^3.25.76
+        version: 3.25.76
     devDependencies:
       '@passu/eslint-config':
         specifier: workspace:*
@@ -1656,6 +1659,13 @@ packages:
   '@tanstack/virtual-file-routes@1.120.17':
     resolution: {integrity: sha512-Ssi+yKcjG9ru02ieCpUBF7QQBEKGB7WQS1R9va3GHu+Oq9WjzmJ4rifzdugjTeKD3yfT7d1I+pOxRhoWog6CHw==}
     engines: {node: '>=12'}
+
+  '@tanstack/zod-adapter@1.128.6':
+    resolution: {integrity: sha512-mH0c+1Bo/OherlwM3IA4eexxBTyd3i+VYNEq/PpW1+2NPgWUJjlXSk4HId/S2XbF32VooTpDRp35Ll9C3Oy/7Q==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      '@tanstack/react-router': '>=1.43.2'
+      zod: ^3.23.8
 
   '@testing-library/dom@10.4.0':
     resolution: {integrity: sha512-pemlzrSESWbdAloYml3bAJMEfNh1Z7EduzqPKprCH5S341frlpYnUEW0H72dLxa6IsYr+mPno20GiSm+h9dEdQ==}
@@ -3554,9 +3564,6 @@ packages:
   zod@3.25.76:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
 
-  zod@4.0.5:
-    resolution: {integrity: sha512-/5UuuRPStvHXu7RS+gmvRf4NXrNxpSllGwDnCBcJZtQsKrviYXm54yDGV2KYNLT5kq0lHGcl7lqWJLgSaG+tgA==}
-
 snapshots:
 
   '@adobe/css-tools@4.4.3': {}
@@ -4786,6 +4793,11 @@ snapshots:
   '@tanstack/store@0.7.1': {}
 
   '@tanstack/virtual-file-routes@1.120.17': {}
+
+  '@tanstack/zod-adapter@1.128.6(@tanstack/react-router@1.121.16(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(zod@3.25.76)':
+    dependencies:
+      '@tanstack/react-router': 1.121.16(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      zod: 3.25.76
 
   '@testing-library/dom@10.4.0':
     dependencies:
@@ -6648,5 +6660,3 @@ snapshots:
   zod@3.25.67: {}
 
   zod@3.25.76: {}
-
-  zod@4.0.5: {}
