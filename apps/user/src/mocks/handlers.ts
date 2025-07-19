@@ -12,7 +12,9 @@ import type {
   EventDetailPayload,
   EventDetailResponse,
   EventDetailErrorResponse,
-} from "../model/api";
+  UserInfoResponse,
+  ApiResponse,
+} from "@/model/api";
 
 export const handlers = [
   // 1. 랜덤 키 발급 API
@@ -20,9 +22,20 @@ export const handlers = [
     { eventId: string }, // Params
     undefined, // RequestBody (no explicit body for this API)
     IssueRandomKeyResponse // ResponseBody
-  >("*/api/v1/event/:eventId/issue_random_key", ({ params }) => {
+  >("*/api/v1/event/:eventId/issue-key", ({ request, params }) => {
     const { eventId } = params; // eventId is now typed as string
     console.log(`Mock: Issuing random key for event ${eventId}`);
+
+    // Check for Authorization header
+    const authHeader = request.headers.get("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      const errorResponse: ApiErrorResponse = {
+        isSuccess: false,
+        message: "Unauthorized",
+        detail: "Access token is required",
+      };
+      return HttpResponse.json(errorResponse, { status: 401 });
+    }
     const payload: IssueRandomKeyPayload = {
       random_key: Math.floor(1000 + Math.random() * 9000).toString(),
       expired_at: new Date(Date.now() + 15 * 60 * 1000).toISOString(), // 15 minutes from now
@@ -41,10 +54,21 @@ export const handlers = [
     EnrollStudentResponse | ApiErrorResponse // ResponseBody
   >("*/api/v1/event/:eventId/enroll", async ({ request, params }) => {
     const { eventId } = params;
+    console.log(`Mock: Enrolling student for event ${eventId}`);
+
+    // Check for Authorization header
+    const authHeader = request.headers.get("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      const errorResponse: ApiErrorResponse = {
+        isSuccess: false,
+        message: "Unauthorized",
+        detail: "Access token is required",
+      };
+      return HttpResponse.json(errorResponse, { status: 401 });
+    }
+
     const { random_key } = await request.json();
-    console.log(
-      `Mock: Enrolling student for event ${eventId} with key ${random_key}`,
-    );
+    console.log(`Mock: Using random key ${random_key}`);
 
     if (random_key === "invalid") {
       return HttpResponse.json(
@@ -130,5 +154,40 @@ export const handlers = [
       ...payload,
     };
     return HttpResponse.json(response, { status: 200 });
+  }),
+  // User Info API
+  http.get<
+    Record<string, never>, // Params
+    undefined, // RequestBody
+    ApiResponse<UserInfoResponse> | ApiErrorResponse // ResponseBody
+  >("*/api/v1/user", ({ request }) => {
+    console.log("Mock: Getting user info");
+
+    // Check for Authorization header
+    const authHeader = request.headers.get("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      const errorResponse: ApiErrorResponse = {
+        isSuccess: false,
+        message: "Unauthorized",
+        detail: "Access token is required",
+      };
+      return HttpResponse.json(errorResponse, { status: 401 });
+    }
+
+    // Mock user info response
+    const response: UserInfoResponse = {
+      name: "홍길동",
+      student_id: "20211234",
+      major: "컴퓨터학부",
+      is_council: false,
+    };
+    return HttpResponse.json(
+      {
+        isSuccess: true,
+        message: "User info retrieved successfully",
+        ...response,
+      },
+      { status: 200 },
+    );
   }),
 ];

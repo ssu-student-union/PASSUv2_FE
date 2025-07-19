@@ -71,3 +71,11 @@ export interface EventConditions {
   year?: string[];
   other_criteria?: unknown; // Placeholder for other criteria
 }
+
+// User Info API
+export interface UserInfoResponse {
+  name?: string;
+  student_id?: string;
+  major?: string;
+  is_council?: boolean;
+}
