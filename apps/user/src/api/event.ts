@@ -1,4 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+import type {
+  UseMutationOptions,
+  UseQueryOptions,
+} from "@tanstack/react-query";
 import { HTTPError } from "ky";
 import { authenticatedApiClient, apiClient } from "./client";
 import type {
@@ -12,7 +16,9 @@ import type {
 } from "@/model/api";
 
 // 1. 랜덤 키 발급 API
-export const useIssueRandomKey = () => {
+export const useIssueRandomKey = (
+  options?: Partial<UseMutationOptions<IssueRandomKeyResponse, Error, string>>,
+) => {
   return useMutation({
     mutationFn: async (eventId: string): Promise<IssueRandomKeyResponse> => {
       const response = await authenticatedApiClient.post(
@@ -20,11 +26,17 @@ export const useIssueRandomKey = () => {
       );
       return response.json();
     },
+    ...options,
   });
 };
 
 // 2. 학생 등록 API
-export const useEnrollStudent = () => {
+export const useEnrollStudent = (
+  options?: Partial<UseMutationOptions<EnrollStudentResponse, Error, {
+    eventId: string;
+    randomKey: string;
+  }>>
+) => {
   return useMutation({
     mutationFn: async ({
       eventId,
@@ -44,11 +56,15 @@ export const useEnrollStudent = () => {
       );
       return response.json();
     },
+    ...options,
   });
 };
 
 // 3. 등록 학생 수 조회 API
-export const useEnrolledCount = (eventId: string) => {
+export const useEnrolledCount = (
+  eventId: string,
+  options?: Partial<UseQueryOptions<EnrolledCountResponse, Error>>
+) => {
   return useQuery({
     queryKey: ["enrolledCount", eventId],
     queryFn: async (): Promise<EnrolledCountResponse> => {
@@ -68,11 +84,15 @@ export const useEnrolledCount = (eventId: string) => {
       }
     },
     enabled: !!eventId,
+    ...options,
   });
 };
 
 // 4. 이벤트 디테일 조회 API
-export const useEventDetail = (eventId: string) => {
+export const useEventDetail = (
+  eventId: string,
+  options?: Partial<UseQueryOptions<EventDetailResponse, Error>>
+) => {
   return useQuery({
     queryKey: ["eventDetail", eventId],
     queryFn: async (): Promise<EventDetailResponse> => {
@@ -90,5 +110,6 @@ export const useEventDetail = (eventId: string) => {
       }
     },
     enabled: !!eventId,
+    ...options,
   });
 };
