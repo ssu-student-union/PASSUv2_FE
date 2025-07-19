@@ -16,11 +16,13 @@
   "dependencies": {
     "@passu/ui": "workspace:*",
     "@tailwindcss/vite": "^4.1.10",
+    "@tanstack/react-query": "^5.83.0",
     "@tanstack/react-router": "^1.121.2",
     "@tanstack/react-router-devtools": "^1.121.16",
     "@tanstack/router-plugin": "^1.121.2",
     "@tanstack/zod-adapter": "^1.128.6",
     "jotai": "^2.9.0",
+    "ky": "^1.8.2",
     "motion": "^12.23.6",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
