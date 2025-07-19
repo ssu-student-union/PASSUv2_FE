@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthCallbackRouteImport } from './routes/auth/callback'
 import { Route as EventIdIndexRouteImport } from './routes/event/$id/index'
+import { Route as EventIdEnrollRouteImport } from './routes/event/$id/enroll'
 import { Route as EventIdDetailRouteImport } from './routes/event/$id/detail'
 
 const IndexRoute = IndexRouteImport.update({
@@ -29,6 +30,11 @@ const EventIdIndexRoute = EventIdIndexRouteImport.update({
   path: '/event/$id/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EventIdEnrollRoute = EventIdEnrollRouteImport.update({
+  id: '/event/$id/enroll',
+  path: '/event/$id/enroll',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EventIdDetailRoute = EventIdDetailRouteImport.update({
   id: '/event/$id/detail',
   path: '/event/$id/detail',
@@ -39,12 +45,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/event/$id/detail': typeof EventIdDetailRoute
+  '/event/$id/enroll': typeof EventIdEnrollRoute
   '/event/$id': typeof EventIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/event/$id/detail': typeof EventIdDetailRoute
+  '/event/$id/enroll': typeof EventIdEnrollRoute
   '/event/$id': typeof EventIdIndexRoute
 }
 export interface FileRoutesById {
@@ -52,20 +60,38 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/event/$id/detail': typeof EventIdDetailRoute
+  '/event/$id/enroll': typeof EventIdEnrollRoute
   '/event/$id/': typeof EventIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth/callback' | '/event/$id/detail' | '/event/$id'
+  fullPaths:
+    | '/'
+    | '/auth/callback'
+    | '/event/$id/detail'
+    | '/event/$id/enroll'
+    | '/event/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth/callback' | '/event/$id/detail' | '/event/$id'
-  id: '__root__' | '/' | '/auth/callback' | '/event/$id/detail' | '/event/$id/'
+  to:
+    | '/'
+    | '/auth/callback'
+    | '/event/$id/detail'
+    | '/event/$id/enroll'
+    | '/event/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth/callback'
+    | '/event/$id/detail'
+    | '/event/$id/enroll'
+    | '/event/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
   EventIdDetailRoute: typeof EventIdDetailRoute
+  EventIdEnrollRoute: typeof EventIdEnrollRoute
   EventIdIndexRoute: typeof EventIdIndexRoute
 }
 
@@ -92,6 +118,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/event/$id/enroll': {
+      id: '/event/$id/enroll'
+      path: '/event/$id/enroll'
+      fullPath: '/event/$id/enroll'
+      preLoaderRoute: typeof EventIdEnrollRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/event/$id/detail': {
       id: '/event/$id/detail'
       path: '/event/$id/detail'
@@ -106,6 +139,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthCallbackRoute: AuthCallbackRoute,
   EventIdDetailRoute: EventIdDetailRoute,
+  EventIdEnrollRoute: EventIdEnrollRoute,
   EventIdIndexRoute: EventIdIndexRoute,
 }
 export const routeTree = rootRouteImport
