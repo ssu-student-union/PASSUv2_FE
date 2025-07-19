@@ -37,58 +37,22 @@ function EventIdPage() {
   };
 
   return (
-    <div
-      className={`
-        relative box-border flex size-full flex-col content-stretch items-start
-        justify-start bg-[#ffffff] p-0
-      `}
-      data-name="1. 수령증 페이지 접속"
-      id="node-1252_571"
-    >
-      <div
-        className={`
-          relative box-border flex min-h-px w-full min-w-px shrink-0 grow
-          basis-0 flex-col content-stretch items-center justify-center p-0
-        `}
-        data-name="View"
-        id="node-1267_1340"
-      >
+    <>
+      <div className="flex size-full flex-col items-center justify-center">
         <div
           className={`
-            relative box-border flex min-h-px w-[336px] min-w-px shrink-0 grow
-            basis-0 flex-col content-stretch items-center justify-center gap-11
-            p-0
+            flex w-[336px] grow basis-0 flex-col items-center justify-center
+            gap-11
           `}
-          data-name="Content"
-          id="node-1267_1339"
         >
           <div
             className={`
-              relative box-border flex w-full shrink-0 flex-col content-stretch
-              items-center justify-start gap-8 px-0 pt-0 pb-[120px]
+              flex w-full flex-col items-center justify-start gap-8 pb-[120px]
             `}
-            data-name="Inner Content"
-            id="node-1267_2025"
           >
-            <div
-              className="relative h-9 w-[168px] shrink-0"
-              data-name="PASSU logo"
-              id="node-1351_1551"
-            >
-              <PassuLogo />
-            </div>
-            <div
-              className={`
-                relative min-w-full shrink-0 text-center text-[28px] leading-[0]
-                text-[rgba(0,0,0,0.8)] not-italic
-                font-['Pretendard:Bold',_sans-serif]
-              `}
-              id="node-1252_574"
-              style={{ width: "min-content" }}
-            >
-              <p className="block leading-[normal]">
-                2025-1학기 IT대학 중간고사 간식 행사
-              </p>
+            <PassuLogo className="h-9" />
+            <div className="min-w-full text-center txt-h2 text-gray-800">
+              <p>2025-1학기 IT대학 중간고사 간식 행사</p>
             </div>
           </div>
         </div>
@@ -113,6 +77,6 @@ function EventIdPage() {
           </div>
         </ModalContent>
       </Modal>
-    </div>
+    </>
   );
 }

@@ -29,9 +29,9 @@ function AuthCallback() {
   const progressValue = useMotionValue(0);
 
   useEffect(() => {
-    const controls = animate(progressValue, 100, { duration: 1 }); // Animate to 100% over 1 second
+    const controls = animate(progressValue, 100, { duration: 1, repeat: 1 }); // Animate to 100% over 1 second
     return () => controls.stop();
-  });
+  }, []);
 
   useEffect(() => {
     if (accessToken) {
@@ -40,45 +40,21 @@ function AuthCallback() {
       // TODO: Add `to` query parameter to redirect URL
       // Redirect to home or a dashboard after setting the token
       // You might want to navigate to a specific page based on your app's logic
-      window.location.href = "/";
+      // void redirect({ to: "/" });
     }
   }, [accessToken, setAccessToken]);
 
   return (
-    <div
-      className={`
-        relative box-border flex size-full flex-col content-stretch items-center
-        justify-center gap-16 p-0
-      `}
-      data-name="View"
-      id="node-1267_1455"
-    >
+    <div className="flex size-full flex-col items-center justify-center gap-16">
       <div
         className={`
-          relative box-border flex w-60 shrink-0 flex-col content-stretch
-          items-center justify-center gap-16 px-0 pt-0 pb-[120px]
+          flex w-60 flex-col items-center justify-center gap-16 pb-[120px]
         `}
-        data-name="Login"
-        id="node-1267_1456"
       >
-        <div
-          className={`
-            relative w-full shrink-0 text-center text-[24px] leading-[0]
-            text-[rgba(0,0,0,0.8)] not-italic
-            font-['Pretendard:Regular',_sans-serif]
-          `}
-          id="node-1252_723"
-        >
-          <p className="block leading-[normal]">로그인 중</p>
+        <div className="w-full text-center txt-h2 text-gray-800">
+          <p>로그인 중</p>
         </div>
-        <div
-          className={`
-            relative box-border flex w-full shrink-0 flex-col content-stretch
-            items-start justify-start gap-2 rounded bg-[#e2f2ff] p-0
-          `}
-          data-name="Load"
-          id="node-1252_724"
-        >
+        <div className="flex w-full flex-col gap-2 rounded bg-blue-50">
           <Progress value={progressValue.get()} />
         </div>
       </div>

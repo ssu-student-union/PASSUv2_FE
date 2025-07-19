@@ -12,72 +12,43 @@ function EventDetailPage() {
   const { id: _id } = Route.useParams();
 
   return (
-    <div
-      className={`
-        relative box-border flex size-full flex-col content-stretch items-center
-        justify-between bg-[#ffffff] p-0
-      `}
-      data-name="Layout"
-    >
+    <div className="flex size-full flex-col items-center justify-between">
       <div
-        className={`
-          relative box-border flex min-h-px w-full min-w-px shrink-0 grow
-          basis-0 flex-col content-stretch items-start justify-start p-0
-        `}
+        className={`flex w-full grow basis-0 flex-col items-start justify-start`}
       >
-        <div className="relative size-full">
+        <div className="size-full">
           <div
             className={`
-              relative box-border flex size-full flex-col content-stretch
-              items-start justify-start gap-4 px-6 pt-4 pb-0
+              flex size-full flex-col items-start justify-start gap-4 px-6 pt-4
+              pb-0
             `}
           >
-            <div
-              className="relative h-[21px] w-[100px] shrink-0"
-              data-name="PASSU logo"
-            >
+            <div className="h-[21px] w-[100px]">
               <PassuLogo />
             </div>
             <div
-              className={`
-                relative box-border flex w-full shrink-0 flex-col
-                content-stretch items-start justify-start gap-4 p-0
-              `}
+              className={`flex w-full flex-col items-start justify-start gap-4`}
             >
               <div
                 className={`
-                  relative box-border flex w-full shrink-0 flex-col
-                  content-stretch items-start justify-start gap-5 p-0
+                  flex w-full flex-col items-start justify-start gap-5
                 `}
               >
-                <div
-                  className={`
-                    relative w-[332px] shrink-0 text-left text-[28px]
-                    leading-[0] text-[rgba(0,0,0,0.8)] not-italic
-                    font-['Pretendard:Bold',_sans-serif]
-                  `}
-                >
-                  <p className="block leading-[normal]">
-                    2025-1학기 IT대학 중간고사 간식 행사
-                  </p>
+                <div className="w-full text-left txt-h2 text-gray-800">
+                  <p>2025-1학기 IT대학 중간고사 간식 행사</p>
                 </div>
                 <div
                   className={`
-                    relative box-border flex w-full shrink-0 flex-col
-                    content-stretch items-start justify-start gap-5 p-0
+                    flex w-full flex-col items-start justify-start gap-5
                   `}
                 >
                   <div
                     className={`
-                      relative box-border flex w-[324px] shrink-0 content-start
-                      items-start justify-start gap-2 p-0
-                      [flex-flow:wrap]
+                      flex w-full flex-wrap content-start items-start
+                      justify-start gap-2
                     `}
-                    data-name="Categories"
                   >
-                    <Chip
-                      className={`border-[#e0e0e0] bg-neutral-100 text-black/80`}
-                    >
+                    <Chip className="border-gray-300 bg-gray-100 text-gray-800">
                       <div
                         className={`flex w-[134px] items-center justify-between`}
                       >
@@ -88,34 +59,22 @@ function EventDetailPage() {
                         </span>
                       </div>
                     </Chip>
-                    <Chip
-                      className={`border-[#e0e0e0] bg-neutral-100 text-black/80`}
-                    >
+                    <Chip className="border-gray-300 bg-gray-100 text-gray-800">
                       학생회비 납부자
                     </Chip>
-                    <Chip
-                      className={`border-[#e0e0e0] bg-neutral-100 text-black/80`}
-                    >
+                    <Chip className="border-gray-300 bg-gray-100 text-gray-800">
                       융합특성화자유전공학부
                     </Chip>
-                    <Chip
-                      className={`border-[#e0e0e0] bg-neutral-100 text-black/80`}
-                    >
+                    <Chip className="border-gray-300 bg-gray-100 text-gray-800">
                       재학생
                     </Chip>
                   </div>
-                  <div className="relative h-0 w-[344px] shrink-0">
+                  <div className="h-0 w-full">
                     <Divider />
                   </div>
                 </div>
               </div>
-              <div
-                className={`
-                  relative w-full shrink-0 text-left text-[14px] leading-[0]
-                  text-[rgba(0,0,0,0.8)] not-italic
-                  font-['Pretendard:Regular',_sans-serif]
-                `}
-              >
+              <div className="w-full text-left txt-body1 text-gray-800">
                 <p className="block leading-[normal]">
                   안녕하세요! 당신에게 보내는 COMMIT📨
                   <br />
@@ -154,22 +113,9 @@ function EventDetailPage() {
           </div>
         </div>
       </div>
-      <div
-        className={`
-          relative h-[88px] w-full shrink-0 cursor-pointer bg-[#0160dd]
-        `}
-        data-name="Footer_Button"
-      >
-        <Button
-          size="footer"
-          className={`
-            h-[88px] w-full rounded-none bg-[#0160dd] text-[20px] leading-[28px]
-            font-bold text-white
-          `}
-        >
-          참여하기
-        </Button>
-      </div>
+      <Button size="footer" className="h-24 cursor-pointer">
+        참여하기
+      </Button>
     </div>
   );
 }
