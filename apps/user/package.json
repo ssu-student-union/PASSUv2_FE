@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "lint": "eslint . --max-warnings 0",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "prepare": "msw init public/"
   },
   "dependencies": {
     "@passu/ui": "workspace:*",
@@ -36,6 +37,7 @@
     "eslint": "^9.29.0",
     "eslint-plugin-better-tailwindcss": "^3.2.0",
     "jsdom": "^26.0.0",
+    "msw": "^2.10.4",
     "typescript": "^5.7.2",
     "vite": "^6.1.0",
     "vitest": "^3.0.5",
@@ -43,5 +45,10 @@
   },
   "overrides": {
     "@tanstack/react-router": "^1.121.2"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
