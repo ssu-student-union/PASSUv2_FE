@@ -32,8 +32,9 @@ function EventIdPage() {
   };
 
   const handleLoginRedirect = () => {
-    const currentUrl = encodeURIComponent(window.location.origin);
-    window.location.href = `https://stu.ssu.ac.kr/register/redirect?redirect=${currentUrl}/auth/callback`;
+    const redirectUrl = `${window.location.origin}/auth/callback?to=/event/${id}`;
+    const encodedRedirectUrl = encodeURIComponent(redirectUrl);
+    window.location.href = `https://stu.ssu.ac.kr/register/redirect?redirect=${encodedRedirectUrl}`;
   };
 
   return (
