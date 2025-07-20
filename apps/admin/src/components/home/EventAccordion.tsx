@@ -20,9 +20,7 @@ export const EventAccordion = ({ variant, events }: EventAccordionProps) => {
   return (
     <Accordion type="multiple" className="w-full">
       <AccordionItem value={variant}>
-        <AccordionTrigger className="px-6 py-3 txt-h3 text-gray-900">
-          {title}
-        </AccordionTrigger>
+        <AccordionTrigger>{title}</AccordionTrigger>
         <AccordionContent className="mt-1 px-2">
           {events.length === 0 ? (
             <NoEventRow />
