@@ -5,44 +5,11 @@ import { Sidebar } from "@/components/sidebar/Sidebar";
 import { SidebarButtonGroup } from "@/components/sidebar/SidebarButtonGroup";
 import { SidebarButton } from "@/components/sidebar/SidebarButton";
 import { EventAccordion } from "@/components/home/EventAccordion";
+import { completedEvents, upcomingEvents } from "@/mocks/event";
 
 export const Route = createFileRoute("/")({
   component: App,
 });
-
-// mock data
-const upcomingEvents = [
-  {
-    id: 1,
-    name: "2025-1학기 연주회",
-    place: "슈파크 일대",
-    date: "2025/05/02",
-    time: "15:00",
-  },
-  {
-    id: 2,
-    name: "2025-1학기 예술행사",
-    place: "슈파크 일대",
-    date: "2025/05/01",
-    time: "15:00",
-  },
-];
-const completedEvents = [
-  {
-    id: 1,
-    name: "2025-1학기 예술행사",
-    place: "슈파크 일대",
-    date: "2025/05/01",
-    time: "15:00",
-  },
-  {
-    id: 2,
-    name: "2025-1학기 연주회",
-    place: "슈파크 일대",
-    date: "2025/05/01",
-    time: "15:00",
-  },
-];
 
 function App() {
   return (
