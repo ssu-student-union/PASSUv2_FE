@@ -15,7 +15,8 @@ interface EventAccordionProps {
 
 export const EventAccordion = ({ variant, events }: EventAccordionProps) => {
   const title = variant === "upcoming" ? "예정된 행사" : "완료된 행사";
-  const textColor = variant === "upcoming" ? "text-gray-900" : "text-gray-600";
+  const textColor: string =
+    variant === "upcoming" ? "text-gray-900" : "text-gray-600";
 
   return (
     <Accordion type="multiple" className="w-full">
