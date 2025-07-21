@@ -99,7 +99,7 @@ export const handlers = [
     { eventId: string }, // Params
     undefined, // RequestBody
     EnrolledCountResponse | EnrolledCountErrorResponse // ResponseBody
-  >("*/api/v1/event/:eventId/enrolled_count", ({ params }) => {
+  >("*/api/v1/event/:eventId/enrolled-count", ({ params }) => {
     const { eventId } = params;
     console.log(`Mock: Getting enrolled count for event ${eventId}`);
 
