@@ -3,10 +3,10 @@ import { cn } from "@passu/ui/utils";
 
 interface EventRowProps {
   event: Event;
-  textColor: string;
+  className: string;
 }
 
-export const EventRow = ({ event, textColor }: EventRowProps) => {
+export const EventRow = ({ event, className }: EventRowProps) => {
   return (
     <div
       className={cn(
@@ -14,7 +14,7 @@ export const EventRow = ({ event, textColor }: EventRowProps) => {
           flex w-full justify-between border-b-1 border-gray-400 px-4 py-3
           txt-subtitle1
         `,
-        textColor,
+        className,
       )}
     >
       <span>{event.name}</span>

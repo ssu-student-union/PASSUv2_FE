@@ -4,8 +4,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@passu/ui/accordion";
-import { EventRow } from "./EventRow";
-import { NoEventRow } from "./NoEventRow";
+import { EventRow } from "@/components/home/EventRow";
+import { NoEventRow } from "@/components/home/NoEventRow";
 import { type Event } from "@/types/event";
 
 interface EventAccordionProps {
@@ -21,13 +21,13 @@ export const EventAccordion = ({ variant, events }: EventAccordionProps) => {
   return (
     <Accordion type="multiple" className="w-full">
       <AccordionItem value={variant}>
-        <AccordionTrigger>{title}</AccordionTrigger>
+        <AccordionTrigger className="cursor-pointer">{title}</AccordionTrigger>
         <AccordionContent className="mt-1 px-2">
           {events.length === 0 ? (
             <NoEventRow />
           ) : (
             events.map((item) => (
-              <EventRow event={item} textColor={textColor} key={item.id} />
+              <EventRow event={item} className={textColor} key={item.id} />
             ))
           )}
         </AccordionContent>
