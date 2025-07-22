@@ -4,6 +4,8 @@ import { LogOut, Plus } from "lucide-react";
 import { Sidebar } from "@/components/sidebar/Sidebar";
 import { SidebarButtonGroup } from "@/components/sidebar/SidebarButtonGroup";
 import { SidebarButton } from "@/components/sidebar/SidebarButton";
+import { EventAccordion } from "@/components/home/EventAccordion";
+import { completedEvents, upcomingEvents } from "@/mocks/event";
 
 export const Route = createFileRoute("/")({
   component: App,
@@ -28,7 +30,25 @@ function App() {
         </SidebarButtonGroup>
       </Sidebar>
 
-      <div className="flex-1">메인</div>
+      <div className="flex-1">
+        <div className={`flex h-full w-full flex-col gap-6 px-20 pt-20 pb-10`}>
+          <div className="flex items-end gap-2">
+            <span className="text-4xl font-bold">총학생회</span>
+            <span className="text-xl">님의 행사 목록</span>
+          </div>
+
+          <div
+            className={`
+              flex h-full flex-1 flex-col gap-12 overflow-y-scroll rounded-3xl
+              bg-white p-5
+            `}
+          >
+            <EventAccordion variant="upcoming" events={upcomingEvents} />
+
+            <EventAccordion variant="completed" events={completedEvents} />
+          </div>
+        </div>
+      </div>
     </>
   );
 }
