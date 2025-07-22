@@ -8,7 +8,11 @@
       "outputs": ["dist/**"]
     },
     "lint": {
-      "dependsOn": ["^lint", "@passu/ui#build:styles"]
+      "dependsOn": [
+        "^lint",
+        "@passu/ui#build:styles",
+        "@passu/ui#build:components"
+      ]
     },
     "check-types": {
       "dependsOn": ["^check-types"]
