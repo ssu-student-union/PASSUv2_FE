@@ -59,11 +59,11 @@ function AuthCallback() {
   }, [progressValue]);
 
   useEffect(() => {
-    if (isSuccess && data?.isSuccess) {
+    if (isSuccess && data?.success) {
       // 토큰 검증 성공 - 토큰 저장 후 리다이렉트
       setAccessToken(accessToken);
       void navigate({ to: to ?? "/" });
-    } else if (isError || (data && !data.isSuccess)) {
+    } else if (isError || (data && !data.success)) {
       // 토큰 검증 실패 - 에러 모달 표시
       setShowErrorModal(true);
     }
