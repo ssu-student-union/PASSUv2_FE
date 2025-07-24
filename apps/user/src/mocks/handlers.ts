@@ -1,17 +1,18 @@
 import { http, HttpResponse } from "msw";
 import type {
   IssueRandomKeyResponse,
-  IssueRandomKeyPayload,
+  IssueRandomKeyData,
   EnrollStudentRequest,
-  EnrollStudentPayload,
+  EnrollStudentData,
   EnrollStudentResponse,
   ApiErrorResponse,
-  EnrolledCountPayload,
+  EnrolledCountData,
   EnrolledCountResponse,
   EnrolledCountErrorResponse,
-  EventDetailPayload,
+  EventDetailData,
   EventDetailResponse,
   EventDetailErrorResponse,
+  UserInfoData,
   UserInfoResponse,
   ApiResponse,
 } from "@/model/api";
@@ -21,7 +22,7 @@ export const handlers = [
   http.post<
     { eventId: string }, // Params
     undefined, // RequestBody (no explicit body for this API)
-    IssueRandomKeyResponse // ResponseBody
+    ApiResponse<IssueRandomKeyData>
   >("*/api/v1/event/:eventId/issue-key", ({ request, params }) => {
     const { eventId } = params; // eventId is now typed as string
     console.log(`Mock: Issuing random key for event ${eventId}`);
@@ -30,20 +31,21 @@ export const handlers = [
     const authHeader = request.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
       const errorResponse: ApiErrorResponse = {
-        isSuccess: false,
+        success: false,
         message: "Unauthorized",
         detail: "Access token is required",
       };
       return HttpResponse.json(errorResponse, { status: 401 });
     }
-    const payload: IssueRandomKeyPayload = {
-      random_key: Math.floor(1000 + Math.random() * 9000).toString(),
-      expired_at: new Date(Date.now() + 15 * 60 * 1000).toISOString(), // 15 minutes from now
+    const data: IssueRandomKeyData = {
+      randomKey: Math.floor(1000 + Math.random() * 9000).toString(),
+      expiredAt: new Date(Date.now() + 15 * 60 * 1000).toISOString(), // 15 minutes from now
     };
     const response: IssueRandomKeyResponse = {
-      isSuccess: true,
+      success: true,
       message: "Random key issued successfully",
-      ...payload,
+      detail: "Key successfully generated",
+      data,
     };
     return HttpResponse.json(response, { status: 200 });
   }),
@@ -51,7 +53,7 @@ export const handlers = [
   http.post<
     { eventId: string }, // Params
     EnrollStudentRequest, // RequestBody
-    EnrollStudentResponse | ApiErrorResponse // ResponseBody
+    ApiResponse<EnrollStudentData>
   >("*/api/v1/event/:eventId/enroll", async ({ request, params }) => {
     const { eventId } = params;
     console.log(`Mock: Enrolling student for event ${eventId}`);
@@ -60,20 +62,20 @@ export const handlers = [
     const authHeader = request.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
       const errorResponse: ApiErrorResponse = {
-        isSuccess: false,
+        success: false,
         message: "Unauthorized",
         detail: "Access token is required",
       };
       return HttpResponse.json(errorResponse, { status: 401 });
     }
 
-    const { random_key } = await request.json();
-    console.log(`Mock: Using random key ${random_key}`);
+    const { randomKey } = await request.json();
+    console.log(`Mock: Using random key ${randomKey}`);
 
-    if (random_key === "invalid") {
+    if (randomKey === "invalid") {
       return HttpResponse.json(
         {
-          isSuccess: false,
+          success: false,
           message: "Invalid random key",
           detail: "Random key not found or expired",
         },
@@ -81,16 +83,17 @@ export const handlers = [
       );
     }
 
-    const payload: EnrollStudentPayload = {
-      event_id: eventId,
-      student_id: "mock_student_123",
-      enrollment_id: "mock_enrollment_abc",
+    const data: EnrollStudentData = {
+      eventId: Number(eventId),
+      studentId: "mock_student_123",
+      enrollmentId: 12345,
       timestamp: new Date().toISOString(),
     };
     const response: EnrollStudentResponse = {
-      isSuccess: true,
+      success: true,
       message: "Student enrolled successfully",
-      ...payload,
+      detail: "Enrollment completed successfully",
+      data,
     };
     return HttpResponse.json(response, { status: 201 });
   }),
@@ -110,13 +113,14 @@ export const handlers = [
       return HttpResponse.json(errorResponse, { status: 404 });
     }
 
-    const payload: EnrolledCountPayload = {
+    const data: EnrolledCountData = {
       count: 123, // Mock count
     };
     const response: EnrolledCountResponse = {
-      isSuccess: true,
+      success: true,
       message: "Successfully retrieved enrolled count",
-      ...payload,
+      detail: "Count retrieved successfully",
+      data,
     };
     return HttpResponse.json(response, { status: 200 });
   }),
@@ -137,8 +141,8 @@ export const handlers = [
     //   return HttpResponse.json(errorResponse, { status: 401 });
     // }
 
-    const payload: EventDetailPayload = {
-      event_id: eventId,
+    const data: EventDetailData = {
+      eventId: Number(eventId),
       name: `Mock Event ${eventId}`,
       description: `Description for mock event ${eventId}`,
       conditions: {
@@ -146,12 +150,13 @@ export const handlers = [
         year: ["3", "4"],
         other_criteria: "mock_criteria",
       },
-      created_at: "2024-06-15T10:00:00Z",
+      createdAt: "2024-06-15T10:00:00Z",
     };
     const response: EventDetailResponse = {
-      isSuccess: true,
+      success: true,
       message: "Successfully retrieved event details",
-      ...payload,
+      detail: "Event details retrieved successfully",
+      data,
     };
     return HttpResponse.json(response, { status: 200 });
   }),
@@ -159,7 +164,7 @@ export const handlers = [
   http.get<
     Record<string, never>, // Params
     undefined, // RequestBody
-    ApiResponse<UserInfoResponse> | ApiErrorResponse // ResponseBody
+    ApiResponse<UserInfoResponse>
   >("*/api/v1/user", ({ request }) => {
     console.log("Mock: Getting user info");
 
@@ -167,7 +172,7 @@ export const handlers = [
     const authHeader = request.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
       const errorResponse: ApiErrorResponse = {
-        isSuccess: false,
+        success: false,
         message: "Unauthorized",
         detail: "Access token is required",
       };
@@ -175,19 +180,18 @@ export const handlers = [
     }
 
     // Mock user info response
-    const response: UserInfoResponse = {
+    const data: UserInfoData = {
       name: "홍길동",
-      student_id: "20211234",
+      studentId: "20211234",
       major: "컴퓨터학부",
-      is_council: false,
+      isCouncil: false,
     };
-    return HttpResponse.json(
-      {
-        isSuccess: true,
-        message: "User info retrieved successfully",
-        ...response,
-      },
-      { status: 200 },
-    );
+    const response: UserInfoResponse = {
+      success: true,
+      message: "User info retrieved successfully",
+      detail: "User information retrieved successfully",
+      data,
+    };
+    return HttpResponse.json(response, { status: 200 });
   }),
 ];
