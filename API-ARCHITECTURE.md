@@ -302,7 +302,9 @@ PASSU는 다음과 같은 특수한 사용 패턴을 갖는 이벤트 등록 시
   - `Authorization`: Bearer 토큰 형식의 학생회 인증 토큰
 
 - **응답**:
+
   - 성공 (200/201 OK/Created):
+
     ```json
     {
      "ended_events" : [
@@ -326,6 +328,7 @@ PASSU는 다음과 같은 특수한 사용 패턴을 갖는 이벤트 등록 시
      ]
     }
     ```
+
   - 실패 (401 Unauthorized):
     ```json
     {
