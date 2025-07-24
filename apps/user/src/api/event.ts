@@ -13,6 +13,7 @@ import type {
   EnrolledCountErrorResponse,
   EventDetailResponse,
   EventDetailErrorResponse,
+  UserInfoResponse,
 } from "@/model/api";
 
 // 1. 랜덤 키 발급 API
@@ -32,10 +33,16 @@ export const useIssueRandomKey = (
 
 // 2. 학생 등록 API
 export const useEnrollStudent = (
-  options?: Partial<UseMutationOptions<EnrollStudentResponse, Error, {
-    eventId: string;
-    randomKey: string;
-  }>>
+  options?: Partial<
+    UseMutationOptions<
+      EnrollStudentResponse,
+      Error,
+      {
+        eventId: string;
+        randomKey: string;
+      }
+    >
+  >,
 ) => {
   return useMutation({
     mutationFn: async ({
@@ -46,7 +53,7 @@ export const useEnrollStudent = (
       randomKey: string;
     }): Promise<EnrollStudentResponse> => {
       const requestBody: EnrollStudentRequest = {
-        random_key: randomKey,
+        randomKey: randomKey,
       };
       const response = await authenticatedApiClient.post(
         `api/v1/event/${eventId}/enroll`,
@@ -63,14 +70,14 @@ export const useEnrollStudent = (
 // 3. 등록 학생 수 조회 API
 export const useEnrolledCount = (
   eventId: string,
-  options?: Partial<UseQueryOptions<EnrolledCountResponse, Error>>
+  options?: Partial<UseQueryOptions<EnrolledCountResponse, Error>>,
 ) => {
   return useQuery({
     queryKey: ["enrolledCount", eventId],
     queryFn: async (): Promise<EnrolledCountResponse> => {
       try {
         const response = await apiClient.get(
-          `api/v1/event/${eventId}/enrolled_count`,
+          `api/v1/event/${eventId}/enrolled-count`,
         );
         return response.json();
       } catch (error) {
@@ -91,7 +98,7 @@ export const useEnrolledCount = (
 // 4. 이벤트 디테일 조회 API
 export const useEventDetail = (
   eventId: string,
-  options?: Partial<UseQueryOptions<EventDetailResponse, Error>>
+  options?: Partial<UseQueryOptions<EventDetailResponse, Error>>,
 ) => {
   return useQuery({
     queryKey: ["eventDetail", eventId],
@@ -110,6 +117,20 @@ export const useEventDetail = (
       }
     },
     enabled: !!eventId,
+    ...options,
+  });
+};
+
+// 5. 사용자 정보 조회 API
+export const useUserInfo = (
+  options?: Partial<UseQueryOptions<UserInfoResponse, Error>>,
+) => {
+  return useQuery({
+    queryKey: ["userInfo"],
+    queryFn: async (): Promise<UserInfoResponse> => {
+      const response = await authenticatedApiClient.get("api/v1/user");
+      return response.json();
+    },
     ...options,
   });
 };
