@@ -12,6 +12,7 @@ import { useAtom } from "jotai";
 import { accessTokenAtom } from "@/atoms/auth";
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
+import { useEventDetail } from "@/api/event";
 
 export const Route = createFileRoute("/event/$id/")({
   component: EventIdPage,
@@ -23,11 +24,14 @@ function EventIdPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
+  // 이벤트 상세 정보 조회
+  const { data: eventData, isLoading, error } = useEventDetail(id);
+
   const handleParticipateClick = () => {
     if (!accessToken) {
       setIsModalOpen(true);
     } else {
-      void navigate({ to: `/event/${id}/detail` });
+      void navigate({ to: "/event/$id/detail", params: { id } });
     }
   };
 
@@ -36,6 +40,46 @@ function EventIdPage() {
     const encodedRedirectUrl = encodeURIComponent(redirectUrl);
     window.location.href = `https://stu.ssu.ac.kr/register/redirect?redirect=${encodedRedirectUrl}`;
   };
+
+  // 로딩 상태
+  if (isLoading) {
+    return (
+      <div className="flex size-full flex-col items-center justify-center">
+        <div className="w-full text-center txt-h2 text-gray-800">
+          <p>이벤트 정보를 불러오는 중...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // 에러 상태
+  if (error) {
+    return (
+      <div className="flex size-full flex-col items-center justify-center">
+        <div className="w-full text-center txt-h2 text-gray-800">
+          <p>이벤트를 불러오는 중 오류가 발생했습니다.</p>
+          <p className="mt-2 text-sm text-gray-600">{error.message}</p>
+        </div>
+        <Button className="mt-4" onClick={() => void navigate({ to: "/" })}>
+          홈으로 돌아가기
+        </Button>
+      </div>
+    );
+  }
+
+  // 이벤트 데이터가 없는 경우
+  if (!eventData?.data) {
+    return (
+      <div className="flex size-full flex-col items-center justify-center">
+        <div className="w-full text-center txt-h2 text-gray-800">
+          <p>이벤트를 찾을 수 없습니다.</p>
+        </div>
+        <Button className="mt-4" onClick={() => void navigate({ to: "/" })}>
+          홈으로 돌아가기
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -53,8 +97,13 @@ function EventIdPage() {
           >
             <PassuLogo className="h-9" />
             <div className="min-w-full text-center txt-h2 text-gray-800">
-              <p>2025-1학기 IT대학 중간고사 간식 행사</p>
+              <p>{eventData.data.name}</p>
             </div>
+            {eventData.data.description && (
+              <div className="min-w-full text-center text-base text-gray-600">
+                <p>{eventData.data.description}</p>
+              </div>
+            )}
           </div>
         </div>
         <Button size="footer" onClick={handleParticipateClick}>
