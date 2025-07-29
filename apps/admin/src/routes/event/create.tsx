@@ -36,9 +36,8 @@ function CreatePage() {
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log("제출할 데이터", data);
-    // api 요청
+  const onSubmit = () => {
+    // 행사 생성 api 요청
   };
 
   return (
