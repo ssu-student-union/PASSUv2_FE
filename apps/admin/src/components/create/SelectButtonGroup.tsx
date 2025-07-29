@@ -4,22 +4,26 @@ import { useState } from "react";
 
 interface SelectButtonGroupProps {
   options: string[];
-  defaultValue?: string[];
+  value?: string[];
+  onChange?: (value: string[]) => void;
 }
 
 export const SelectButtonGroup = ({
   options,
-  defaultValue = [],
+  value = [],
+  onChange,
 }: SelectButtonGroupProps) => {
-  const [selected, setSelected] = useState<string[]>(defaultValue);
+  const [selected, setSelected] = useState<string[]>(value);
 
   const handleClick = (option: string) => {
-    setSelected((prev) =>
-      prev.includes(option)
-        ? prev.filter((o) => o !== option)
-        : [...prev, option],
-    );
+    const updated = selected.includes(option)
+      ? selected.filter((o) => o !== option)
+      : [...selected, option];
+
+    setSelected(updated);
+    onChange?.(updated);
   };
+
   return (
     <div className="flex h-full items-center gap-4">
       {options.map((opt) => {
@@ -29,6 +33,7 @@ export const SelectButtonGroup = ({
           <Button
             key={opt}
             variant={isSelected ? "default" : "outline"}
+            type="button"
             className={cn(
               "border-1",
               !isSelected &&
