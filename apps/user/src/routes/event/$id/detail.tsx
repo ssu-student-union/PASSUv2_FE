@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@passu/ui/button";
 import { PassuLogo } from "@passu/ui/passu-logo";
 import { Chip } from "@passu/ui/chip";
@@ -44,12 +44,17 @@ function EventDetailPage() {
   if (eventError) {
     return (
       <div className="flex size-full flex-col items-center justify-center">
-        <div className="w-full text-center txt-h2 text-gray-800">
+        <div
+          className={`
+            flex w-full grow flex-col items-center justify-center text-center
+            txt-h2 text-gray-800
+          `}
+        >
           <p>이벤트를 불러오는 중 오류가 발생했습니다.</p>
           <p className="mt-2 text-sm text-gray-600">{eventError.message}</p>
         </div>
-        <Button className="mt-4" onClick={() => void navigate({ to: "/" })}>
-          홈으로 돌아가기
+        <Button size="footer" asChild>
+          <Link to="/">홈으로 돌아가기</Link>
         </Button>
       </div>
     );
@@ -59,11 +64,16 @@ function EventDetailPage() {
   if (!eventData?.data) {
     return (
       <div className="flex size-full flex-col items-center justify-center">
-        <div className="w-full text-center txt-h2 text-gray-800">
+        <div
+          className={`
+            flex w-full grow flex-col items-center justify-center text-center
+            txt-h2 text-gray-800
+          `}
+        >
           <p>이벤트를 찾을 수 없습니다.</p>
         </div>
-        <Button className="mt-4" onClick={() => void navigate({ to: "/" })}>
-          홈으로 돌아가기
+        <Button size="footer" asChild>
+          <Link to="/">홈으로 돌아가기</Link>
         </Button>
       </div>
     );
@@ -75,87 +85,48 @@ function EventDetailPage() {
   return (
     <div className="flex size-full flex-col items-center justify-between">
       <div
-        className={`flex w-full grow basis-0 flex-col items-start justify-start`}
+        className={`
+          flex size-full flex-col items-start justify-start gap-4 px-6 pt-4
+        `}
       >
-        <div className="size-full">
+        <PassuLogo className="h-9" />
+        <div className={`flex w-full flex-col items-start justify-start gap-5`}>
+          <h2 className="w-full text-left txt-h2 text-gray-800">
+            {event.name}
+          </h2>
           <div
             className={`
-              flex size-full flex-col items-start justify-start gap-4 px-6 pt-4
-              pb-0
+              flex w-full flex-wrap content-start items-start justify-start
+              gap-2
             `}
           >
-            <div className="h-[21px] w-[100px]">
-              <PassuLogo />
-            </div>
-            <div
-              className={`flex w-full flex-col items-start justify-start gap-4`}
-            >
-              <div
-                className={`
-                  flex w-full flex-col items-start justify-start gap-5
-                `}
-              >
-                <div className="w-full text-left txt-h2 text-gray-800">
-                  <p>{event.name}</p>
-                </div>
-                <div
-                  className={`
-                    flex w-full flex-col items-start justify-start gap-5
-                  `}
-                >
-                  <div
-                    className={`
-                      flex w-full flex-wrap content-start items-start
-                      justify-start gap-2
-                    `}
-                  >
-                    <Chip className="border-gray-300 bg-gray-100 text-gray-800">
-                      <div
-                        className={`flex w-[134px] items-center justify-between`}
-                      >
-                        <span>잔여수량</span>
-                        <span className="tracking-[-0.28px]">
-                          <span className="font-bold">
-                            {isCountLoading ? "..." : enrolledCount}
-                          </span>
-                          <span> 명</span>
-                        </span>
-                      </div>
-                    </Chip>
-                    {event.conditions.major?.map((major) => (
-                      <Chip
-                        key={major}
-                        className="border-gray-300 bg-gray-100 text-gray-800"
-                      >
-                        {major}
-                      </Chip>
-                    ))}
-                    {event.conditions.year?.map((year) => (
-                      <Chip
-                        key={year}
-                        className="border-gray-300 bg-gray-100 text-gray-800"
-                      >
-                        {year}학년
-                      </Chip>
-                    ))}
-                  </div>
-                  <div className="h-0 w-full">
-                    <Divider />
-                  </div>
-                </div>
-              </div>
-              <div className="w-full text-left txt-body1 text-gray-800">
-                <p className="block leading-[normal]">{event.description}</p>
-              </div>
-            </div>
+            <Chip className={`flex items-center justify-between`}>
+              <span>잔여수량</span>
+              <span>
+                <span className="font-bold">
+                  {isCountLoading ? "..." : enrolledCount}
+                </span>
+                <span>/</span>
+                <span>300</span> {/* 예시로 300명으로 설정 */}
+                <span> 명</span>
+              </span>
+            </Chip>
+            {event.conditions.major?.map((major) => (
+              <Chip key={major}>{major}</Chip>
+            ))}
+            {event.conditions.year?.map((year) => (
+              <Chip key={year}>{year}학년</Chip>
+            ))}
           </div>
+          <Divider />
         </div>
+        <p
+          className={`w-full text-left txt-body1 leading-[normal] text-gray-800`}
+        >
+          {event.description}
+        </p>
       </div>
-      <Button
-        size="footer"
-        className="h-24 cursor-pointer"
-        onClick={handleParticipateClick}
-      >
+      <Button size="footer" onClick={handleParticipateClick}>
         참여하기
       </Button>
     </div>
