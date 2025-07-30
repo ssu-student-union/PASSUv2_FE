@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@passu/ui/button";
 import { PassuLogo } from "@passu/ui/passu-logo";
 import {
@@ -7,6 +7,7 @@ import {
   ModalHeader,
   ModalTitle,
   ModalDescription,
+  ModalFooter,
 } from "@passu/ui/modal";
 import { useAtom } from "jotai";
 import { accessTokenAtom } from "@/atoms/auth";
@@ -36,7 +37,7 @@ function EventIdPage() {
   };
 
   const handleLoginRedirect = () => {
-    const redirectUrl = `${window.location.origin}/auth/callback?to=/event/${id}`;
+    const redirectUrl = `${window.location.origin}/auth/callback?to=/event/${id}/detail`;
     const encodedRedirectUrl = encodeURIComponent(redirectUrl);
     window.location.href = `https://stu.ssu.ac.kr/register/redirect?redirect=${encodedRedirectUrl}`;
   };
@@ -56,12 +57,17 @@ function EventIdPage() {
   if (error) {
     return (
       <div className="flex size-full flex-col items-center justify-center">
-        <div className="w-full text-center txt-h2 text-gray-800">
+        <div
+          className={`
+            flex w-full grow flex-col items-center justify-center text-center
+            txt-h2 text-gray-800
+          `}
+        >
           <p>이벤트를 불러오는 중 오류가 발생했습니다.</p>
           <p className="mt-2 text-sm text-gray-600">{error.message}</p>
         </div>
-        <Button className="mt-4" onClick={() => void navigate({ to: "/" })}>
-          홈으로 돌아가기
+        <Button size="footer" asChild>
+          <Link to="/">홈으로 돌아가기</Link>
         </Button>
       </div>
     );
@@ -71,11 +77,16 @@ function EventIdPage() {
   if (!eventData?.data) {
     return (
       <div className="flex size-full flex-col items-center justify-center">
-        <div className="w-full text-center txt-h2 text-gray-800">
+        <div
+          className={`
+            flex w-full grow flex-col items-center justify-center text-center
+            txt-h2 text-gray-800
+          `}
+        >
           <p>이벤트를 찾을 수 없습니다.</p>
         </div>
-        <Button className="mt-4" onClick={() => void navigate({ to: "/" })}>
-          홈으로 돌아가기
+        <Button size="footer" asChild>
+          <Link to="/">홈으로 돌아가기</Link>
         </Button>
       </div>
     );
@@ -86,25 +97,18 @@ function EventIdPage() {
       <div className="flex size-full flex-col items-center justify-center">
         <div
           className={`
-            flex w-[336px] grow basis-0 flex-col items-center justify-center
-            gap-11
+            flex grow basis-0 flex-col items-center justify-center gap-8
           `}
         >
-          <div
-            className={`
-              flex w-full flex-col items-center justify-start gap-8 pb-[120px]
-            `}
-          >
-            <PassuLogo className="h-9" />
-            <div className="min-w-full text-center txt-h2 text-gray-800">
-              <p>{eventData.data.name}</p>
-            </div>
-            {eventData.data.description && (
-              <div className="min-w-full text-center text-base text-gray-600">
-                <p>{eventData.data.description}</p>
-              </div>
-            )}
-          </div>
+          <PassuLogo className="h-9" />
+          <h2 className="w-full text-center txt-h2 text-gray-800">
+            {eventData.data.name}
+          </h2>
+          {eventData.data.description && (
+            <p className="w-full text-center text-base text-gray-600">
+              {eventData.data.description}
+            </p>
+          )}
         </div>
         <Button size="footer" onClick={handleParticipateClick}>
           참여하기
@@ -119,12 +123,12 @@ function EventIdPage() {
               이벤트에 참여하려면 로그인이 필요합니다.
             </ModalDescription>
           </ModalHeader>
-          <div className="flex justify-end gap-2 p-4">
+          <ModalFooter>
             <Button variant="outline" onClick={() => setIsModalOpen(false)}>
               취소
             </Button>
             <Button onClick={handleLoginRedirect}>로그인</Button>
-          </div>
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </>
