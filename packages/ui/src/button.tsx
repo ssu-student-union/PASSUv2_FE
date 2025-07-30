@@ -50,7 +50,7 @@ const buttonVariants = cva(
       size: "default",
       variantType: "default",
     },
-  }
+  },
 );
 
 function Button({
