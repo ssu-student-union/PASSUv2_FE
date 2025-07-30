@@ -8,17 +8,15 @@ export const Route = createFileRoute("/")({
 
 function App() {
   return (
-    <div className="text-center">
-      <header
-        className={`
-          flex min-h-screen flex-col items-center justify-center bg-[#282c34]
-          text-[calc(10px+2vmin)] text-white
-        `}
-      >
-        <PassuLogo />
-        <p className="mb-4">Welcome to Passu User!</p>
-        <Button>Button</Button>
-      </header>
+    <div
+      className={`
+        flex min-h-screen flex-col items-center justify-center bg-gray-800
+        text-white
+      `}
+    >
+      <PassuLogo />
+      <p className="mb-4 txt-h3">Welcome to Passu User!</p>
+      <Button>Button</Button>
     </div>
   );
 }

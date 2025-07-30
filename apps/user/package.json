@@ -10,17 +10,25 @@
     "preview": "vite preview",
     "test": "vitest run",
     "lint": "eslint . --max-warnings 0",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "prepare": "msw init -y public/"
   },
   "dependencies": {
     "@passu/ui": "workspace:*",
     "@tailwindcss/vite": "^4.1.10",
+    "@tanstack/react-query": "^5.83.0",
+    "@tanstack/react-query-devtools": "^5.83.0",
     "@tanstack/react-router": "^1.121.2",
     "@tanstack/react-router-devtools": "^1.121.16",
     "@tanstack/router-plugin": "^1.121.2",
+    "@tanstack/zod-adapter": "^1.128.6",
+    "jotai": "^2.9.0",
+    "ky": "^1.8.2",
+    "motion": "^12.23.6",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "tailwindcss": "^4.0.6"
+    "tailwindcss": "^4.0.6",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@passu/eslint-config": "workspace:*",
@@ -36,6 +44,7 @@
     "eslint": "^9.29.0",
     "eslint-plugin-better-tailwindcss": "^3.2.0",
     "jsdom": "^26.0.0",
+    "msw": "^2.10.4",
     "typescript": "^5.7.2",
     "vite": "^6.1.0",
     "vitest": "^3.0.5",
@@ -43,5 +52,10 @@
   },
   "overrides": {
     "@tanstack/react-router": "^1.121.2"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
