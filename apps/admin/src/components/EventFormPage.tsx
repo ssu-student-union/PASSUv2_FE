@@ -88,6 +88,7 @@ export function EventFormPage({ mode }: Props) {
           <Input
             {...register("time", { required: "행사 시간을 입력해주세요" })}
             placeholder="15:00"
+            type="time"
           />
         </EventFormRow>
 
@@ -155,7 +156,9 @@ export function EventFormPage({ mode }: Props) {
         <Button variantType="form-actions" variant="outline" asChild>
           <a href="/">뒤로가기</a>
         </Button>
-        <Button variantType="form-actions">완료</Button>
+        <Button variantType="form-actions" type="submit">
+          완료
+        </Button>
       </div>
     </form>
   );
