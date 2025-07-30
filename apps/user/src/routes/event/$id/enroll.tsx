@@ -2,8 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PassuLogo } from "@passu/ui/passu-logo";
 import { Button } from "@passu/ui/button";
 import { useNavigate } from "@tanstack/react-router";
-import { useIssueRandomKey, useEnrollStudent } from "@/api/event";
+import { useIssueRandomKey } from "@/api/event";
 import { useEffect, useState } from "react";
+import { Divider } from "@passu/ui/divider";
 
 export const Route = createFileRoute("/event/$id/enroll")({
   component: EventEnrollPage,
@@ -12,19 +13,17 @@ export const Route = createFileRoute("/event/$id/enroll")({
 function EventEnrollPage() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
-  const [randomKey, setRandomKey] = useState<string>("");
+  const [randomKey, setRandomKey] = useState<string | null>(null);
   const [enrollmentStatus, setEnrollmentStatus] = useState<
-    "idle" | "issuing" | "ready" | "enrolling" | "enrolled" | "error"
+    "idle" | "issuing" | "ready" | "error"
   >("idle");
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // 랜덤 키 발급 mutation
   const issueKeyMutation = useIssueRandomKey({
     onSuccess: (data) => {
       setRandomKey(data.data.randomKey);
       setEnrollmentStatus("ready");
-      // 자동으로 학생 등록 진행
-      enrollMutation.mutate({ eventId: id, randomKey: data.data.randomKey });
     },
     onError: (error) => {
       setErrorMessage(error.message || "랜덤 키 발급에 실패했습니다.");
@@ -32,26 +31,12 @@ function EventEnrollPage() {
     },
   });
 
-  // 학생 등록 mutation
-  const enrollMutation = useEnrollStudent({
-    onSuccess: () => {
-      setEnrollmentStatus("enrolled");
-      // 완료 페이지로 이동
-      setTimeout(() => {
-        void navigate({ to: "/event/$id/enrolled", params: { id } });
-      }, 2000);
-    },
-    onError: (error) => {
-      setErrorMessage(error.message || "학생 등록에 실패했습니다.");
-      setEnrollmentStatus("error");
-    },
-  });
-
-  // 컴포넌트 마운트 시 랜덤 키 발급 시작
   useEffect(() => {
-    setEnrollmentStatus("issuing");
-    issueKeyMutation.mutate(id);
-  }, [id, issueKeyMutation]);
+    if (enrollmentStatus === "idle") {
+      setEnrollmentStatus("issuing");
+      issueKeyMutation.mutate(id);
+    }
+  }, [enrollmentStatus, id, issueKeyMutation]);
 
   const handleRetry = () => {
     setEnrollmentStatus("issuing");
@@ -86,116 +71,36 @@ function EventEnrollPage() {
     );
   }
 
-  // 성공 상태 (잠시 표시 후 enrolled 페이지로 이동)
-  if (enrollmentStatus === "enrolled") {
-    return (
-      <div className="flex size-full flex-col items-center justify-center">
-        <div className="mb-6">
-          <PassuLogo />
-        </div>
-        <div className="mb-4 w-full text-center txt-h2 text-gray-800">
-          <p>등록 완료!</p>
-        </div>
-        <div className="w-full text-center text-base text-gray-600">
-          <p>완료 페이지로 이동합니다...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="relative size-full" data-name="View">
-      <div className="relative size-full">
-        <div
-          className={`
-            relative box-border flex size-full flex-col content-stretch
-            items-start justify-start gap-4 px-6 pt-4 pb-0
-          `}
-        >
-          <div
-            className="relative h-[21px] w-[100px] shrink-0"
-            data-name="PASSU logo"
-          >
-            <PassuLogo />
-          </div>
-          <div
+    <div
+      className={`
+        flex size-full flex-col content-stretch items-start justify-start gap-4
+        px-6 pt-4
+      `}
+    >
+      <PassuLogo className="h-9" />
+      <div
+        className={`
+          flex w-full grow flex-col content-stretch items-center justify-center
+          gap-8
+        `}
+      >
+        <div>
+          <p
             className={`
-              relative box-border flex min-h-px w-full min-w-px shrink-0 grow
-              basis-0 flex-col content-stretch items-center justify-center
-              gap-[34px] p-0
+              w-full shrink-0 text-center text-8xl leading-[normal] font-bold
+              tracking-[-1.92px] text-black
             `}
-            data-name="Content"
           >
-            <div
-              className={`
-                relative box-border flex w-full shrink-0 flex-col
-                content-stretch items-center justify-center gap-[34px] px-0 pt-0
-                pb-[120px]
-              `}
-              data-name="Inner Center"
-            >
-              <div
-                className={`
-                  relative box-border flex shrink-0 flex-col content-stretch
-                  items-center justify-start p-0
-                `}
-              >
-                <div
-                  className={`
-                    relative w-full shrink-0 text-center text-[96px] leading-[0]
-                    tracking-[-1.92px] text-[#000000] not-italic
-                    font-['Pretendard:Bold',_sans-serif]
-                  `}
-                >
-                  <p className="block leading-[normal]">
-                    {enrollmentStatus === "issuing"
-                      ? "..."
-                      : enrollmentStatus === "enrolling"
-                        ? "등록중"
-                        : randomKey || "----"}
-                  </p>
-                </div>
-                <div className="relative h-0 w-full shrink-0">
-                  <div
-                    className={`
-                      absolute top-[-1px] right-[-0.459%] bottom-[-1px]
-                      left-[-0.459%]
-                    `}
-                  >
-                    <svg
-                      width="100%"
-                      height="2"
-                      viewBox="0 0 218 2"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="block size-full max-w-none"
-                    >
-                      <path d="M0 1H218" stroke="#e0e0e0" strokeWidth="2" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-              <div
-                className={`
-                  relative min-w-full shrink-0 text-center text-[24px]
-                  leading-[0] text-[rgba(0,0,0,0.8)] not-italic
-                  font-['Pretendard:Regular',_sans-serif]
-                `}
-                style={{ width: "min-content" }}
-              >
-                <p className="block leading-[normal]">
-                  {enrollmentStatus === "issuing"
-                    ? "랜덤 키를 발급하고 있습니다..."
-                    : enrollmentStatus === "ready"
-                      ? "등록을 진행하고 있습니다..."
-                      : enrollmentStatus === "enrolling"
-                        ? "등록을 진행하고 있습니다..."
-                        : "화면을 학생회에게 보여주세요."}
-                </p>
-              </div>
-            </div>
-          </div>
+            {enrollmentStatus === "issuing" ? "..." : (randomKey ?? "----")}
+          </p>
+          <Divider />
         </div>
+        <p className={`text-center txt-subtitle1`}>
+          {enrollmentStatus === "issuing"
+            ? "랜덤 키를 발급하고 있습니다..."
+            : "화면을 학생회에게 보여주세요."}
+        </p>
       </div>
     </div>
   );
