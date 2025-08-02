@@ -17,7 +17,7 @@ export const EventFormRow = <T extends FieldValues>({
   const message = errors[name]?.message;
   const showError = message && typeof message === "string";
   return (
-    <div className="">
+    <div>
       <div className="flex w-full items-start justify-center gap-10">
         <label className="h-13 w-34 py-3 txt-h5">{label}</label>
         <div className="h-full flex-1 flex-col">
