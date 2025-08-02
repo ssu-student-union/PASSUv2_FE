@@ -2,20 +2,20 @@ import { Button } from "@passu/ui/button";
 import { cn } from "@passu/ui/utils";
 import { useState } from "react";
 
-interface SelectButtonGroupProps {
-  options: string[];
-  value?: string[];
-  onChange?: (value: string[]) => void;
+interface SelectButtonGroupProps<T extends readonly string[]> {
+  options: T;
+  value?: T[number][];
+  onChange?: (value: T[number][]) => void;
 }
 
-export const SelectButtonGroup = ({
+export const SelectButtonGroup = <T extends readonly string[]>({
   options,
   value = [],
   onChange,
-}: SelectButtonGroupProps) => {
-  const [selected, setSelected] = useState<string[]>(value);
+}: SelectButtonGroupProps<T>) => {
+  const [selected, setSelected] = useState<T[number][]>(value);
 
-  const handleClick = (option: string) => {
+  const handleClick = (option: T[number]) => {
     const updated = selected.includes(option)
       ? selected.filter((o) => o !== option)
       : [...selected, option];

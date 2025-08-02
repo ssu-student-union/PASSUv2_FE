@@ -1,6 +1,10 @@
 import { EventFormRow } from "@/components/create/EventFormRow";
 import { SelectButtonGroup } from "@/components/create/SelectButtonGroup";
-import type { FormValues } from "@/types/event";
+import {
+  FEE_OPTIONS,
+  PARTICIPANT_OPTIONS,
+  type FormValues,
+} from "@/types/event";
 import { Button } from "@passu/ui/button";
 import { Input } from "@passu/ui/input";
 import { NumberInput } from "@passu/ui/number-input";
@@ -12,9 +16,6 @@ import { Controller, useForm } from "react-hook-form";
 interface Props {
   mode: "create" | "edit";
 }
-
-const PARTICIPANT_OPTIONS = ["재학생", "휴학생", "졸업 유예", "졸업생"];
-const FEE_OPTIONS = ["납부자", "미납자"];
 
 export function EventFormPage({ mode }: Props) {
   const { id } = useParams({ strict: false });
