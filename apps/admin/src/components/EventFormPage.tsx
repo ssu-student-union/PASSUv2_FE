@@ -9,7 +9,7 @@ import { Button } from "@passu/ui/button";
 import { Input } from "@passu/ui/input";
 import { NumberInput } from "@passu/ui/number-input";
 import { Textarea } from "@passu/ui/textarea";
-import { useParams } from "@tanstack/react-router";
+import { Link, useParams } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 
@@ -155,7 +155,7 @@ export function EventFormPage({ mode }: Props) {
 
       <div className="flex w-full justify-center gap-8">
         <Button variantType="form-actions" variant="outline" asChild>
-          <a href="/">뒤로가기</a>
+          <Link to="/">뒤로가기</Link>
         </Button>
         <Button variantType="form-actions" type="submit">
           완료
