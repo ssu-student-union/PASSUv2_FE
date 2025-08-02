@@ -1,21 +1,20 @@
 import type { ReactNode } from "react";
 import type { FieldErrors, FieldValues } from "react-hook-form";
 
-interface EventFormRowProps<T extends FieldValues> {
+interface EventFormRowProps<T extends FieldValues, N extends keyof T> {
   label: string;
-  name: keyof T;
   children: ReactNode;
-  errors: FieldErrors<T>;
+  error: FieldErrors<T>[N] | undefined;
 }
 
-export const EventFormRow = <T extends FieldValues>({
+export const EventFormRow = <T extends FieldValues, N extends keyof T>({
   label,
-  name,
-  errors,
+  error,
   children,
-}: EventFormRowProps<T>) => {
-  const message = errors[name]?.message;
+}: EventFormRowProps<T, N>) => {
+  const message = error?.message;
   const showError = message && typeof message === "string";
+
   return (
     <div>
       <div className="flex w-full items-start justify-center gap-10">

@@ -64,28 +64,28 @@ export function EventFormPage({ mode }: Props) {
         {isEdit ? "행사 수정" : "행사 생성"}
       </h1>
       <div className="flex flex-col gap-8 rounded-3xl bg-white px-12 py-8">
-        <EventFormRow label="행사명" name="title" errors={errors}>
+        <EventFormRow label="행사명" error={errors.title}>
           <Input
             {...register("title", { required: "행사명을 입력해주세요." })}
             placeholder="행사명을 입력하세요"
           />
         </EventFormRow>
 
-        <EventFormRow label="행사 장소" name="location" errors={errors}>
+        <EventFormRow label="행사 장소" error={errors.location}>
           <Input
             {...register("location", { required: "행사 장소를 입력해주세요." })}
             placeholder="장소를 입력하세요"
           />
         </EventFormRow>
 
-        <EventFormRow label="행사 날짜" name="date" errors={errors}>
+        <EventFormRow label="행사 날짜" error={errors.date}>
           <Input
             {...register("date", { required: "행사 날짜를 입력해주세요." })}
             placeholder="YYYY/MM/DD ~ YYYY/MM/DD"
           />
         </EventFormRow>
 
-        <EventFormRow label="행사 시작 시간" name="time" errors={errors}>
+        <EventFormRow label="행사 시작 시간" error={errors.time}>
           <Input
             {...register("time", { required: "행사 시간을 입력해주세요" })}
             placeholder="15:00"
@@ -93,13 +93,13 @@ export function EventFormPage({ mode }: Props) {
           />
         </EventFormRow>
 
-        <EventFormRow label="상품명" name="product" errors={errors}>
+        <EventFormRow label="상품명" error={errors.product}>
           <Input
             {...register("product", { required: "상품명을 입력해주세요." })}
           />
         </EventFormRow>
 
-        <EventFormRow label="상품 수량" name="quantity" errors={errors}>
+        <EventFormRow label="상품 수량" error={errors.quantity}>
           <Controller
             name="quantity"
             control={control}
@@ -113,37 +113,39 @@ export function EventFormPage({ mode }: Props) {
           />
         </EventFormRow>
 
-        <EventFormRow label="대상자" name="participants" errors={errors}>
-          <Controller
-            name="participants"
-            control={control}
-            rules={{ required: "대상자를 선택해주세요" }}
-            render={({ field }) => (
+        <Controller
+          name="participants"
+          control={control}
+          rules={{
+            validate: (value) => value.length > 0 || "대상자를 선택해주세요",
+          }}
+          render={({ field, fieldState }) => (
+            <EventFormRow label="대상자" error={fieldState.error}>
               <SelectButtonGroup
                 options={PARTICIPANT_OPTIONS}
                 value={field.value}
                 onChange={field.onChange}
               />
-            )}
-          />
-        </EventFormRow>
+            </EventFormRow>
+          )}
+        />
 
-        <EventFormRow label="학생회비 납부" name="feeStatus" errors={errors}>
-          <Controller
-            name="feeStatus"
-            control={control}
-            rules={{ required: "학생회비 여부를 선택해주세요." }}
-            render={({ field }) => (
+        <Controller
+          name="feeStatus"
+          control={control}
+          rules={{ required: "학생회비 여부를 선택해주세요." }}
+          render={({ field, fieldState }) => (
+            <EventFormRow label="학생회비 납부" error={fieldState.error}>
               <SelectButtonGroup
                 options={FEE_OPTIONS}
                 value={field.value}
                 onChange={field.onChange}
               />
-            )}
-          />
-        </EventFormRow>
+            </EventFormRow>
+          )}
+        />
 
-        <EventFormRow label="행사 설명" name="description" errors={errors}>
+        <EventFormRow label="행사 설명" error={errors.description}>
           <Textarea
             {...register("description", {
               required: "행사 설명을 입력해주세요",
