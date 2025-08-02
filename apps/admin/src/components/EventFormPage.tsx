@@ -3,7 +3,7 @@ import { SelectButtonGroup } from "@/components/create/SelectButtonGroup";
 import {
   FEE_OPTIONS,
   PARTICIPANT_OPTIONS,
-  type FormValues,
+  type EventFormValues,
 } from "@/types/event";
 import { Button } from "@passu/ui/button";
 import { Input } from "@passu/ui/input";
@@ -26,7 +26,7 @@ export function EventFormPage({ mode }: Props) {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<FormValues>({
+  } = useForm<EventFormValues>({
     mode: "onSubmit",
     defaultValues: {
       title: "",
