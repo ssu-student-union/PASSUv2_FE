@@ -7,12 +7,16 @@ export interface Event {
 }
 
 export const PARTICIPANT_OPTIONS = [
-  "재학생",
-  "휴학생",
-  "졸업 유예",
-  "졸업생",
+  { label: "재학생", value: "ENROLLED" },
+  { label: "휴학생", value: "ON_LEAVE" },
+  { label: "졸업 유예", value: "DELAYED" },
+  { label: "졸업생", value: "GRADUATED" },
 ] as const;
-export const FEE_OPTIONS = ["납부자", "미납자"] as const;
+
+export const FEE_OPTIONS = [
+  { label: "납부자", value: "PAID" },
+  { label: "미납자", value: "UNPAID" },
+] as const;
 
 export type ParticipantOption = (typeof PARTICIPANT_OPTIONS)[number];
 export type FeeStatusOption = (typeof FEE_OPTIONS)[number];

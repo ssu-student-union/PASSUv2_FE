@@ -1,20 +1,26 @@
 import { Button } from "@passu/ui/button";
 import { cn } from "@passu/ui/utils";
 
-interface SelectButtonGroupProps<T extends readonly string[]> {
-  options: T;
-  value?: T[number][];
-  onChange?: (value: T[number][]) => void;
+interface Option {
+  label: string;
+  value: string;
 }
 
-export const SelectButtonGroup = <T extends readonly string[]>({
+interface SelectButtonGroupProps<T extends Option> {
+  options: readonly T[];
+  value?: T[];
+  onChange?: (value: T[]) => void;
+}
+
+export const SelectButtonGroup = <T extends Option>({
   options,
   value = [],
   onChange,
 }: SelectButtonGroupProps<T>) => {
-  const handleClick = (option: T[number]) => {
-    const updated = value.includes(option)
-      ? value.filter((o) => o !== option)
+  const handleClick = (option: T) => {
+    const isSelected = value.some((v) => v.value === option.value);
+    const updated = isSelected
+      ? value.filter((v) => v.value !== option.value)
       : [...value, option];
     onChange?.(updated);
   };
@@ -22,11 +28,11 @@ export const SelectButtonGroup = <T extends readonly string[]>({
   return (
     <div className="flex h-full items-center gap-4">
       {options.map((opt) => {
-        const isSelected = value.includes(opt);
+        const isSelected = value.some((v) => v.value === opt.value);
 
         return (
           <Button
-            key={opt}
+            key={opt.value}
             variant={isSelected ? "default" : "outline"}
             type="button"
             className={cn(
@@ -40,7 +46,7 @@ export const SelectButtonGroup = <T extends readonly string[]>({
             size="rounded"
             onClick={() => handleClick(opt)}
           >
-            {opt}
+            {opt.label}
           </Button>
         );
       })}
