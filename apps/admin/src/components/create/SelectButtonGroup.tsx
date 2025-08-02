@@ -1,6 +1,5 @@
 import { Button } from "@passu/ui/button";
 import { cn } from "@passu/ui/utils";
-import { useState } from "react";
 
 interface SelectButtonGroupProps<T extends readonly string[]> {
   options: T;
@@ -13,21 +12,17 @@ export const SelectButtonGroup = <T extends readonly string[]>({
   value = [],
   onChange,
 }: SelectButtonGroupProps<T>) => {
-  const [selected, setSelected] = useState<T[number][]>(value);
-
   const handleClick = (option: T[number]) => {
-    const updated = selected.includes(option)
-      ? selected.filter((o) => o !== option)
-      : [...selected, option];
-
-    setSelected(updated);
+    const updated = value.includes(option)
+      ? value.filter((o) => o !== option)
+      : [...value, option];
     onChange?.(updated);
   };
 
   return (
     <div className="flex h-full items-center gap-4">
       {options.map((opt) => {
-        const isSelected = selected.includes(opt);
+        const isSelected = value.includes(opt);
 
         return (
           <Button
