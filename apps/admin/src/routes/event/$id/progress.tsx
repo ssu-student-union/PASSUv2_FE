@@ -48,7 +48,7 @@ function ProgressPage() {
               </SidebarButton>
 
               <SidebarButton variant="outline" asChild>
-                <Link to="/event/edit/$id" params={{ id }}>
+                <Link to="/event/$id/edit" params={{ id }}>
                   <Pencil />
                   <span>행사 수정</span>
                 </Link>
