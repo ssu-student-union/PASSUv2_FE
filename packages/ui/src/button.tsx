@@ -31,6 +31,7 @@ const buttonVariants = cva(
       variantType: {
         default: null,
         sidebar: null,
+        "form-actions": null,
       },
     },
     compoundVariants: [
@@ -43,6 +44,16 @@ const buttonVariants = cva(
         variantType: "sidebar",
         variant: "outline",
         className: "border-2 text-primary hover:text-primary",
+      },
+      {
+        variantType: "form-actions",
+        size: "default",
+        className: "h-12 w-60 rounded-full border-2 txt-subtitle1",
+      },
+      {
+        variantType: "form-actions",
+        variant: "outline",
+        className: "text-primary hover:text-primary",
       },
     ],
     defaultVariants: {

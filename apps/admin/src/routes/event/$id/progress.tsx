@@ -5,7 +5,7 @@ import { SidebarDownloadListButton } from "@/components/sidebar/SidebarDownloadL
 import { SidebarGoToEventList } from "@/components/sidebar/SidebarGoToEventList";
 import { SidebarListSection } from "@/components/sidebar/SidebarListSection";
 import type { SidebarListItem } from "@/types/sidebar";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Pause, Pencil, Play, Square } from "lucide-react";
 import { useState } from "react";
 
@@ -28,6 +28,7 @@ const enum EventStatus {
 }
 
 function ProgressPage() {
+  const { id } = Route.useParams();
   const [status, setStatus] = useState<EventStatus>(EventStatus.NotStarted);
 
   return (
@@ -46,14 +47,11 @@ function ProgressPage() {
                 </span>
               </SidebarButton>
 
-              <SidebarButton
-                variant="outline"
-                onClick={() => {
-                  /* 수정 로직 */
-                }}
-              >
-                <Pencil />
-                <span>행사 수정</span>
+              <SidebarButton variant="outline" asChild>
+                <Link to="/event/$id/edit" params={{ id }}>
+                  <Pencil />
+                  <span>행사 수정</span>
+                </Link>
               </SidebarButton>
 
               <SidebarGoToEventList />

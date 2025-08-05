@@ -15,6 +15,7 @@ import { Route as LoginCallbackRouteImport } from './routes/login/callback'
 import { Route as EventCreateRouteImport } from './routes/event/create'
 import { Route as EventIdResultRouteImport } from './routes/event/$id/result'
 import { Route as EventIdProgressRouteImport } from './routes/event/$id/progress'
+import { Route as EventIdEditRouteImport } from './routes/event/$id/edit'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -46,12 +47,18 @@ const EventIdProgressRoute = EventIdProgressRouteImport.update({
   path: '/event/$id/progress',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EventIdEditRoute = EventIdEditRouteImport.update({
+  id: '/event/$id/edit',
+  path: '/event/$id/edit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/event/create': typeof EventCreateRoute
   '/login/callback': typeof LoginCallbackRoute
   '/login': typeof LoginIndexRoute
+  '/event/$id/edit': typeof EventIdEditRoute
   '/event/$id/progress': typeof EventIdProgressRoute
   '/event/$id/result': typeof EventIdResultRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/event/create': typeof EventCreateRoute
   '/login/callback': typeof LoginCallbackRoute
   '/login': typeof LoginIndexRoute
+  '/event/$id/edit': typeof EventIdEditRoute
   '/event/$id/progress': typeof EventIdProgressRoute
   '/event/$id/result': typeof EventIdResultRoute
 }
@@ -69,6 +77,7 @@ export interface FileRoutesById {
   '/event/create': typeof EventCreateRoute
   '/login/callback': typeof LoginCallbackRoute
   '/login/': typeof LoginIndexRoute
+  '/event/$id/edit': typeof EventIdEditRoute
   '/event/$id/progress': typeof EventIdProgressRoute
   '/event/$id/result': typeof EventIdResultRoute
 }
@@ -79,6 +88,7 @@ export interface FileRouteTypes {
     | '/event/create'
     | '/login/callback'
     | '/login'
+    | '/event/$id/edit'
     | '/event/$id/progress'
     | '/event/$id/result'
   fileRoutesByTo: FileRoutesByTo
@@ -87,6 +97,7 @@ export interface FileRouteTypes {
     | '/event/create'
     | '/login/callback'
     | '/login'
+    | '/event/$id/edit'
     | '/event/$id/progress'
     | '/event/$id/result'
   id:
@@ -95,6 +106,7 @@ export interface FileRouteTypes {
     | '/event/create'
     | '/login/callback'
     | '/login/'
+    | '/event/$id/edit'
     | '/event/$id/progress'
     | '/event/$id/result'
   fileRoutesById: FileRoutesById
@@ -104,6 +116,7 @@ export interface RootRouteChildren {
   EventCreateRoute: typeof EventCreateRoute
   LoginCallbackRoute: typeof LoginCallbackRoute
   LoginIndexRoute: typeof LoginIndexRoute
+  EventIdEditRoute: typeof EventIdEditRoute
   EventIdProgressRoute: typeof EventIdProgressRoute
   EventIdResultRoute: typeof EventIdResultRoute
 }
@@ -152,6 +165,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventIdProgressRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/event/$id/edit': {
+      id: '/event/$id/edit'
+      path: '/event/$id/edit'
+      fullPath: '/event/$id/edit'
+      preLoaderRoute: typeof EventIdEditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -160,6 +180,7 @@ const rootRouteChildren: RootRouteChildren = {
   EventCreateRoute: EventCreateRoute,
   LoginCallbackRoute: LoginCallbackRoute,
   LoginIndexRoute: LoginIndexRoute,
+  EventIdEditRoute: EventIdEditRoute,
   EventIdProgressRoute: EventIdProgressRoute,
   EventIdResultRoute: EventIdResultRoute,
 }
