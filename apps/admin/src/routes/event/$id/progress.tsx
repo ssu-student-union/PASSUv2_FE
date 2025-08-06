@@ -1,3 +1,4 @@
+import { FinishModal } from "@/components/progress/FinishModal";
 import { Sidebar } from "@/components/sidebar/Sidebar";
 import { SidebarButton } from "@/components/sidebar/SidebarButton";
 import { SidebarButtonGroup } from "@/components/sidebar/SidebarButtonGroup";
@@ -88,6 +89,11 @@ function ProgressPage() {
       setInputValue(""); // 성공 후 입력창 비우기
       console.log(`인증 성공: ${inputValue}`);
     }
+  };
+
+  // 모달 예 버튼 눌렀을 때 실행 함수
+  const handleConfirmFinish = () => {
+    setStatus(EventStatus.Ongoing);
   };
 
   return (
@@ -181,11 +187,8 @@ function ProgressPage() {
                 }
               />
               <Button
-                variant="outline"
-                className={`
-                  h-12 rounded-full bg-white text-primary
-                  hover:text-primary
-                `}
+                variant="default"
+                className={`h-12 rounded-full`}
                 disabled={
                   status === EventStatus.NotStarted ||
                   status === EventStatus.Paused
@@ -197,6 +200,18 @@ function ProgressPage() {
             </div>
           </div>
         </div>
+        {status === EventStatus.Finished && (
+          <div
+            className={`
+              fixed inset-0 flex items-center justify-center bg-black/40
+            `}
+          >
+            <FinishModal
+              onClose={() => setStatus(EventStatus.Ongoing)}
+              onConfirm={handleConfirmFinish}
+            />
+          </div>
+        )}
       </div>
     </>
   );
