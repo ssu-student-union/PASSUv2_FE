@@ -1,5 +1,6 @@
 import { EventFormRow } from "@/components/create/EventFormRow";
 import { EventDescription } from "@/components/result/EventDescription";
+import { PrintableList } from "@/components/result/PrintableList";
 import { ResultInfoRow } from "@/components/result/ResultInfoRow";
 import { Sidebar } from "@/components/sidebar/Sidebar";
 import { SidebarButton } from "@/components/sidebar/SidebarButton";
@@ -9,6 +10,8 @@ import { SidebarGoToEventList } from "@/components/sidebar/SidebarGoToEventList"
 import { SidebarListSection } from "@/components/sidebar/SidebarListSection";
 import { createFileRoute } from "@tanstack/react-router";
 import { Printer } from "lucide-react";
+import { useRef } from "react";
+import { useReactToPrint } from "react-to-print";
 
 export const Route = createFileRoute("/event/$id/result")({
   component: ResultPage,
@@ -48,11 +51,17 @@ const description = `[2025-1학기 야식 행사 안내]
 이메일 ssure65welfare@gmail.com`;
 
 function ResultPage() {
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const handlePrint = useReactToPrint({
+    contentRef,
+  });
+
   return (
     <>
       <Sidebar>
         <SidebarButtonGroup>
-          <SidebarButton>
+          <SidebarButton onClick={handlePrint}>
             <Printer />
             상품수령명단 인쇄
           </SidebarButton>
@@ -98,6 +107,10 @@ function ResultPage() {
             </EventFormRow>
           </div>
         </div>
+      </div>
+
+      <div style={{ display: "none" }}>
+        <PrintableList ref={contentRef} />
       </div>
     </>
   );
