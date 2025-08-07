@@ -1,4 +1,4 @@
-import { EventFormRow } from "@/components/create/EventFormRow";
+import { EventFormRow } from "@/components/event/EventFormRow";
 import { EventDescription } from "@/components/result/EventDescription";
 import { PrintableList } from "@/components/result/PrintableList";
 import { ResultInfoRow } from "@/components/result/ResultInfoRow";
@@ -50,6 +50,22 @@ const description = `[2025-1학기 야식 행사 안내]
 카카오톡 ‘숭실대학교 총학생회’
 이메일 ssure65welfare@gmail.com`;
 
+const resultInfoRows = [
+  { label: "행사명", value: "2025-1학기 야식행사" },
+  { label: "행사 장소", value: "슈파크 일대 (돌계단) / 우천 시 학생식당" },
+  { label: "행사 시작 날짜", value: "2025/04/30" },
+  { label: "행사 종료 날짜", value: "2025/05/01" },
+  {
+    label: "상품명",
+    value: "지코바 순살 양념구이(순한맛) + 밥 + 무알콜 맥주 음료",
+  },
+  { label: "전체 수량", value: "600" },
+  { label: "소진 수량", value: "590" },
+  { label: "잔여 수량", value: "10" },
+  { label: "대상자", value: "재학생" },
+  { label: "학생회비 납부", value: "납부자, 미납부자" },
+];
+
 function ResultPage() {
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -76,31 +92,20 @@ function ResultPage() {
 
       <div className="flex-1 overflow-y-auto px-10 py-26">
         <div className={`flex w-full flex-col gap-12`}>
-          {/* 1. 행사 결과 타이틀 */}
           <div className="flex justify-between">
             <span className="text-4xl font-bold">행사 결과</span>
           </div>
 
-          {/* 2. Input 필드를 포함한 메인 컨텐츠 영역 */}
           <div
             className={`flex w-full flex-col gap-8 rounded-3xl bg-white p-10`}
           >
-            <ResultInfoRow label="행사명" value="2025-1학기 야식행사" />
-            <ResultInfoRow
-              label="행사 장소"
-              value="슈파크 일대 (돌계단) / 우천 시 학생식당"
-            />
-            <ResultInfoRow label="행사 시작 날짜" value="2025/04/30" />
-            <ResultInfoRow label="행사 종료 날짜" value="2025/05/01" />
-            <ResultInfoRow
-              label="상품명"
-              value="지코바 순살 양념구이(순한맛) + 밥 + 무알콞 맥주 음료"
-            />
-            <ResultInfoRow label="전체 수량" value="600" />
-            <ResultInfoRow label="소진 수량" value="590" />
-            <ResultInfoRow label="잔여 수량" value="10" />
-            <ResultInfoRow label="대상자" value="재학생" />
-            <ResultInfoRow label="학생회비 납부" value="납부자, 미납부자" />
+            {resultInfoRows.map((info) => (
+              <ResultInfoRow
+                key={info.label}
+                label={info.label}
+                value={info.value}
+              />
+            ))}
 
             <EventFormRow label="행사 설명">
               <EventDescription description={description} />

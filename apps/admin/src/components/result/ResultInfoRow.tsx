@@ -1,4 +1,4 @@
-import { EventFormRow } from "@/components/create/EventFormRow";
+import { EventFormRow } from "@/components/event/EventFormRow";
 import { Input } from "@passu/ui/input";
 
 interface ResultInfoRowProps {
