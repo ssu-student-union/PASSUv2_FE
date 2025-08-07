@@ -5,95 +5,41 @@ import { SidebarButtonGroup } from "@/components/sidebar/SidebarButtonGroup";
 import { SidebarDownloadListButton } from "@/components/sidebar/SidebarDownloadListButton";
 import { SidebarGoToEventList } from "@/components/sidebar/SidebarGoToEventList";
 import { SidebarListSection } from "@/components/sidebar/SidebarListSection";
-import type { SidebarListItem } from "@/types/sidebar";
+import { eventStatusMessages } from "@/constants/eventstatusMessage";
+import { useEventManagement } from "@/hooks/useEventManagement";
+import { useTimer } from "@/hooks/useTimer";
+import { EventStatus } from "@/types/event";
+import { formatTime } from "@/utils/formatTime";
 import { Button } from "@passu/ui/button";
 import { Chip } from "@passu/ui/chip";
 import { Input } from "@passu/ui/input";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Pause, Pencil, Play, Square } from "lucide-react";
-import { useEffect, useState, type JSX } from "react";
-
-// mock data
-const list: SidebarListItem[] = [
-  { date: "2025.05.26 18:05:33", name: "하이하", code: 2321 },
-  { date: "2025.05.26 18:05:33", name: "하이하", code: 2321 },
-  { date: "2025.05.26 18:05:33", name: "하이하", code: 2321 },
-];
 
 export const Route = createFileRoute("/event/$id/progress")({
   component: ProgressPage,
 });
 
-const enum EventStatus {
-  NotStarted = "not_started",
-  Ongoing = "ongoing",
-  Paused = "paused",
-  Finished = "finished",
-}
-
 function ProgressPage() {
   const { id } = Route.useParams();
-  const [status, setStatus] = useState<EventStatus>(EventStatus.NotStarted);
+  const {
+    status,
+    participantCount,
+    inputValue,
+    startEvent,
+    pauseEvent,
+    finishEvent,
+    resumeEvent,
+    handleAuthentication,
+    handleInputChange,
+  } = useEventManagement();
+  const elapsedTime = useTimer(status === EventStatus.Ongoing);
 
-  const [elapsedTime, setElapsedTime] = useState(0); // 경과 시간 (초 단위)
-  const [participantCount, setParticipantCount] = useState(0); // 현재 참여 인원
-  const [inputValue, setInputValue] = useState(""); // 인증번호 입력값
-
-  const totalParticipants = 600; // 전체 참여 인원
-
-  const statusMessages: Record<EventStatus, JSX.Element> = {
-    [EventStatus.NotStarted]: (
-      <>
-        행사 시작 버튼을 누르면 <br />
-        인증번호 입력창이 활성화됩니다.
-      </>
-    ),
-    [EventStatus.Ongoing]: <>인증번호를 입력해주세요.</>,
-    [EventStatus.Paused]: (
-      <>
-        행사 재개 버튼을 누르면 <br />
-        인증번호 입력창이 활성화됩니다.
-      </>
-    ),
-    [EventStatus.Finished]: <>행사가 종료되었습니다.</>,
-  };
-
-  useEffect(() => {
-    let interval: NodeJS.Timeout | undefined;
-
-    if (status === EventStatus.Ongoing) {
-      interval = setInterval(() => {
-        setElapsedTime((prevTime) => prevTime + 1);
-      }, 1000);
-    }
-
-    return () => clearInterval(interval);
-  }, [status]);
-
-  // 시간 포맷팅 함수
-  const formatTime = (timeInSeconds: number) => {
-    const hours = String(Math.floor(timeInSeconds / 3600)).padStart(2, "0");
-    const minutes = String(Math.floor((timeInSeconds % 3600) / 60)).padStart(
-      2,
-      "0",
-    );
-    const seconds = String(timeInSeconds % 60).padStart(2, "0");
-    return `${hours}:${minutes}:${seconds}`;
-  };
-
-  // 인증 처리 함수
-  const handleAuthentication = () => {
-    // api 호출
-    if (inputValue.length === 4) {
-      setParticipantCount((prevCount) => prevCount + 1);
-      setInputValue(""); // 성공 후 입력창 비우기
-      console.log(`인증 성공: ${inputValue}`);
-    }
-  };
+  const totalParticipants = 600;
 
   // 모달 예 버튼 눌렀을 때 실행 함수
   const handleConfirmFinish = () => {
-    setStatus(EventStatus.Ongoing);
+    resumeEvent();
   };
 
   return (
@@ -103,7 +49,11 @@ function ProgressPage() {
           {status === EventStatus.NotStarted ||
           status === EventStatus.Paused ? (
             <>
-              <SidebarButton onClick={() => setStatus(EventStatus.Ongoing)}>
+              <SidebarButton
+                onClick={
+                  status === EventStatus.NotStarted ? startEvent : resumeEvent
+                }
+              >
                 <Play />
                 <span>
                   {status === EventStatus.NotStarted
@@ -123,15 +73,12 @@ function ProgressPage() {
             </>
           ) : (
             <>
-              <SidebarButton onClick={() => setStatus(EventStatus.Paused)}>
+              <SidebarButton onClick={pauseEvent}>
                 <Pause />
                 <span>행사 일시정지</span>
               </SidebarButton>
 
-              <SidebarButton
-                variant="outline"
-                onClick={() => setStatus(EventStatus.Finished)}
-              >
+              <SidebarButton variant="outline" onClick={finishEvent}>
                 <Square className="fill-hover" />
                 <span>행사 종료</span>
               </SidebarButton>
@@ -140,7 +87,7 @@ function ProgressPage() {
           <SidebarDownloadListButton />
         </SidebarButtonGroup>
 
-        <SidebarListSection list={list} />
+        <SidebarListSection />
       </Sidebar>
 
       <div className="flex-1">
@@ -169,14 +116,14 @@ function ProgressPage() {
                   whitespace-normal
                 `}
               >
-                {statusMessages[status]}
+                {eventStatusMessages[status]}
               </span>
 
               <Input
                 placeholder="0000"
                 maxLength={4}
                 value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
+                onChange={(e) => handleInputChange(e.target.value)}
                 className={`
                   h-34 w-78 text-center text-8xl font-bold
                   placeholder:text-8xl
@@ -200,6 +147,7 @@ function ProgressPage() {
             </div>
           </div>
         </div>
+
         {status === EventStatus.Finished && (
           <div
             className={`
@@ -207,7 +155,7 @@ function ProgressPage() {
             `}
           >
             <FinishModal
-              onClose={() => setStatus(EventStatus.Ongoing)}
+              onClose={resumeEvent}
               onConfirm={handleConfirmFinish}
             />
           </div>
