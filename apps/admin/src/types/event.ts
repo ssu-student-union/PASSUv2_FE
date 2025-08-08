@@ -32,3 +32,10 @@ export interface EventFormValues {
   feeStatus: FeeStatusOption[];
   description: string;
 }
+
+export enum EventStatus {
+  NotStarted = "not_started",
+  Ongoing = "ongoing",
+  Paused = "paused",
+  Finished = "finished",
+}
