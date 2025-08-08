@@ -6,15 +6,15 @@ import { SidebarDownloadListButton } from "@/components/sidebar/SidebarDownloadL
 import { SidebarGoToEventList } from "@/components/sidebar/SidebarGoToEventList";
 import { SidebarListSection } from "@/components/sidebar/SidebarListSection";
 import { eventStatusMessages } from "@/constants/eventstatusMessage";
-import { useEventManagement } from "@/hooks/useEventManagement";
 import { useTimer } from "@/hooks/useTimer";
 import { EventStatus } from "@/types/event";
 import { formatTime } from "@/utils/formatTime";
 import { Button } from "@passu/ui/button";
 import { Chip } from "@passu/ui/chip";
 import { Input } from "@passu/ui/input";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Pause, Pencil, Play, Square } from "lucide-react";
+import { useState } from "react";
 
 export const Route = createFileRoute("/event/$id/progress")({
   component: ProgressPage,
@@ -22,24 +22,42 @@ export const Route = createFileRoute("/event/$id/progress")({
 
 function ProgressPage() {
   const { id } = Route.useParams();
-  const {
-    status,
-    participantCount,
-    inputValue,
-    startEvent,
-    pauseEvent,
-    finishEvent,
-    resumeEvent,
-    handleAuthentication,
-    handleInputChange,
-  } = useEventManagement();
+  const navigate = useNavigate();
+
+  const [status, setStatus] = useState<EventStatus>(EventStatus.NotStarted);
+  const [participantCount, setParticipantCount] = useState(0);
+  const [inputValue, setInputValue] = useState("");
+
+  const startEvent = () => setStatus(EventStatus.Ongoing);
+  const pauseEvent = () => setStatus(EventStatus.Paused);
+  const finishEvent = () => setStatus(EventStatus.Finished);
+  const resumeEvent = () => setStatus(EventStatus.Ongoing);
+
+  const handleInputChange = (value: string) => {
+    if (/^\d*$/.test(value)) {
+      setInputValue(value);
+    }
+  };
+
+  const handleAuthentication = () => {
+    if (inputValue.length === 4) {
+      // 인증 api
+      setParticipantCount((prev) => prev + 1);
+      setInputValue("");
+    }
+  };
+
   const elapsedTime = useTimer(status === EventStatus.Ongoing);
 
   const totalParticipants = 600;
 
-  // 모달 예 버튼 눌렀을 때 실행 함수
-  const handleConfirmFinish = () => {
-    resumeEvent();
+  const onConfirm = () => {
+    // 행사 종료 api
+
+    void navigate({
+      to: "/event/$id/result",
+      params: { id },
+    });
   };
 
   return (
@@ -95,7 +113,7 @@ function ProgressPage() {
           <div className="flex justify-between">
             <span className="text-4xl font-bold">2025-1학기 야식행사</span>
 
-            <div className="flex gap-7">
+            <div className="flex h-10 gap-7">
               <Chip variant="outline">
                 {participantCount}/{totalParticipants} (명)
               </Chip>
@@ -154,10 +172,7 @@ function ProgressPage() {
               fixed inset-0 flex items-center justify-center bg-black/40
             `}
           >
-            <FinishModal
-              onClose={resumeEvent}
-              onConfirm={handleConfirmFinish}
-            />
+            <FinishModal onClose={resumeEvent} onConfirm={onConfirm} />
           </div>
         )}
       </div>

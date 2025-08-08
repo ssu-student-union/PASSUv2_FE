@@ -77,7 +77,7 @@ function ResultPage() {
     <>
       <Sidebar>
         <SidebarButtonGroup>
-          <SidebarButton onClick={handlePrint}>
+          <SidebarButton onClick={() => contentRef.current && handlePrint()}>
             <Printer />
             상품수령명단 인쇄
           </SidebarButton>
