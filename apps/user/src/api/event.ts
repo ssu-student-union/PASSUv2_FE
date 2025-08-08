@@ -23,7 +23,7 @@ export const useIssueRandomKey = (
   return useMutation({
     mutationFn: async (eventId: string): Promise<IssueRandomKeyResponse> => {
       const response = await authenticatedApiClient.post(
-        `api/v1/event/${eventId}/issue-key`,
+        `/api/v1/event/${eventId}/issue-key`,
       );
       return response.json();
     },
@@ -56,7 +56,7 @@ export const useEnrollStudent = (
         randomKey: randomKey,
       };
       const response = await authenticatedApiClient.post(
-        `api/v1/event/${eventId}/enroll`,
+        `/api/v1/event/${eventId}/enroll`,
         {
           json: requestBody,
         },
@@ -77,7 +77,7 @@ export const useEnrolledCount = (
     queryFn: async (): Promise<EnrolledCountResponse> => {
       try {
         const response = await apiClient.get(
-          `api/v1/event/${eventId}/enrolled-count`,
+          `/api/v1/event/${eventId}/enrolled-count`,
         );
         return response.json();
       } catch (error) {
@@ -104,7 +104,7 @@ export const useEventDetail = (
     queryKey: ["eventDetail", eventId],
     queryFn: async (): Promise<EventDetailResponse> => {
       try {
-        const response = await apiClient.get(`api/v1/event/${eventId}`);
+        const response = await apiClient.get(`/api/v1/event/${eventId}`);
         return response.json();
       } catch (error) {
         // 에러 처리
@@ -128,7 +128,7 @@ export const useUserInfo = (
   return useQuery({
     queryKey: ["userInfo"],
     queryFn: async (): Promise<UserInfoResponse> => {
-      const response = await authenticatedApiClient.get("api/v1/user");
+      const response = await authenticatedApiClient.get("/api/v1/user");
       return response.json();
     },
     ...options,

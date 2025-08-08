@@ -5,7 +5,8 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": ["dist/**"]
+      "outputs": ["dist/**"],
+      "env": ["VITE_ENABLE_MSW"]
     },
     "lint": {
       "dependsOn": [

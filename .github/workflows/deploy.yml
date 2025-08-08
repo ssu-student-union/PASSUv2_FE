@@ -1,0 +1,62 @@
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      mode:
+        required: true
+        type: string
+      deployment_url:
+        required: false
+        type: string
+      dist_directory:
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    name: Deploy (${{ inputs.environment }})
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    environment:
+      name: ${{ inputs.environment }}
+      url: ${{ inputs.deployment_url }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22" # Or your preferred Node.js version
+          cache: "pnpm" # Cache pnpm dependencies
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build project
+        run: pnpm build:apps -- --mode=${{ inputs.mode }}
+        env:
+          VITE_ENABLE_MSW: ${{ vars.ENABLE_MSW }}
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ASSUME_ROLE }}
+          aws-region: ap-northeast-2 # Specify your AWS region
+
+      - name: Upload to S3
+        run: |
+          aws s3 sync ${{ inputs.dist_directory }} s3://${{ vars.S3_BUCKET_NAME }} --delete
+
+      - name: Invalidate CloudFront Cache
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"

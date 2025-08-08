@@ -1,0 +1,19 @@
+name: Admin Deployment (production)
+on:
+  push:
+    tags:
+      - "admin-*"
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  deploy:
+    name: Admin Deployment (production)
+    uses: ./.github/workflows/deploy.yml
+    with:
+      environment: admin-production
+      mode: production
+      deployment_url: https://passu.sssupport.shop # 관리 페이지의 실제 배포 URL은 공개하지 않습니다.
+      dist_directory: apps/admin/dist
