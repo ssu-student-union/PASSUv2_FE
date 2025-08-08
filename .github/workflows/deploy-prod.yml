@@ -1,0 +1,19 @@
+name: User Deployment (production)
+on:
+  push:
+    tags:
+      - "user-*"
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  deploy:
+    name: User Deployment (production)
+    uses: ./.github/workflows/deploy.yml
+    with:
+      environment: production
+      mode: production
+      deployment_url: https://passu.sssupport.shop
+      dist_directory: apps/user/dist
