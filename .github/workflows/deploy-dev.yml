@@ -4,6 +4,7 @@ on:
     branches:
       - main
     paths:
+      - ".github/workflows/**"
       - "apps/user/**"
       - "package.json"
       - "packages/**"
@@ -12,6 +13,7 @@ on:
     branches:
       - main
     paths:
+      - ".github/workflows/**"
       - "apps/user/**"
       - "package.json"
       - "packages/**"
