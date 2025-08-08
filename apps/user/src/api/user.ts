@@ -22,14 +22,14 @@ export const useUserInfo = (options?: {
         let response;
         if (accessToken) {
           // 임시 토큰을 사용하여 API 호출
-          response = await apiClient.get("api/v1/user", {
+          response = await apiClient.get("/api/v1/user", {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },
           });
         } else {
           // 기본 인증된 클라이언트 사용
-          response = await authenticatedApiClient.get("api/v1/user");
+          response = await authenticatedApiClient.get("/api/v1/user");
         }
         return response.json();
       } catch (error) {
