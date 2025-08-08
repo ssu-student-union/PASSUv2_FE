@@ -15,5 +15,5 @@ jobs:
     with:
       environment: admin-production
       mode: production
-      deployment_url: https://passu.sssupport.shop
+      deployment_url: https://passu.sssupport.shop # 관리 페이지의 실제 배포 URL은 공개하지 않습니다.
       dist_directory: apps/admin/dist
