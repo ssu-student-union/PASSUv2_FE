@@ -26,7 +26,7 @@ declare module "@tanstack/react-router" {
 }
 
 async function enableMocking() {
-  if (process.env.VITE_ENABLE_MSW !== "true") {
+  if (import.meta.env.VITE_ENABLE_MSW !== "true") {
     return;
   }
   const { worker } = await import("./mocks/browser");
