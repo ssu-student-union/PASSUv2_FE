@@ -43,7 +43,7 @@ jobs:
         run: pnpm install
 
       - name: Build project
-        run: pnpm build --mode=${{ inputs.mode }}
+        run: pnpm build -- --mode=${{ inputs.mode }}
         env:
           VITE_ENABLE_MSW: ${{ vars.ENABLE_MSW }}
 
