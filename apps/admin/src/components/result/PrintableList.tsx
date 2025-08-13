@@ -22,31 +22,31 @@ export const PrintableList = React.forwardRef<HTMLDivElement>((_, ref) => {
 
       <table
         className={`
-          mt-8 w-full border-collapse border border-black text-center
+          mt-8 w-full border-collapse border-2 border-black text-center
           print:mt-12
         `}
       >
         <thead>
           <tr>
-            <th className="border border-black p-2">순번</th>
-            <th className="border border-black p-2">이름</th>
-            <th className="border border-black p-2">학과</th>
-            <th className="border border-black p-2">학번</th>
-            <th className="border border-black p-2">종류</th>
-            <th className="border border-black p-2">수량</th>
-            <th className="border border-black p-2">서명 또는 날인</th>
+            <th className="border-2 border-black p-2">순번</th>
+            <th className="border-2 border-black p-2">이름</th>
+            <th className="border-2 border-black p-2">학과</th>
+            <th className="border-2 border-black p-2">학번</th>
+            <th className="border-2 border-black p-2">종류</th>
+            <th className="border-2 border-black p-2">수량</th>
+            <th className="border-2 border-black p-2">서명 또는 날인</th>
           </tr>
         </thead>
         <tbody>
           {data.map((row) => (
             <tr key={row.id}>
-              <td className="h-10 border border-black p-2">{row.id}</td>
-              <td className="border border-black p-2"></td>
-              <td className="border border-black p-2"></td>
-              <td className="border border-black p-2"></td>
-              <td className="border border-black p-2"></td>
-              <td className="border border-black p-2"></td>
-              <td className="border border-black p-2"></td>
+              <td className="h-10 border-2 border-black p-2">{row.id}</td>
+              <td className="border-2 border-black p-2"></td>
+              <td className="border-2 border-black p-2"></td>
+              <td className="border-2 border-black p-2"></td>
+              <td className="border-2 border-black p-2"></td>
+              <td className="border-2 border-black p-2"></td>
+              <td className="border-2 border-black p-2"></td>
             </tr>
           ))}
         </tbody>
