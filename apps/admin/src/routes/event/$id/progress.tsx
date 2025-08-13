@@ -175,7 +175,11 @@ function ProgressPage() {
               fixed inset-0 flex items-center justify-center bg-black/40
             `}
           >
-            <FinishModal onClose={resumeEvent} onConfirm={onConfirm} />
+            <FinishModal
+              open={true}
+              onClose={resumeEvent}
+              onConfirm={onConfirm}
+            />
           </div>
         )}
       </div>
