@@ -62,3 +62,19 @@ export const description = `[2025-1학기 야식 행사 안내]
 인스타그램 @ssure65th
 카카오톡 ‘숭실대학교 총학생회’
 이메일 ssure65welfare@gmail.com`;
+
+export const resultInfoRows = [
+  { label: "행사명", value: "2025-1학기 야식행사" },
+  { label: "행사 장소", value: "슈파크 일대 (돌계단) / 우천 시 학생식당" },
+  { label: "행사 시작 날짜", value: "2025/04/30" },
+  { label: "행사 종료 날짜", value: "2025/05/01" },
+  {
+    label: "상품명",
+    value: "지코바 순살 양념구이(순한맛) + 밥 + 무알콜 맥주 음료",
+  },
+  { label: "전체 수량", value: "600" },
+  { label: "소진 수량", value: "590" },
+  { label: "잔여 수량", value: "10" },
+  { label: "대상자", value: "재학생" },
+  { label: "학생회비 납부", value: "납부자, 미납부자" },
+];
