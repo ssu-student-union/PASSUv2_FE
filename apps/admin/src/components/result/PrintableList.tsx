@@ -1,7 +1,11 @@
 import * as React from "react";
 import "@/styles/print.css";
 
-export const PrintableList = React.forwardRef<HTMLDivElement>((_, ref) => {
+interface PrintableListProps {
+  ref?: React.Ref<HTMLDivElement>;
+}
+
+export const PrintableList = ({ ref }: PrintableListProps) => {
   // api 호출
   const data = Array.from({ length: 50 }, (_, i) => ({
     id: i + 1,
@@ -53,4 +57,4 @@ export const PrintableList = React.forwardRef<HTMLDivElement>((_, ref) => {
       </table>
     </div>
   );
-});
+};
