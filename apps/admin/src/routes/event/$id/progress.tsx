@@ -47,7 +47,10 @@ function ProgressPage() {
     }
   };
 
-  const elapsedTime = useTimer(status === EventStatus.Ongoing);
+  const elapsedTime = useTimer(
+    null, // 추후 서버 데이터로 변경
+    status === EventStatus.Ongoing || status === EventStatus.Paused,
+  );
 
   const totalParticipants = 600;
 
