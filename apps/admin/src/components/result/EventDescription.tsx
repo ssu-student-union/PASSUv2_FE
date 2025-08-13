@@ -3,8 +3,8 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@passu/ui/accordion"; // Accordion 컴포넌트 경로
-import { Textarea } from "@passu/ui/textarea"; // Textarea 컴포넌트 경로
+} from "@passu/ui/accordion";
+import { Textarea } from "@passu/ui/textarea";
 
 interface EventDescriptionProps {
   description: string;
@@ -21,7 +21,10 @@ export const EventDescription = ({ description }: EventDescriptionProps) => {
           <Textarea
             readOnly
             value={description}
-            className={`mt-3 h-auto bg-gray-100 text-center whitespace-pre-wrap`}
+            className={`
+              mt-3 field-sizing-content bg-gray-100 text-center
+              whitespace-pre-wrap
+            `}
           />
         </AccordionContent>
       </AccordionItem>
