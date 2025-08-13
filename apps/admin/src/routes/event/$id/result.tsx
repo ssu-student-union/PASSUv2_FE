@@ -82,7 +82,7 @@ function ResultPage() {
         </div>
       </div>
 
-      <div style={{ display: "none" }}>
+      <div className="hidden">
         <PrintableList ref={contentRef} />
       </div>
     </>

@@ -18,7 +18,7 @@ export const PrintableList = React.forwardRef<HTMLDivElement>((_, ref) => {
       <style>{`
         @media print {
           @page { 
-            margin: 2rem;
+            margin: 1rem;
           }
         }
       `}</style>
