@@ -33,7 +33,7 @@ export interface EventFormValues {
   description: string;
 }
 
-export enum EventStatus {
+export const enum EventStatus {
   NotStarted = "not_started",
   Ongoing = "ongoing",
   Paused = "paused",
