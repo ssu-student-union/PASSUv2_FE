@@ -4,7 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@passu/ui/accordion";
-import { Textarea } from "@passu/ui/textarea";
+import TextareaAutosize from "react-textarea-autosize";
 
 interface EventDescriptionProps {
   description: string;
@@ -18,12 +18,12 @@ export const EventDescription = ({ description }: EventDescriptionProps) => {
           <div />
         </AccordionTrigger>
         <AccordionContent>
-          <Textarea
+          <TextareaAutosize
             readOnly
             value={description}
             className={`
-              mt-3 field-sizing-content bg-gray-100 text-center
-              whitespace-pre-wrap
+              mt-3 field-sizing-content w-full resize-none bg-gray-100 p-3
+              text-center whitespace-pre-wrap
             `}
           />
         </AccordionContent>
