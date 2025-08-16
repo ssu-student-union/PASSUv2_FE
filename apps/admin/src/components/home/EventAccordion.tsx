@@ -7,6 +7,7 @@ import {
 import { EventRow } from "@/components/home/EventRow";
 import { NoEventRow } from "@/components/home/NoEventRow";
 import { type Event } from "@/types/event";
+import { Link } from "@tanstack/react-router";
 
 interface EventAccordionProps {
   variant: "upcoming" | "completed";
@@ -27,7 +28,17 @@ export const EventAccordion = ({ variant, events }: EventAccordionProps) => {
             <NoEventRow />
           ) : (
             events.map((item) => (
-              <EventRow event={item} className={textColor} key={item.id} />
+              <Link
+                to={
+                  variant === "upcoming"
+                    ? "/event/$id/progress"
+                    : "/event/$id/result"
+                }
+                params={{ id: String(item.id) }}
+                key={item.id}
+              >
+                <EventRow event={item} className={textColor} />
+              </Link>
             ))
           )}
         </AccordionContent>

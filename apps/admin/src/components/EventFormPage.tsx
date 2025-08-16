@@ -1,4 +1,4 @@
-import { EventFormRow } from "@/components/create/EventFormRow";
+import { EventFormRow } from "@/components/event/EventFormRow";
 import { SelectButtonGroup } from "@/components/create/SelectButtonGroup";
 import {
   FEE_OPTIONS,
