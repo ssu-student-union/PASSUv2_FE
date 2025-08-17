@@ -19,6 +19,7 @@
     "@tanstack/react-router": "^1.121.2",
     "@tanstack/react-router-devtools": "^1.121.16",
     "@tanstack/router-plugin": "^1.121.2",
+    "axios": "^1.11.0",
     "lucide-react": "^0.515.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
