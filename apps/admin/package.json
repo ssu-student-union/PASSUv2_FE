@@ -15,6 +15,7 @@
   "dependencies": {
     "@passu/ui": "workspace:*",
     "@tailwindcss/vite": "^4.1.10",
+    "@tanstack/react-query": "^5.83.0",
     "@tanstack/react-router": "^1.121.2",
     "@tanstack/react-router-devtools": "^1.121.16",
     "@tanstack/router-plugin": "^1.121.2",
@@ -32,6 +33,7 @@
     "@passu/prettier-config": "workspace:*",
     "@passu/tailwind-config": "workspace:*",
     "@passu/typescript-config": "workspace:*",
+    "@tanstack/react-query-devtools": "^5.83.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.2.0",
     "@types/react": "^19.0.8",
