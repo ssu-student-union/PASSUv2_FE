@@ -1,4 +1,4 @@
-export interface EventRequestDto {
+export interface EventRequest {
   name: string;
   location: string;
   productName: string;
@@ -10,7 +10,7 @@ export interface EventRequestDto {
   endTime: string;
 }
 
-export interface EventResponseDto {
+export interface EventResponse {
   id: number;
   name: string;
   location: string;
@@ -26,33 +26,33 @@ export interface EventResponseDto {
   updatedAt: string;
 }
 
-export interface PageEventResponseDto {
+export interface PageEventResponse {
   totalElements: number;
   totalPages: number;
   size: number;
-  content: EventResponseDto[];
+  content: EventResponse[];
   number: number;
   first: boolean;
   last: boolean;
   empty: boolean;
 }
 
-export interface EnrollmentRequestDto {
+export interface EnrollmentRequest {
   randomKey: string;
 }
 
-export interface EnrollmentResponseDto {
+export interface EnrollmentResponse {
   eventId: number;
   studentId: string;
   enrollmentId: number;
   timestamp: string;
 }
 
-export interface EnrolledCountResponseDto {
+export interface EnrolledCountResponse {
   count: number;
 }
 
-export interface EnrollmentListResponseDto {
+export interface EnrollmentListResponse {
   enrollmentId: number;
   studentId: string;
   studentName: string;
