@@ -1,124 +1,227 @@
-import apiClient from "@/api/apiClient";
-import type { ApiResponse } from "@/types/api-response";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import type {
+  UseMutationOptions,
+  UseQueryOptions,
+} from "@tanstack/react-query";
 import type {
   EnrolledCountResponseDto,
+  EnrollmentListResponseDto,
   EnrollmentResponseDto,
   EventRequestDto,
   EventResponseDto,
   PageEventResponseDto,
 } from "@/types/event.api";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import type { ApiResponse } from "@/types/api-response";
+import apiClient from "@/api/apiClient";
 
-// 행사 목록
-export const useEventList = (status: string, page = 0, size = 10) => {
+// 1. 행사 목록 조회 API
+export const useEventList = (
+  status: string,
+  page = 0,
+  size = 10,
+  options?: Partial<UseQueryOptions<ApiResponse<PageEventResponseDto>, Error>>,
+) => {
   return useQuery({
     queryKey: ["eventList", status, page, size],
-    queryFn: () =>
-      apiClient
-        .get<ApiResponse<PageEventResponseDto>>(`/api/v1/event`, {
-          params: { status, page, size },
-        })
-        .then((res) => res.data),
+    queryFn: async (): Promise<ApiResponse<PageEventResponseDto>> => {
+      const response = await apiClient.get("/api/v1/event", {
+        searchParams: {
+          status,
+          page: page.toString(),
+          size: size.toString(),
+        },
+      });
+      return response.json();
+    },
+    ...options,
   });
 };
 
-// 행사 생성
-export const useCreateEvent = () => {
+// 2. 행사 생성 API
+export const useCreateEvent = (
+  options?: Partial<
+    UseMutationOptions<ApiResponse<EventResponseDto>, Error, EventRequestDto>
+  >,
+) => {
   return useMutation({
-    mutationFn: (data: EventRequestDto) =>
-      apiClient
-        .post<ApiResponse<EventResponseDto>>("/api/v1/event", data)
-        .then((res) => res.data),
+    mutationFn: async (
+      data: EventRequestDto,
+    ): Promise<ApiResponse<EventResponseDto>> => {
+      const response = await apiClient.post("/api/v1/event", {
+        json: data,
+      });
+      return response.json();
+    },
+    ...options,
   });
 };
 
-// 행사 디테일 조회
-export const useEventDetail = (id: number) => {
+// 3. 행사 디테일 조회 API
+export const useEventDetail = (
+  id: number,
+  options?: Partial<UseQueryOptions<ApiResponse<EventResponseDto>, Error>>,
+) => {
   return useQuery({
     queryKey: ["eventDetail", id],
-    queryFn: () =>
-      apiClient
-        .get<ApiResponse<EventResponseDto>>(`/api/v1/event/${id}`)
-        .then((res) => res.data),
+    queryFn: async (): Promise<ApiResponse<EventResponseDto>> => {
+      const response = await apiClient.get(`/api/v1/event/${id}`);
+      return response.json();
+    },
     enabled: !!id,
+    ...options,
   });
 };
 
-// 행사 수정
-export const useUpdateEvent = () => {
+// 4. 행사 수정 API
+export const useUpdateEvent = (
+  options?: Partial<
+    UseMutationOptions<
+      ApiResponse<EventResponseDto>,
+      Error,
+      { id: number; data: EventRequestDto }
+    >
+  >,
+) => {
   return useMutation({
-    mutationFn: ({ id, data }: { id: number; data: EventRequestDto }) =>
-      apiClient
-        .put<ApiResponse<EventResponseDto>>(`/api/v1/event/${id}`, data)
-        .then((res) => res.data),
+    mutationFn: async ({
+      id,
+      data,
+    }: {
+      id: number;
+      data: EventRequestDto;
+    }): Promise<ApiResponse<EventResponseDto>> => {
+      const response = await apiClient.put(`/api/v1/event/${id}`, {
+        json: data,
+      });
+      return response.json();
+    },
+    ...options,
   });
 };
 
-// 행사 삭제
-export const useDeleteEvent = () => {
+// 5. 행사 삭제 API
+export const useDeleteEvent = (
+  options?: Partial<UseMutationOptions<void, Error, number>>,
+) => {
   return useMutation({
-    mutationFn: (id: number) => apiClient.delete(`/api/v1/event/${id}`),
+    mutationFn: async (id: number): Promise<void> => {
+      await apiClient.delete(`/api/v1/event/${id}`);
+    },
+    ...options,
   });
 };
 
-// 행사 시작
-export const useStartEvent = () => {
+// 6. 행사 시작 API
+export const useStartEvent = (
+  options?: Partial<
+    UseMutationOptions<ApiResponse<EventResponseDto>, Error, number>
+  >,
+) => {
   return useMutation({
-    mutationFn: (id: number) =>
-      apiClient
-        .patch<ApiResponse<EventResponseDto>>(`/api/v1/event/${id}/start`)
-        .then((res) => res.data),
+    mutationFn: async (id: number): Promise<ApiResponse<EventResponseDto>> => {
+      const response = await apiClient.patch(`/api/v1/event/${id}/start`);
+      return response.json();
+    },
+    ...options,
   });
 };
 
-// 행사 멈춤
-export const usePauseEvent = () => {
+// 7. 행사 멈춤 API
+export const usePauseEvent = (
+  options?: Partial<
+    UseMutationOptions<ApiResponse<EventResponseDto>, Error, number>
+  >,
+) => {
   return useMutation({
-    mutationFn: (id: number) =>
-      apiClient
-        .patch<ApiResponse<EventResponseDto>>(`/api/v1/event/${id}/pause`)
-        .then((res) => res.data),
+    mutationFn: async (id: number): Promise<ApiResponse<EventResponseDto>> => {
+      const response = await apiClient.patch(`/api/v1/event/${id}/pause`);
+      return response.json();
+    },
+    ...options,
   });
 };
 
-// 행사 종료
-export const useEndEvent = () => {
+// 8. 행사 종료 API
+export const useEndEvent = (
+  options?: Partial<
+    UseMutationOptions<ApiResponse<EventResponseDto>, Error, number>
+  >,
+) => {
   return useMutation({
-    mutationFn: (id: number) =>
-      apiClient
-        .patch<ApiResponse<EventResponseDto>>(`/api/v1/event/${id}/end`)
-        .then((res) => res.data),
+    mutationFn: async (id: number): Promise<ApiResponse<EventResponseDto>> => {
+      const response = await apiClient.patch(`/api/v1/event/${id}/end`);
+      return response.json();
+    },
+    ...options,
   });
 };
 
-// 학생 등록
-export const useEnrollStudent = () => {
+// 9. 학생 등록 API
+export const useEnrollStudent = (
+  options?: Partial<
+    UseMutationOptions<
+      ApiResponse<EnrollmentResponseDto>,
+      Error,
+      {
+        eventId: number;
+        randomKey: string;
+      }
+    >
+  >,
+) => {
   return useMutation({
-    mutationFn: ({
+    mutationFn: async ({
       eventId,
       randomKey,
     }: {
       eventId: number;
       randomKey: string;
-    }) =>
-      apiClient
-        .post<
-          ApiResponse<EnrollmentResponseDto>
-        >(`/api/v1/event/${eventId}/enroll`, { randomKey })
-        .then((res) => res.data),
+    }): Promise<ApiResponse<EnrollmentResponseDto>> => {
+      const response = await apiClient.post(`/api/v1/event/${eventId}/enroll`, {
+        json: { randomKey },
+      });
+      return response.json();
+    },
+    ...options,
   });
 };
 
-// 등록된 학생 수 조회
-export const useEnrolledCount = (eventId: number) => {
+// 10. 등록된 학생 수 조회 API
+export const useEnrolledCount = (
+  eventId: number,
+  options?: Partial<
+    UseQueryOptions<ApiResponse<EnrolledCountResponseDto>, Error>
+  >,
+) => {
   return useQuery({
     queryKey: ["enrolledCount", eventId],
-    queryFn: () =>
-      apiClient
-        .get<
-          ApiResponse<EnrolledCountResponseDto>
-        >(`/api/v1/event/${eventId}/enrolled-count`)
-        .then((res) => res.data),
+    queryFn: async (): Promise<ApiResponse<EnrolledCountResponseDto>> => {
+      const response = await apiClient.get(
+        `/api/v1/event/${eventId}/enrolled-count`,
+      );
+      return response.json();
+    },
     enabled: !!eventId,
+    ...options,
+  });
+};
+
+// 11. 등록된 학생 목록 조회
+export const useEnrollmentList = (
+  eventId: number,
+  options?: Partial<
+    UseQueryOptions<ApiResponse<EnrollmentListResponseDto[]>, Error>
+  >,
+) => {
+  return useQuery({
+    queryKey: ["enrollmentList", eventId],
+    queryFn: async (): Promise<ApiResponse<EnrollmentListResponseDto[]>> => {
+      const response = await apiClient.get(
+        `/api/v1/event/${eventId}/enrollments`,
+      );
+      return response.json();
+    },
+    enabled: !!eventId,
+    ...options,
   });
 };

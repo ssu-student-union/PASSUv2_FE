@@ -51,3 +51,13 @@ export interface EnrollmentResponseDto {
 export interface EnrolledCountResponseDto {
   count: number;
 }
+
+export interface EnrollmentListResponseDto {
+  enrollmentId: number;
+  studentId: string;
+  studentName: string;
+  studentDepartment: string;
+  randomKey: number;
+  timestamp: string;
+  status: string;
+}
