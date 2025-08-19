@@ -10,7 +10,7 @@ export interface EventRequest {
   endTime: string;
 }
 
-export interface EventResponse {
+export interface EventData {
   id: number;
   name: string;
   location: string;
@@ -30,7 +30,7 @@ export interface PageEventResponse {
   totalElements: number;
   totalPages: number;
   size: number;
-  content: EventResponse[];
+  content: EventData[];
   number: number;
   first: boolean;
   last: boolean;
@@ -41,18 +41,18 @@ export interface EnrollmentRequest {
   randomKey: string;
 }
 
-export interface EnrollmentResponse {
+export interface EnrollmentData {
   eventId: number;
   studentId: string;
   enrollmentId: number;
   timestamp: string;
 }
 
-export interface EnrolledCountResponse {
+export interface EnrolledCountData {
   count: number;
 }
 
-export interface EnrollmentListResponse {
+export interface EnrollmentListData {
   enrollmentId: number;
   studentId: string;
   studentName: string;
