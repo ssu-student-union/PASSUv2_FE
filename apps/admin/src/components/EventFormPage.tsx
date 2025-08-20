@@ -9,16 +9,18 @@ import { Button } from "@passu/ui/button";
 import { Input } from "@passu/ui/input";
 import { NumberInput } from "@passu/ui/number-input";
 import { Textarea } from "@passu/ui/textarea";
-import { Link, useParams } from "@tanstack/react-router";
+import { Link, useNavigate, useParams } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-
+import dayjs from "dayjs";
+import { useCreateEvent } from "@/api/event";
 interface Props {
   mode: "create" | "edit";
 }
 
 export function EventFormPage({ mode }: Props) {
   const { id } = useParams({ strict: false });
+  const navigate = useNavigate();
   const isEdit = mode === "edit";
 
   const {
@@ -31,7 +33,8 @@ export function EventFormPage({ mode }: Props) {
     defaultValues: {
       title: "",
       location: "",
-      date: "",
+      startDate: "",
+      endDate: "",
       time: "",
       product: "",
       quantity: 1,
@@ -41,17 +44,48 @@ export function EventFormPage({ mode }: Props) {
     },
   });
 
+  const { mutate } = useCreateEvent({
+    onSuccess: (data) => {
+      console.log("행사 생성 성공: ", data);
+      void navigate({ to: "/" });
+    },
+    onError: (error) => {
+      console.error("행사 생성 실패:", error);
+    },
+  });
+
+  const toISO = (date: string, time: string) => {
+    return dayjs(`${date}T${time}`).toISOString();
+  };
+
   useEffect(() => {
     if (isEdit && id) {
       // 수정 모드일 경우 초기값 불러오기
     }
   }, [id, isEdit]);
 
-  const onSubmit = () => {
+  const onSubmit = (formData: EventFormValues) => {
+    const participantValues = formData.participants.map((p) => p.value);
+    const requireUnionFee = formData.feeStatus.some(
+      (opt) => opt.value === "PAID",
+    );
+
     if (isEdit && id) {
       // 수정 api
     } else {
-      // 생성 api
+      const payload = {
+        name: formData.title,
+        location: formData.location,
+        productName: formData.product,
+        description: formData.description,
+        productQuantity: formData.quantity,
+        requireStatus: participantValues,
+        requireUnionFee,
+        startTime: toISO(formData.startDate, formData.time),
+        endTime: toISO(formData.endDate, formData.time),
+      };
+
+      mutate(payload);
     }
   };
 
@@ -78,9 +112,22 @@ export function EventFormPage({ mode }: Props) {
           />
         </EventFormRow>
 
-        <EventFormRow label="행사 날짜" error={errors.date?.message}>
+        <EventFormRow label="행사 시작 날짜" error={errors.startDate?.message}>
           <Input
-            {...register("date", { required: "행사 날짜를 입력해주세요." })}
+            type="date"
+            {...register("startDate", {
+              required: "행사 시작 날짜를 입력해주세요.",
+            })}
+            placeholder="YYYY/MM/DD ~ YYYY/MM/DD"
+          />
+        </EventFormRow>
+
+        <EventFormRow label="행사 종료 날짜" error={errors.endDate?.message}>
+          <Input
+            type="date"
+            {...register("endDate", {
+              required: "행사 종료 날짜를 입력해주세요.",
+            })}
             placeholder="YYYY/MM/DD ~ YYYY/MM/DD"
           />
         </EventFormRow>

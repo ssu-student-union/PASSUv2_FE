@@ -7,10 +7,10 @@ export interface Event {
 }
 
 export const PARTICIPANT_OPTIONS = [
-  { label: "재학생", value: "ENROLLED" },
-  { label: "휴학생", value: "ON_LEAVE" },
-  { label: "졸업 유예", value: "DELAYED" },
-  { label: "졸업생", value: "GRADUATED" },
+  { label: "재학생", value: 1 },
+  { label: "휴학생", value: 2 },
+  { label: "졸업 유예", value: 3 },
+  { label: "졸업생", value: 4 },
 ] as const;
 
 export const FEE_OPTIONS = [
@@ -24,7 +24,8 @@ export type FeeStatusOption = (typeof FEE_OPTIONS)[number];
 export interface EventFormValues {
   title: string;
   location: string;
-  date: string;
+  startDate: string;
+  endDate: string;
   time: string;
   product: string;
   quantity: number;

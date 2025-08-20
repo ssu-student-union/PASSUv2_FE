@@ -4,11 +4,11 @@ import type {
   UseQueryOptions,
 } from "@tanstack/react-query";
 import type {
-  EnrolledCountResponse,
-  EnrollmentListResponse,
-  EnrollmentResponse,
+  EnrolledCountData,
+  EnrollmentListData,
+  EnrollmentData,
   EventRequest,
-  EventResponse,
+  EventData,
   PageEventResponse,
 } from "@/types/event.api";
 import type { ApiResponse } from "@/types/api-response";
@@ -34,10 +34,10 @@ export const useEventList = (
 
 // 2. 행사 생성 API
 export const useCreateEvent = (
-  options?: Partial<UseMutationOptions<EventResponse, Error, EventRequest>>,
+  options?: Partial<UseMutationOptions<EventData, Error, EventRequest>>,
 ) =>
   useMutation({
-    mutationFn: async (data: EventRequest): Promise<EventResponse> => {
+    mutationFn: async (data: EventRequest): Promise<EventData> => {
       const response = await apiClient.post("/api/v1/event", { json: data });
       return response.json();
     },
@@ -47,11 +47,11 @@ export const useCreateEvent = (
 // 3. 행사 디테일 조회 API
 export const useEventDetail = (
   id: number,
-  options?: Partial<UseQueryOptions<EventResponse, Error>>,
+  options?: Partial<UseQueryOptions<EventData, Error>>,
 ) =>
   useQuery({
     queryKey: ["eventDetail", id],
-    queryFn: async (): Promise<EventResponse> => {
+    queryFn: async (): Promise<EventData> => {
       const response = await apiClient.get(`/api/v1/event/${id}`);
       return response.json();
     },
@@ -62,11 +62,11 @@ export const useEventDetail = (
 // 4. 행사 수정 API
 export const useUpdateEvent = (
   options?: Partial<
-    UseMutationOptions<EventResponse, Error, { id: number; data: EventRequest }>
+    UseMutationOptions<EventData, Error, { id: number; data: EventRequest }>
   >,
 ) =>
   useMutation({
-    mutationFn: async ({ id, data }): Promise<EventResponse> => {
+    mutationFn: async ({ id, data }): Promise<EventData> => {
       const response = await apiClient.put(`/api/v1/event/${id}`, {
         json: data,
       });
@@ -88,10 +88,10 @@ export const useDeleteEvent = (
 
 // 6. 행사 시작
 export const useStartEvent = (
-  options?: Partial<UseMutationOptions<EventResponse, Error, number>>,
+  options?: Partial<UseMutationOptions<EventData, Error, number>>,
 ) =>
   useMutation({
-    mutationFn: async (id: number): Promise<EventResponse> => {
+    mutationFn: async (id: number): Promise<EventData> => {
       const response = await apiClient.patch(`/api/v1/event/${id}/start`);
       return response.json();
     },
@@ -100,10 +100,10 @@ export const useStartEvent = (
 
 // 7. 행사 멈춤
 export const usePauseEvent = (
-  options?: Partial<UseMutationOptions<EventResponse, Error, number>>,
+  options?: Partial<UseMutationOptions<EventData, Error, number>>,
 ) =>
   useMutation({
-    mutationFn: async (id: number): Promise<EventResponse> => {
+    mutationFn: async (id: number): Promise<EventData> => {
       const response = await apiClient.patch(`/api/v1/event/${id}/pause`);
       return response.json();
     },
@@ -112,10 +112,10 @@ export const usePauseEvent = (
 
 // 8. 행사 종료
 export const useEndEvent = (
-  options?: Partial<UseMutationOptions<EventResponse, Error, number>>,
+  options?: Partial<UseMutationOptions<EventData, Error, number>>,
 ) =>
   useMutation({
-    mutationFn: async (id: number): Promise<EventResponse> => {
+    mutationFn: async (id: number): Promise<EventData> => {
       const response = await apiClient.patch(`/api/v1/event/${id}/end`);
       return response.json();
     },
@@ -126,7 +126,7 @@ export const useEndEvent = (
 export const useEnrollStudent = (
   options?: Partial<
     UseMutationOptions<
-      ApiResponse<EnrollmentResponse>,
+      ApiResponse<EnrollmentData>,
       Error,
       { eventId: number; randomKey: string }
     >
@@ -136,7 +136,7 @@ export const useEnrollStudent = (
     mutationFn: async ({
       eventId,
       randomKey,
-    }): Promise<ApiResponse<EnrollmentResponse>> => {
+    }): Promise<ApiResponse<EnrollmentData>> => {
       const response = await apiClient.post(`/api/v1/event/${eventId}/enroll`, {
         json: { randomKey },
       });
@@ -148,11 +148,11 @@ export const useEnrollStudent = (
 // 10. 등록된 학생 수 조회 API
 export const useEnrolledCount = (
   eventId: number,
-  options?: Partial<UseQueryOptions<ApiResponse<EnrolledCountResponse>, Error>>,
+  options?: Partial<UseQueryOptions<ApiResponse<EnrolledCountData>, Error>>,
 ) =>
   useQuery({
     queryKey: ["enrolledCount", eventId],
-    queryFn: async (): Promise<ApiResponse<EnrolledCountResponse>> => {
+    queryFn: async (): Promise<ApiResponse<EnrolledCountData>> => {
       const response = await apiClient.get(
         `/api/v1/event/${eventId}/enrolled-count`,
       );
@@ -165,13 +165,11 @@ export const useEnrolledCount = (
 // 11. 등록된 학생 목록 조회
 export const useEnrollmentList = (
   eventId: number,
-  options?: Partial<
-    UseQueryOptions<ApiResponse<EnrollmentListResponse[]>, Error>
-  >,
+  options?: Partial<UseQueryOptions<ApiResponse<EnrollmentListData[]>, Error>>,
 ) =>
   useQuery({
     queryKey: ["enrollmentList", eventId],
-    queryFn: async (): Promise<ApiResponse<EnrollmentListResponse[]>> => {
+    queryFn: async (): Promise<ApiResponse<EnrollmentListData[]>> => {
       const response = await apiClient.get(
         `/api/v1/event/${eventId}/enrollments`,
       );

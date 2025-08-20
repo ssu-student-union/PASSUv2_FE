@@ -1,12 +1,18 @@
-import type { Event } from "@/types/event";
+import type { EventData } from "@/types/event.api";
 import { cn } from "@passu/ui/utils";
+import dayjs from "dayjs";
 
 interface EventRowProps {
-  event: Event;
+  event: EventData;
   className: string;
 }
 
 export const EventRow = ({ event, className }: EventRowProps) => {
+  const startTime = dayjs(event.startTime);
+
+  const formattedDate = startTime.format("YYYY/MM/DD");
+  const formattedStartTime = startTime.format("HH:mm");
+
   return (
     <div
       className={cn(
@@ -19,9 +25,9 @@ export const EventRow = ({ event, className }: EventRowProps) => {
     >
       <span>{event.name}</span>
       <div className="flex gap-4">
-        <span> {event.place}</span>
-        <span> {event.date}</span>
-        <span> {event.time}</span>
+        <span> {event.location}</span>
+        <span> {formattedDate}</span>
+        <span> {formattedStartTime}</span>
       </div>
     </div>
   );

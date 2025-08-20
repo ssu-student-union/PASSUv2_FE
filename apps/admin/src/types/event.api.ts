@@ -4,7 +4,7 @@ export interface EventRequest {
   productName: string;
   description: string;
   productQuantity: number;
-  requireStatus: number;
+  requireStatus: number[];
   requireUnionFee: boolean;
   startTime: string;
   endTime: string;
@@ -18,7 +18,7 @@ export interface EventData {
   productQuantity: number;
   description: string;
   status: "BEFORE" | "ONGOING" | "PAUSE" | "AFTER";
-  requireStatus: number;
+  requireStatus: number[];
   requireUnionFee: boolean;
   startTime: string;
   endTime: string;

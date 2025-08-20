@@ -1,16 +1,16 @@
 import { http, HttpResponse } from "msw";
 import type {
   EventRequest,
-  EventResponse,
+  EventData,
   PageEventResponse,
   EnrollmentRequest,
-  EnrollmentResponse,
-  EnrolledCountResponse,
-  EnrollmentListResponse,
+  EnrollmentData,
+  EnrolledCountData,
+  EnrollmentListData,
 } from "@/types/event.api";
 import type { ApiResponse } from "@/types/api-response";
 
-const mockEvent: EventResponse = {
+const mockEvent: EventData = {
   id: 1,
   name: "총학 이벤트",
   location: "학생회관",
@@ -83,7 +83,7 @@ export const eventHandlers = [
       );
     }
 
-    const data: EventResponse = {
+    const data: EventData = {
       ...mockEvent,
       id: Number(params.eventId),
     };
@@ -104,7 +104,7 @@ export const eventHandlers = [
     }
 
     const body: EventRequest = (await request.json()) as EventRequest;
-    const data: EventResponse = {
+    const data: EventData = {
       ...body,
       id: 999,
       status: "BEFORE",
@@ -128,7 +128,7 @@ export const eventHandlers = [
     }
 
     const body: EventRequest = (await request.json()) as EventRequest;
-    const data: EventResponse = {
+    const data: EventData = {
       ...body,
       id: Number(params.eventId),
       status: "BEFORE",
@@ -223,7 +223,7 @@ export const eventHandlers = [
     }
 
     (await request.json()) as EnrollmentRequest;
-    const data: EnrollmentResponse = {
+    const data: EnrollmentData = {
       eventId: Number(params.eventId),
       studentId: "20231234",
       enrollmentId: 1001,
@@ -245,7 +245,7 @@ export const eventHandlers = [
       );
     }
 
-    const data: EnrolledCountResponse = { count: 42 };
+    const data: EnrolledCountData = { count: 42 };
     return HttpResponse.json(wrap(data));
   }),
 
@@ -262,7 +262,7 @@ export const eventHandlers = [
       );
     }
 
-    const data: EnrollmentListResponse[] = [
+    const data: EnrollmentListData[] = [
       {
         enrollmentId: 1001,
         studentId: "20231234",

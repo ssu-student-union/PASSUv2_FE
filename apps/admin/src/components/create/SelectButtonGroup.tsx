@@ -3,7 +3,7 @@ import { cn } from "@passu/ui/utils";
 
 interface Option {
   label: string;
-  value: string;
+  value: number | string;
 }
 
 interface SelectButtonGroupProps<T extends Option> {

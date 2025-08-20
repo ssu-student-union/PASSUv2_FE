@@ -5,13 +5,19 @@ import { Sidebar } from "@/components/sidebar/Sidebar";
 import { SidebarButtonGroup } from "@/components/sidebar/SidebarButtonGroup";
 import { SidebarButton } from "@/components/sidebar/SidebarButton";
 import { EventAccordion } from "@/components/home/EventAccordion";
-import { completedEvents, upcomingEvents } from "@/mocks/event";
+import { useEventList } from "@/api/event";
 
 export const Route = createFileRoute("/")({
   component: App,
 });
 
 function App() {
+  const { data: upcomingData } = useEventList("BEFORE");
+  const { data: completedData } = useEventList("AFTER");
+
+  const upcomingEvents = upcomingData?.data?.content ?? [];
+  const completedEvents = completedData?.data?.content ?? [];
+
   return (
     <>
       <Sidebar>

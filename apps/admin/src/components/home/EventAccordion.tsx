@@ -6,12 +6,12 @@ import {
 } from "@passu/ui/accordion";
 import { EventRow } from "@/components/home/EventRow";
 import { NoEventRow } from "@/components/home/NoEventRow";
-import { type Event } from "@/types/event";
 import { Link } from "@tanstack/react-router";
+import type { EventData } from "@/types/event.api";
 
 interface EventAccordionProps {
   variant: "upcoming" | "completed";
-  events: Event[];
+  events: EventData[];
 }
 
 export const EventAccordion = ({ variant, events }: EventAccordionProps) => {
