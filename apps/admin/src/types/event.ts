@@ -9,7 +9,6 @@ export interface Event {
 export const PARTICIPANT_OPTIONS = [
   { label: "재학생", value: 1 },
   { label: "휴학생", value: 2 },
-  { label: "졸업 유예", value: 3 },
   { label: "졸업생", value: 4 },
 ] as const;
 

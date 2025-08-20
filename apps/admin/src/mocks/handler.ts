@@ -10,18 +10,48 @@ import type {
 } from "@/types/event.api";
 import type { ApiResponse } from "@/types/api-response";
 
-const mockEvent: EventData = {
+export const mockEvent: EventData = {
   id: 1,
-  name: "총학 이벤트",
-  location: "학생회관",
-  productName: "텀블러",
-  productQuantity: 100,
-  description: "환경을 위한 텀블러 나눔 행사입니다.",
+  name: "2025-1학기 야식 행사",
+  location: "슈파크 일대 (돌계단)",
+  productName: "지코바 순살 양념구이(순한맛) + 밥 + 무알콜 맥주 음료",
+  productQuantity: 600,
+  description: `[2025-1학기 야식 행사 안내]
+
+안녕하세요. 우리의 숭실에 확신을
+제65대 총학생회 S:SURE입니다.
+
+중간고사 기간을 맞이하여 학업으로 지친 학우분들을 위해 야식 행사를 준비하였습니다.
+자세한 내용은 하단의 내용을 참고 부탁드립니다.
+
+<행사 안내>
+✅일시: 4/30(수), 5/1(목) 18:00 ~ 준비 수량 소진 시까지
+✅장소: 슈파크 일대 (돌계단)
+✅대상: 2025-1학기 재학생 600명 (일일 선착순 300명)
+✅메뉴: 지코바 순살 양념구이(순한맛) + 밥 + 무알콜 맥주 음료
+
+<유의 사항>
+⛔번호표 배부는 17시부터 시작합니다. (줄 맡아두기 및 이탈 불가)
+⛔1일 차 참여 시, 2일 차 중복 참여가 불가합니다.
+⛔행사 당일 PASSU를 통해 재학 여부 확인 예정입니다.
+
+시험기간을 보내고 계신 모든 학우 여러분의 노력이 빛나길 바라며,
+확신으로 가득 찬 응원을 전합니다.
+
+제65대 총학생회 S:SURE는 앞으로도 학우 여러분의 만족도 높은
+학교생활을 위해 노력하겠습니다. 감사합니다.
+
+-
+문의
+총학생회 S:SURE 복지국
+인스타그램 @ssure65th
+카카오톡 ‘숭실대학교 총학생회’
+이메일 ssure65welfare@gmail.com`,
   status: "BEFORE",
-  requireStatus: [1],
+  requireStatus: [1], // 재학생
   requireUnionFee: true,
-  startTime: "2025-08-20T10:00:00Z",
-  endTime: "2025-08-20T14:00:00Z",
+  startTime: "2025-04-30T18:00:00+09:00",
+  endTime: "2025-05-01T21:00:00+09:00",
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 };

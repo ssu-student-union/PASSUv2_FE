@@ -1,3 +1,4 @@
+import { useEnrolledCount, useEventDetail } from "@/api/event";
 import { EventFormRow } from "@/components/event/EventFormRow";
 import { EventDescription } from "@/components/result/EventDescription";
 import { PrintableList } from "@/components/result/PrintableList";
@@ -8,8 +9,9 @@ import { SidebarButtonGroup } from "@/components/sidebar/SidebarButtonGroup";
 import { SidebarDownloadListButton } from "@/components/sidebar/SidebarDownloadListButton";
 import { SidebarGoToEventList } from "@/components/sidebar/SidebarGoToEventList";
 import { SidebarListSection } from "@/components/sidebar/SidebarListSection";
-import { description, resultInfoRows } from "@/mocks/event";
-import { createFileRoute } from "@tanstack/react-router";
+import { PARTICIPANT_OPTIONS } from "@/types/event";
+import { createFileRoute, useParams } from "@tanstack/react-router";
+import dayjs from "dayjs";
 import { Printer } from "lucide-react";
 import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
@@ -19,11 +21,60 @@ export const Route = createFileRoute("/event/$id/result")({
 });
 
 function ResultPage() {
+  const { id } = useParams({ strict: false });
   const contentRef = useRef<HTMLDivElement>(null);
 
   const handlePrint = useReactToPrint({
     contentRef,
   });
+
+  const { data: eventDetail, isLoading, isError } = useEventDetail(Number(id));
+  const { data: enrollCount } = useEnrolledCount(Number(id));
+
+  if (isLoading) return <div>로딩 중...</div>;
+  if (isError || !eventDetail) return <div>데이터를 불러오지 못했습니다.</div>;
+
+  const participantLabel = (codes: number[]) => {
+    return codes
+      .map(
+        (code) => PARTICIPANT_OPTIONS.find((opt) => opt.value === code)?.label,
+      )
+      .filter(Boolean)
+      .join(", ");
+  };
+
+  const feeStatusLabel = (requireUnionFee: boolean) =>
+    requireUnionFee ? "납부자, 미납자" : "납부자만";
+
+  const resultInfoRows = [
+    { label: "행사명", value: eventDetail.name },
+    { label: "행사 장소", value: eventDetail.location },
+    {
+      label: "행사 시작 날짜",
+      value: dayjs(eventDetail.startTime).format("YYYY/MM/DD"),
+    },
+    {
+      label: "행사 종료 날짜",
+      value: dayjs(eventDetail.endTime).format("YYYY/MM/DD"),
+    },
+    { label: "상품명", value: eventDetail.productName },
+    { label: "전체 수량", value: eventDetail.productQuantity.toString() },
+    { label: "소진 수량", value: enrollCount?.data.count },
+    {
+      label: "잔여 수량",
+      value: enrollCount
+        ? eventDetail.productQuantity - enrollCount?.data.count
+        : eventDetail.productQuantity,
+    },
+    {
+      label: "대상자",
+      value: participantLabel(eventDetail.requireStatus),
+    },
+    {
+      label: "학생회비 납부",
+      value: feeStatusLabel(eventDetail.requireUnionFee),
+    },
+  ];
 
   return (
     <>
@@ -51,16 +102,16 @@ function ResultPage() {
           <div
             className={`flex w-full flex-col gap-8 rounded-3xl bg-white p-10`}
           >
-            {resultInfoRows.map((info) => (
+            {resultInfoRows?.map((info) => (
               <ResultInfoRow
                 key={info.label}
                 label={info.label}
-                value={info.value}
+                value={info.value ?? ""}
               />
             ))}
 
             <EventFormRow label="행사 설명">
-              <EventDescription description={description} />
+              <EventDescription description={eventDetail.description} />
             </EventFormRow>
           </div>
         </div>
