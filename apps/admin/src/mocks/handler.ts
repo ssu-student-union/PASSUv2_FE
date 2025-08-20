@@ -18,7 +18,7 @@ const mockEvent: EventData = {
   productQuantity: 100,
   description: "환경을 위한 텀블러 나눔 행사입니다.",
   status: "BEFORE",
-  requireStatus: 1,
+  requireStatus: [1],
   requireUnionFee: true,
   startTime: "2025-08-20T10:00:00Z",
   endTime: "2025-08-20T14:00:00Z",

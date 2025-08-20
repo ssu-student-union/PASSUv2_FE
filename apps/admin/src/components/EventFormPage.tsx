@@ -13,7 +13,7 @@ import { Link, useNavigate, useParams } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import dayjs from "dayjs";
-import { useCreateEvent } from "@/api/event";
+import { useCreateEvent, useEventDetail, useUpdateEvent } from "@/api/event";
 interface Props {
   mode: "create" | "edit";
 }
@@ -27,6 +27,7 @@ export function EventFormPage({ mode }: Props) {
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm<EventFormValues>({
     mode: "onSubmit",
@@ -44,7 +45,7 @@ export function EventFormPage({ mode }: Props) {
     },
   });
 
-  const { mutate } = useCreateEvent({
+  const { mutate: createEvent } = useCreateEvent({
     onSuccess: (data) => {
       console.log("행사 생성 성공: ", data);
       void navigate({ to: "/" });
@@ -54,15 +55,49 @@ export function EventFormPage({ mode }: Props) {
     },
   });
 
+  const { mutate: updateEvent } = useUpdateEvent({
+    onSuccess: (data) => {
+      console.log("행사 수정 성공: ", data);
+      void navigate({ to: "/" });
+    },
+    onError: (error) => {
+      console.error("행사 수정 실패:", error);
+    },
+  });
+
+  const { data: eventDetail } = useEventDetail(Number(id), {
+    enabled: isEdit && !!id,
+  });
+
   const toISO = (date: string, time: string) => {
     return dayjs(`${date}T${time}`).toISOString();
   };
 
   useEffect(() => {
-    if (isEdit && id) {
-      // 수정 모드일 경우 초기값 불러오기
+    if (isEdit && eventDetail) {
+      const start = dayjs(eventDetail.startTime);
+      const end = dayjs(eventDetail.endTime);
+
+      reset({
+        title: eventDetail.name,
+        location: eventDetail.location,
+        startDate: start.format("YYYY-MM-DD"),
+        endDate: end.format("YYYY-MM-DD"),
+        time: start.format("HH:mm"),
+        product: eventDetail.productName,
+        quantity: eventDetail.productQuantity,
+        participants: PARTICIPANT_OPTIONS.filter((opt) =>
+          eventDetail.requireStatus.includes(opt.value),
+        ),
+        feeStatus: FEE_OPTIONS.filter((opt) =>
+          eventDetail.requireUnionFee
+            ? opt.value === "PAID"
+            : opt.value === "UNPAID",
+        ),
+        description: eventDetail.description,
+      });
     }
-  }, [id, isEdit]);
+  }, [isEdit, eventDetail, reset]);
 
   const onSubmit = (formData: EventFormValues) => {
     const participantValues = formData.participants.map((p) => p.value);
@@ -70,22 +105,22 @@ export function EventFormPage({ mode }: Props) {
       (opt) => opt.value === "PAID",
     );
 
-    if (isEdit && id) {
-      // 수정 api
-    } else {
-      const payload = {
-        name: formData.title,
-        location: formData.location,
-        productName: formData.product,
-        description: formData.description,
-        productQuantity: formData.quantity,
-        requireStatus: participantValues,
-        requireUnionFee,
-        startTime: toISO(formData.startDate, formData.time),
-        endTime: toISO(formData.endDate, formData.time),
-      };
+    const payload = {
+      name: formData.title,
+      location: formData.location,
+      productName: formData.product,
+      description: formData.description,
+      productQuantity: formData.quantity,
+      requireStatus: participantValues,
+      requireUnionFee,
+      startTime: toISO(formData.startDate, formData.time),
+      endTime: toISO(formData.endDate, formData.time),
+    };
 
-      mutate(payload);
+    if (isEdit && id) {
+      updateEvent({ id: Number(id), data: payload });
+    } else {
+      createEvent(payload);
     }
   };
 
