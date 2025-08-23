@@ -44,6 +44,7 @@ export interface EnrollmentRequest {
 export interface EnrollmentData {
   eventId: number;
   studentId: string;
+  studentName: string;
   enrollmentId: number;
   timestamp: string;
 }

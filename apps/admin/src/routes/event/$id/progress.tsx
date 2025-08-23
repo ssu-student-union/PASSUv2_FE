@@ -1,3 +1,12 @@
+import {
+  useEndEvent,
+  useEnrolledCount,
+  useEnrollmentList,
+  useEnrollStudent,
+  useEventDetail,
+  usePauseEvent,
+  useStartEvent,
+} from "@/api/event";
 import { FinishModal } from "@/components/progress/FinishModal";
 import { Sidebar } from "@/components/sidebar/Sidebar";
 import { SidebarButton } from "@/components/sidebar/SidebarButton";
@@ -12,6 +21,7 @@ import { formatTime } from "@/utils/formatTime";
 import { Button } from "@passu/ui/button";
 import { Chip } from "@passu/ui/chip";
 import { Input } from "@passu/ui/input";
+import { cn } from "@passu/ui/utils";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Pause, Pencil, Play, Square } from "lucide-react";
 import { useState } from "react";
@@ -23,44 +33,63 @@ export const Route = createFileRoute("/event/$id/progress")({
 function ProgressPage() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
+  const numberId = Number(id);
 
   const [status, setStatus] = useState<EventStatus>(EventStatus.NotStarted);
-  const [participantCount, setParticipantCount] = useState(0);
   const [inputValue, setInputValue] = useState("");
+  const [authMessage, setAuthMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
 
-  const startEvent = () => setStatus(EventStatus.Ongoing);
-  const pauseEvent = () => setStatus(EventStatus.Paused);
-  const finishEvent = () => setStatus(EventStatus.Finished);
-  const resumeEvent = () => setStatus(EventStatus.Ongoing);
+  const { mutate: startEventAPI } = useStartEvent({
+    onSuccess: () => setStatus(EventStatus.Ongoing),
+  });
+  const { mutate: pauseEventAPI } = usePauseEvent({
+    onSuccess: () => setStatus(EventStatus.Paused),
+  });
+  const { mutate: endEventAPI } = useEndEvent({
+    onSuccess: () => setStatus(EventStatus.Finished),
+  });
 
-  const handleInputChange = (value: string) => {
-    if (/^\d*$/.test(value)) {
-      setInputValue(value);
-    }
-  };
+  const { data: eventDetail } = useEventDetail(numberId);
+  const { data: enrollList, refetch: refetchEnrollList } =
+    useEnrollmentList(numberId);
+  const { data: enrollCount, refetch: refetchEnrollCount } =
+    useEnrolledCount(numberId);
+
+  const { mutate: enrollStudent } = useEnrollStudent({
+    onSuccess: async (res) => {
+      setInputValue("");
+      setAuthMessage({
+        type: "success",
+        text: `${res.data.studentName} 인증 성공!`,
+      });
+      await refetchEnrollCount();
+      await refetchEnrollList();
+    },
+    onError: (err: Error) => {
+      setAuthMessage({
+        type: "error",
+        text: err.message || "인증 실패. 다시 시도해주세요",
+      });
+    },
+  });
 
   const handleAuthentication = () => {
     if (inputValue.length === 4) {
-      // 인증 api
-      setParticipantCount((prev) => prev + 1);
-      setInputValue("");
+      enrollStudent({ eventId: numberId, randomKey: inputValue });
     }
   };
 
   const elapsedTime = useTimer(
-    null, // 추후 서버 데이터로 변경
+    null,
     status === EventStatus.Ongoing || status === EventStatus.Paused,
   );
 
-  const totalParticipants = 600;
-
-  const onConfirm = () => {
-    // 행사 종료 api
-
-    void navigate({
-      to: "/event/$id/result",
-      params: { id },
-    });
+  const navigateToResult = () => {
+    endEventAPI(numberId);
+    void navigate({ to: "/event/$id/result", params: { id } });
   };
 
   return (
@@ -70,11 +99,7 @@ function ProgressPage() {
           {status === EventStatus.NotStarted ||
           status === EventStatus.Paused ? (
             <>
-              <SidebarButton
-                onClick={
-                  status === EventStatus.NotStarted ? startEvent : resumeEvent
-                }
-              >
+              <SidebarButton onClick={() => startEventAPI(numberId)}>
                 <Play />
                 <span>
                   {status === EventStatus.NotStarted
@@ -82,24 +107,24 @@ function ProgressPage() {
                     : "행사 재개"}
                 </span>
               </SidebarButton>
-
               <SidebarButton variant="outline" asChild>
                 <Link to="/event/$id/edit" params={{ id }}>
                   <Pencil />
                   <span>행사 수정</span>
                 </Link>
               </SidebarButton>
-
               <SidebarGoToEventList />
             </>
           ) : (
             <>
-              <SidebarButton onClick={pauseEvent}>
+              <SidebarButton onClick={() => pauseEventAPI(numberId)}>
                 <Pause />
                 <span>행사 일시정지</span>
               </SidebarButton>
-
-              <SidebarButton variant="outline" onClick={finishEvent}>
+              <SidebarButton
+                variant="outline"
+                onClick={() => endEventAPI(numberId)}
+              >
                 <Square className="fill-hover" />
                 <span>행사 종료</span>
               </SidebarButton>
@@ -107,44 +132,43 @@ function ProgressPage() {
           )}
           <SidebarDownloadListButton />
         </SidebarButtonGroup>
-
-        <SidebarListSection />
+        <SidebarListSection list={enrollList?.data.slice(0, 5)} />
       </Sidebar>
 
-      <div className="flex-1">
-        <div className={`flex h-full w-full flex-col gap-6 px-20 pt-20 pb-10`}>
-          <div className="flex justify-between">
-            <span className="text-4xl font-bold">2025-1학기 야식행사</span>
-
+      <main className="flex-1">
+        <section className="flex h-full w-full flex-col gap-6 px-20 pt-20 pb-10">
+          <header className="flex justify-between">
+            <h1 className="text-4xl font-bold">{eventDetail?.name}</h1>
             <div className="flex h-10 gap-7">
               <Chip variant="outline">
-                {participantCount}/{totalParticipants} (명)
+                {enrollCount?.data.count}/{eventDetail?.productQuantity} (명)
               </Chip>
               <Chip variant="outline">{formatTime(elapsedTime)}</Chip>
             </div>
-          </div>
+          </header>
 
-          <div
+          <section
             className={`
               flex flex-1 items-center justify-center gap-12 overflow-y-auto
               rounded-3xl bg-white p-10
             `}
           >
             <div className="flex flex-col gap-10">
-              <span
+              <p
                 className={`
                   mx-auto max-w-[22rem] text-center text-2xl break-words
                   whitespace-normal
                 `}
               >
                 {eventStatusMessages[status]}
-              </span>
-
+              </p>
               <Input
                 placeholder="0000"
                 maxLength={4}
                 value={inputValue}
-                onChange={(e) => handleInputChange(e.target.value)}
+                onChange={(e) =>
+                  setInputValue(e.target.value.replace(/\D/g, ""))
+                }
                 className={`
                   h-34 w-78 text-center text-8xl font-bold
                   placeholder:text-8xl
@@ -154,20 +178,34 @@ function ProgressPage() {
                   status === EventStatus.Paused
                 }
               />
-              <Button
-                variant="default"
-                className={`h-12 rounded-full`}
-                disabled={
-                  status === EventStatus.NotStarted ||
-                  status === EventStatus.Paused
-                }
-                onClick={handleAuthentication}
-              >
-                인증 확인
-              </Button>
+              <div className="flex flex-col gap-3">
+                <Button
+                  variant="default"
+                  className="h-12 rounded-full"
+                  disabled={
+                    status === EventStatus.NotStarted ||
+                    status === EventStatus.Paused
+                  }
+                  onClick={handleAuthentication}
+                >
+                  인증 확인
+                </Button>
+                {authMessage && (
+                  <p
+                    className={cn(
+                      "text-center txt-subtitle1",
+                      authMessage.type === "success"
+                        ? "text-primary"
+                        : `text-red-500`,
+                    )}
+                  >
+                    {authMessage.text}
+                  </p>
+                )}
+              </div>
             </div>
-          </div>
-        </div>
+          </section>
+        </section>
 
         {status === EventStatus.Finished && (
           <div
@@ -176,13 +214,13 @@ function ProgressPage() {
             `}
           >
             <FinishModal
-              open={true}
-              onClose={resumeEvent}
-              onConfirm={onConfirm}
+              open
+              onClose={() => startEventAPI(numberId)}
+              onConfirm={navigateToResult}
             />
           </div>
         )}
-      </div>
+      </main>
     </>
   );
 }

@@ -256,6 +256,7 @@ export const eventHandlers = [
     const data: EnrollmentData = {
       eventId: Number(params.eventId),
       studentId: "20231234",
+      studentName: "박숭실",
       enrollmentId: 1001,
       timestamp: new Date().toISOString(),
     };
@@ -275,7 +276,7 @@ export const eventHandlers = [
       );
     }
 
-    const data: EnrolledCountData = { count: 42 };
+    const data: EnrolledCountData = { count: 2 };
     return HttpResponse.json(wrap(data));
   }),
 
