@@ -37,14 +37,16 @@ export const PrintableList = ({ ref }: PrintableListProps) => {
             <th className="border-3 border-black p-2">학과</th>
             <th className="border-3 border-black p-2">학번</th>
             <th className="border-3 border-black p-2">종류</th>
+            <th className="border-3 border-black p-2">타임스탬프</th>
             <th className="border-3 border-black p-2">수량</th>
-            <th className="border-3 border-black p-2">서명 또는 날인</th>
+            <th className="border-3 border-black p-2">인증번호</th>
           </tr>
         </thead>
         <tbody>
           {data.map((row) => (
             <tr key={row.id}>
               <td className="h-10 border-3 border-black p-2">{row.id}</td>
+              <td className="border-3 border-black p-2"></td>
               <td className="border-3 border-black p-2"></td>
               <td className="border-3 border-black p-2"></td>
               <td className="border-3 border-black p-2"></td>
