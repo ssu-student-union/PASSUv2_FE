@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { LogOut, Plus } from "lucide-react";
-
 import { Sidebar } from "@/components/sidebar/Sidebar";
 import { SidebarButtonGroup } from "@/components/sidebar/SidebarButtonGroup";
 import { SidebarButton } from "@/components/sidebar/SidebarButton";
@@ -38,8 +37,13 @@ function App() {
 
           <div
             className={`
-              flex h-full flex-1 flex-col gap-12 rounded-3xl bg-white p-5
+              flex h-full flex-1 flex-col gap-12 overflow-y-auto rounded-3xl
+              bg-white p-5
             `}
+            style={{
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+            }}
           >
             <EventAccordion variant="upcoming" />
 

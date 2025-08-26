@@ -51,7 +51,7 @@ export const EventAccordion = ({ variant }: EventAccordionProps) => {
     >
       <AccordionItem value={variant}>
         <AccordionTrigger className="cursor-pointer">{title}</AccordionTrigger>
-        <AccordionContent className={`mt-1 max-h-50 overflow-auto px-2`}>
+        <AccordionContent className={`mt-1 max-h-90 overflow-auto px-2`}>
           {events.length === 0 ? (
             <NoEventRow />
           ) : (

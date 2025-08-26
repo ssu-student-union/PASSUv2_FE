@@ -99,7 +99,8 @@ export const eventHandlers = [
     const url = new URL(request.url);
     const page = Number(url.searchParams.get("page") ?? "0");
     const size = Number(url.searchParams.get("size") ?? "10");
-    const totalEvents = 30;
+    const status = url.searchParams.get("status") ?? "BEFORE";
+    const totalEvents = status === "BEFORE" ? 2 : 30;
 
     const allMockEvents = generateMockEvents(totalEvents, 1);
 
