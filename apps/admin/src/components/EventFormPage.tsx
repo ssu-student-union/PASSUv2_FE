@@ -215,7 +215,22 @@ export function EventFormPage({ mode }: Props) {
         <Controller
           name="feeStatus"
           control={control}
-          rules={{ required: "학생회비 여부를 선택해주세요." }}
+          rules={{
+            validate: (value) => {
+              const hasPaid = value.some((v) => v.value === "PAID");
+              const hasUnpaid = value.some((v) => v.value === "UNPAID");
+
+              if (!hasPaid && hasUnpaid) {
+                return "미납자만 선택할 수 없습니다";
+              }
+
+              if (!hasPaid && !hasUnpaid) {
+                return "학생회비 여부를 선택해주세요.";
+              }
+
+              return true;
+            },
+          }}
           render={({ field, fieldState }) => (
             <EventFormRow
               label="학생회비 납부"
