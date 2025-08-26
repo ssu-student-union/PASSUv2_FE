@@ -5,19 +5,12 @@ import { Sidebar } from "@/components/sidebar/Sidebar";
 import { SidebarButtonGroup } from "@/components/sidebar/SidebarButtonGroup";
 import { SidebarButton } from "@/components/sidebar/SidebarButton";
 import { EventAccordion } from "@/components/home/EventAccordion";
-import { useEventList } from "@/api/event";
 
 export const Route = createFileRoute("/")({
   component: App,
 });
 
 function App() {
-  const { data: upcomingData } = useEventList("BEFORE");
-  const { data: completedData } = useEventList("AFTER");
-
-  const upcomingEvents = upcomingData?.data?.content ?? [];
-  const completedEvents = completedData?.data?.content ?? [];
-
   return (
     <>
       <Sidebar>
@@ -45,13 +38,12 @@ function App() {
 
           <div
             className={`
-              flex h-full flex-1 flex-col gap-12 overflow-y-scroll rounded-3xl
-              bg-white p-5
+              flex h-full flex-1 flex-col gap-12 rounded-3xl bg-white p-5
             `}
           >
-            <EventAccordion variant="upcoming" events={upcomingEvents} />
+            <EventAccordion variant="upcoming" />
 
-            <EventAccordion variant="completed" events={completedEvents} />
+            <EventAccordion variant="completed" />
           </div>
         </div>
       </div>

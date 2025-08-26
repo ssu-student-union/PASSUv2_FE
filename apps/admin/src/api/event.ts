@@ -1,5 +1,7 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import type {
+  InfiniteData,
+  UseInfiniteQueryResult,
   UseMutationOptions,
   UseQueryOptions,
 } from "@tanstack/react-query";
@@ -15,21 +17,25 @@ import type { ApiResponse } from "@/types/api-response";
 import apiClient from "@/api/apiClient";
 
 // 1. 행사 목록 조회 API
-export const useEventList = (
+export const useInfiniteEventList = (
   status: string,
-  page = 0,
   size = 10,
-  options?: Partial<UseQueryOptions<ApiResponse<PageEventResponse>, Error>>,
-) =>
-  useQuery({
-    queryKey: ["eventList", status, page, size],
-    queryFn: async (): Promise<ApiResponse<PageEventResponse>> => {
+): UseInfiniteQueryResult<InfiniteData<ApiResponse<PageEventResponse>>> =>
+  useInfiniteQuery<ApiResponse<PageEventResponse>, Error>({
+    queryKey: ["eventList", status, size],
+    queryFn: async ({ pageParam = 0 }) => {
       const response = await apiClient.get("/api/v1/event", {
-        searchParams: { status, page: page.toString(), size: size.toString() },
+        searchParams: {
+          status,
+          page: pageParam as number,
+          size,
+        },
       });
       return response.json();
     },
-    ...options,
+    getNextPageParam: (lastPage) =>
+      lastPage.data.last ? undefined : lastPage.data.number + 1,
+    initialPageParam: 0,
   });
 
 // 2. 행사 생성 API

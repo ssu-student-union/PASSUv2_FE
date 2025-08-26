@@ -56,6 +56,20 @@ export const mockEvent: EventData = {
   updatedAt: new Date().toISOString(),
 };
 
+// 행사 목록 mock data 만드는 함수
+const generateMockEvents = (count: number, startIndex: number): EventData[] => {
+  const events: EventData[] = [];
+  for (let i = 0; i < count; i++) {
+    const id = startIndex + i;
+    events.push({
+      ...mockEvent,
+      id: id,
+      name: `2025-1학기 야식 행사 ${id}`,
+    });
+  }
+  return events;
+};
+
 const wrap = <T>(data: T): ApiResponse<T> => ({
   success: true,
   message: "요청이 성공했습니다.",
@@ -85,16 +99,27 @@ export const eventHandlers = [
     const url = new URL(request.url);
     const page = Number(url.searchParams.get("page") ?? "0");
     const size = Number(url.searchParams.get("size") ?? "10");
+    const totalEvents = 30;
+
+    const allMockEvents = generateMockEvents(totalEvents, 1);
+
+    const startIndex = page * size;
+    const endIndex = startIndex + size;
+
+    const content = allMockEvents.slice(startIndex, endIndex);
+
+    const isLastPage = endIndex >= totalEvents;
+    const totalPages = Math.ceil(totalEvents / size);
 
     const response: PageEventResponse = {
-      totalElements: 1,
-      totalPages: 1,
+      totalElements: totalEvents,
+      totalPages: totalPages,
       size,
       number: page,
-      content: [mockEvent],
-      first: true,
-      last: true,
-      empty: false,
+      content,
+      first: page === 0,
+      last: isLastPage,
+      empty: content.length === 0,
     };
 
     return HttpResponse.json(wrap(response));
