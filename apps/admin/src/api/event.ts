@@ -12,9 +12,11 @@ import type {
   EventRequest,
   EventData,
   PageEventResponse,
+  UserInfoData,
 } from "@/types/event.api";
 import type { ApiResponse } from "@/types/api-response";
 import apiClient from "@/api/apiClient";
+import ky from "ky";
 
 // 1. 행사 목록 조회 API
 export const useInfiniteEventList = (
@@ -184,3 +186,26 @@ export const useEnrollmentList = (
     enabled: !!eventId,
     ...options,
   });
+
+// 12. 계정 정보 조회
+export const useUserInfo = (
+  options?: Partial<UseQueryOptions<UserInfoData>>,
+) => {
+  const accessToken = localStorage.getItem("accessToken");
+  return useQuery({
+    queryKey: ["userInfo", accessToken],
+    queryFn: async (): Promise<UserInfoData> => {
+      const response = await ky.get(
+        `${import.meta.env.VITE_ACCOUNT_API_URL}/users/user-info`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+      return response.json();
+    },
+    enabled: !!accessToken,
+    ...options,
+  });
+};

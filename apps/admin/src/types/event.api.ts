@@ -62,3 +62,17 @@ export interface EnrollmentListData {
   timestamp: string;
   status: string;
 }
+
+export interface UserInfoData {
+  code: string;
+  message: string;
+  data: {
+    name: string;
+    studentId: string;
+    major: string;
+    isCouncil: boolean;
+    status: number;
+    isPaidUnionFee: boolean;
+  };
+  isSuccess: boolean;
+}
