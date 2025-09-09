@@ -30,7 +30,11 @@ function ProgressPage() {
   const navigate = useNavigate();
   const numberId = Number(id);
 
-  const [status, setStatus] = useState<EventStatus>(EventStatus.BEFORE);
+  const { data: eventDetail } = useEventDetail(numberId);
+
+  const [status, setStatus] = useState<EventStatus>(
+    eventDetail?.status ?? EventStatus.BEFORE,
+  );
   const [inputValue, setInputValue] = useState("");
   const [authMessage, setAuthMessage] = useState<{
     type: "success" | "error";
@@ -46,8 +50,6 @@ function ProgressPage() {
   const { mutate: endEventAPI } = useEndEvent({
     onSuccess: () => setStatus(EventStatus.AFTER),
   });
-
-  const { data: eventDetail } = useEventDetail(numberId);
 
   const { data: enrollCount, refetch: refetchEnrollCount } =
     useEnrolledCount(numberId);

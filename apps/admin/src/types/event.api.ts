@@ -1,3 +1,5 @@
+import type { EventStatus } from "@/types/event";
+
 export interface EventRequest {
   name: string;
   location: string;
@@ -17,7 +19,7 @@ export interface EventData {
   productName: string;
   productQuantity: number;
   description: string;
-  status: "BEFORE" | "ONGOING" | "PAUSE" | "AFTER";
+  status: EventStatus;
   requireStatus: number[];
   requireUnionFee: boolean;
   startTime: string;
