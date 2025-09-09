@@ -34,8 +34,8 @@ export interface EventFormValues {
 }
 
 export const enum EventStatus {
-  NotStarted = "not_started",
-  Ongoing = "ongoing",
-  Paused = "paused",
-  Finished = "finished",
+  BEFORE = "BEFORE",
+  ONGOING = "ONGOING",
+  PAUSE = "PAUSE",
+  AFTER = "AFTER",
 }

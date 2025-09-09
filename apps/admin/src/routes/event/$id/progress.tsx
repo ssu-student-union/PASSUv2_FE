@@ -35,7 +35,7 @@ function ProgressPage() {
   const navigate = useNavigate();
   const numberId = Number(id);
 
-  const [status, setStatus] = useState<EventStatus>(EventStatus.NotStarted);
+  const [status, setStatus] = useState<EventStatus>(EventStatus.BEFORE);
   const [inputValue, setInputValue] = useState("");
   const [authMessage, setAuthMessage] = useState<{
     type: "success" | "error";
@@ -43,13 +43,13 @@ function ProgressPage() {
   } | null>(null);
 
   const { mutate: startEventAPI } = useStartEvent({
-    onSuccess: () => setStatus(EventStatus.Ongoing),
+    onSuccess: () => setStatus(EventStatus.ONGOING),
   });
   const { mutate: pauseEventAPI } = usePauseEvent({
-    onSuccess: () => setStatus(EventStatus.Paused),
+    onSuccess: () => setStatus(EventStatus.PAUSE),
   });
   const { mutate: endEventAPI } = useEndEvent({
-    onSuccess: () => setStatus(EventStatus.Finished),
+    onSuccess: () => setStatus(EventStatus.AFTER),
   });
 
   const { data: eventDetail } = useEventDetail(numberId);
@@ -84,7 +84,7 @@ function ProgressPage() {
 
   const elapsedTime = useTimer(
     null,
-    status === EventStatus.Ongoing || status === EventStatus.Paused,
+    status === EventStatus.ONGOING || status === EventStatus.PAUSE,
   );
 
   const navigateToResult = () => {
@@ -96,15 +96,12 @@ function ProgressPage() {
     <>
       <Sidebar>
         <SidebarButtonGroup>
-          {status === EventStatus.NotStarted ||
-          status === EventStatus.Paused ? (
+          {status === EventStatus.BEFORE || status === EventStatus.PAUSE ? (
             <>
               <SidebarButton onClick={() => startEventAPI(numberId)}>
                 <Play />
                 <span>
-                  {status === EventStatus.NotStarted
-                    ? "행사 시작"
-                    : "행사 재개"}
+                  {status === EventStatus.BEFORE ? "행사 시작" : "행사 재개"}
                 </span>
               </SidebarButton>
               <SidebarButton variant="outline" asChild>
@@ -174,8 +171,7 @@ function ProgressPage() {
                   placeholder:text-8xl
                 `}
                 disabled={
-                  status === EventStatus.NotStarted ||
-                  status === EventStatus.Paused
+                  status === EventStatus.BEFORE || status === EventStatus.PAUSE
                 }
               />
               <div className="flex flex-col gap-3">
@@ -183,8 +179,8 @@ function ProgressPage() {
                   variant="default"
                   className="h-12 rounded-full"
                   disabled={
-                    status === EventStatus.NotStarted ||
-                    status === EventStatus.Paused
+                    status === EventStatus.BEFORE ||
+                    status === EventStatus.PAUSE
                   }
                   onClick={handleAuthentication}
                 >
@@ -207,7 +203,7 @@ function ProgressPage() {
           </section>
         </section>
 
-        {status === EventStatus.Finished && (
+        {status === EventStatus.AFTER && (
           <div
             className={`
               fixed inset-0 flex items-center justify-center bg-black/40

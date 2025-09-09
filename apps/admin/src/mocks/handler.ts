@@ -100,7 +100,7 @@ export const eventHandlers = [
     const page = Number(url.searchParams.get("page") ?? "0");
     const size = Number(url.searchParams.get("size") ?? "10");
     const status = url.searchParams.get("status") ?? "BEFORE";
-    const totalEvents = status === "BEFORE" ? 2 : 30;
+    const totalEvents = status === "COMPLETED" ? 30 : 2;
 
     const allMockEvents = generateMockEvents(totalEvents, 1);
 

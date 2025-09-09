@@ -5,6 +5,7 @@ import { SidebarButtonGroup } from "@/components/sidebar/SidebarButtonGroup";
 import { SidebarButton } from "@/components/sidebar/SidebarButton";
 import { EventAccordion } from "@/components/home/EventAccordion";
 import { useUserInfo } from "@/api/event";
+import { EventStatus } from "@/types/event";
 
 export const Route = createFileRoute("/")({
   component: App,
@@ -49,9 +50,11 @@ function App() {
               msOverflowStyle: "none",
             }}
           >
-            <EventAccordion variant="upcoming" />
+            <EventAccordion type={EventStatus.BEFORE} />
 
-            <EventAccordion variant="completed" />
+            <EventAccordion type={EventStatus.PAUSE} />
+
+            <EventAccordion type={EventStatus.AFTER} />
           </div>
         </div>
       </div>
