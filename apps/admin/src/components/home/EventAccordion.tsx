@@ -8,7 +8,7 @@ import { EventRow } from "@/components/home/EventRow";
 import { NoEventRow } from "@/components/home/NoEventRow";
 import { Link } from "@tanstack/react-router";
 import { useInfiniteEventList } from "@/api/event";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { EventStatus } from "@/types/event";
 
 interface EventAccordionProps {
@@ -17,10 +17,17 @@ interface EventAccordionProps {
 
 export const EventAccordion = ({ type }: EventAccordionProps) => {
   const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const [openItems, setOpenItems] = useState<string[]>([
+    EventStatus.BEFORE,
+    EventStatus.PAUSE,
+  ]);
+
+  const isOpen = openItems.includes(type);
+
   const title =
     type === EventStatus.BEFORE
       ? "예정된 행사"
-      : type === EventStatus.ONGOING
+      : type === EventStatus.PAUSE
         ? "진행중인 행사"
         : "완료된 행사";
   const textColor: string =
@@ -33,7 +40,7 @@ export const EventAccordion = ({ type }: EventAccordionProps) => {
 
   useEffect(() => {
     const el = sentinelRef.current;
-    if (!el || !hasNextPage || isFetchingNextPage) return;
+    if (!el || !hasNextPage || isFetchingNextPage || !isOpen) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -46,13 +53,14 @@ export const EventAccordion = ({ type }: EventAccordionProps) => {
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage, isOpen]);
 
   return (
     <Accordion
       type="multiple"
       className="w-full"
-      defaultValue={["upcoming", "completed"]}
+      value={openItems}
+      onValueChange={setOpenItems}
     >
       <AccordionItem value={type}>
         <AccordionTrigger className="cursor-pointer">{title}</AccordionTrigger>
@@ -74,7 +82,7 @@ export const EventAccordion = ({ type }: EventAccordionProps) => {
               </Link>
             ))
           )}
-          <div ref={sentinelRef} className="h-6"></div>
+          {isOpen && <div ref={sentinelRef} className="h-6"></div>}
         </AccordionContent>
       </AccordionItem>
     </Accordion>
