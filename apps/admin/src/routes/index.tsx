@@ -12,7 +12,8 @@ export const Route = createFileRoute("/")({
 
 function App() {
   const { data } = useUserInfo();
-  const userName = data?.data?.major ?? data?.data?.name;
+  const userName = data?.data?.name ?? data?.data?.major;
+  console.log(data?.data);
   return (
     <>
       <Sidebar>

@@ -341,4 +341,35 @@ export const eventHandlers = [
     ];
     return HttpResponse.json(wrap(data));
   }),
+
+  http.get("*/users/user-info", ({ request }) => {
+    if (isUnauthorized(request)) {
+      return HttpResponse.json(
+        {
+          success: false,
+          message: "Unauthorized",
+          detail: "Access token is required",
+        },
+        {
+          status: 401,
+        },
+      );
+    }
+
+    const data = {
+      code: "200",
+      message: "성공 입니다.",
+      data: {
+        name: "테스트1",
+        studentId: "20190001",
+        major: "자유전공학부",
+        isCouncil: false,
+        status: 4,
+        isPaidUnionFee: false,
+      },
+      isSuccess: true,
+    };
+
+    return HttpResponse.json(data);
+  }),
 ];
