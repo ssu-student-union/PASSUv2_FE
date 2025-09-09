@@ -1,13 +1,19 @@
 import { Button } from "@passu/ui/button";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate, useParams } from "@tanstack/react-router";
 import { useEventForm } from "@/hooks/useEventForm";
 import { EventFormFields } from "@/components/event/EventFormFields";
+import { useDeleteEvent } from "@/api/event";
 interface Props {
   mode: "create" | "edit";
 }
 
 export function EventFormPage({ mode }: Props) {
+  const navigate = useNavigate();
+  const { id } = useParams({ strict: false });
   const { form, onSubmit, isEdit } = useEventForm(mode);
+  const { mutate: deleteEvent } = useDeleteEvent({
+    onSuccess: () => navigate({ to: "/" }),
+  });
 
   return (
     <form
@@ -25,6 +31,15 @@ export function EventFormPage({ mode }: Props) {
         <Button variantType="form-actions" variant="outline" asChild>
           <Link to="/">뒤로가기</Link>
         </Button>
+        {mode === "edit" && (
+          <Button
+            variantType="form-actions"
+            variant="outline"
+            onClick={() => deleteEvent(Number(id))}
+          >
+            행사 삭제
+          </Button>
+        )}
         <Button variantType="form-actions" type="submit">
           완료
         </Button>
