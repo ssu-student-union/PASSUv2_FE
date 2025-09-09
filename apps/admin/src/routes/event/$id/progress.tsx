@@ -1,7 +1,6 @@
 import {
   useEndEvent,
   useEnrolledCount,
-  useEnrollmentList,
   useEnrollStudent,
   useEventDetail,
   usePauseEvent,
@@ -11,13 +10,9 @@ import { FinishModal } from "@/components/progress/FinishModal";
 import { Sidebar } from "@/components/sidebar/Sidebar";
 import { SidebarButton } from "@/components/sidebar/SidebarButton";
 import { SidebarButtonGroup } from "@/components/sidebar/SidebarButtonGroup";
-import { SidebarDownloadListButton } from "@/components/sidebar/SidebarDownloadListButton";
 import { SidebarGoToEventList } from "@/components/sidebar/SidebarGoToEventList";
-import { SidebarListSection } from "@/components/sidebar/SidebarListSection";
 import { eventStatusMessages } from "@/constants/eventstatusMessage";
-import { useTimer } from "@/hooks/useTimer";
 import { EventStatus } from "@/types/event";
-import { formatTime } from "@/utils/formatTime";
 import { Button } from "@passu/ui/button";
 import { Chip } from "@passu/ui/chip";
 import { Input } from "@passu/ui/input";
@@ -53,8 +48,7 @@ function ProgressPage() {
   });
 
   const { data: eventDetail } = useEventDetail(numberId);
-  const { data: enrollList, refetch: refetchEnrollList } =
-    useEnrollmentList(numberId);
+
   const { data: enrollCount, refetch: refetchEnrollCount } =
     useEnrolledCount(numberId);
 
@@ -66,7 +60,6 @@ function ProgressPage() {
         text: `${res.data.studentName} 인증 성공!`,
       });
       await refetchEnrollCount();
-      await refetchEnrollList();
     },
     onError: (err: Error) => {
       setAuthMessage({
@@ -81,11 +74,6 @@ function ProgressPage() {
       enrollStudent({ eventId: numberId, randomKey: inputValue });
     }
   };
-
-  const elapsedTime = useTimer(
-    null,
-    status === EventStatus.ONGOING || status === EventStatus.PAUSE,
-  );
 
   const navigateToResult = () => {
     endEventAPI(numberId);
@@ -127,9 +115,7 @@ function ProgressPage() {
               </SidebarButton>
             </>
           )}
-          <SidebarDownloadListButton />
         </SidebarButtonGroup>
-        <SidebarListSection list={enrollList?.data.slice(0, 5)} />
       </Sidebar>
 
       <main className="flex-1">
@@ -140,7 +126,6 @@ function ProgressPage() {
               <Chip variant="outline">
                 {enrollCount?.data.count}/{eventDetail?.productQuantity} (명)
               </Chip>
-              <Chip variant="outline">{formatTime(elapsedTime)}</Chip>
             </div>
           </header>
 
