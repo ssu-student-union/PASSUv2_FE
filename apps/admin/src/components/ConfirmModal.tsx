@@ -8,22 +8,26 @@ import {
   ModalTitle,
 } from "@passu/ui/modal";
 
-interface FinishModalProps {
-  open: boolean;
+interface ConfirmModalProps {
   onClose: () => void;
+  title: string;
+  subTitle?: string;
   onConfirm: () => void;
 }
 
-export const FinishModal = ({ open, onClose, onConfirm }: FinishModalProps) => {
+export const ConfirmModal = ({
+  onClose,
+  onConfirm,
+  title,
+  subTitle,
+}: ConfirmModalProps) => {
   return (
-    <Modal open={open} onOpenChange={onClose}>
+    <Modal open={true} onOpenChange={onClose}>
       <ModalContent className="w-110 px-6 pt-6 pb-10" showCloseButton>
         <ModalHeader className="flex flex-col items-center gap-1">
-          <ModalTitle className="text-lg font-semibold">
-            행사를 종료하시겠습니까?
-          </ModalTitle>
+          <ModalTitle className="text-lg font-semibold">{title}</ModalTitle>
           <ModalDescription className="text-sm text-gray-600">
-            종료된 행사는 수정할 수 없습니다.
+            {subTitle}
           </ModalDescription>
         </ModalHeader>
 

@@ -9,6 +9,7 @@ import type {
   EnrollmentListData,
 } from "@/types/event.api";
 import type { ApiResponse } from "@/types/api-response";
+import { EventStatus } from "@/types/event";
 
 export const mockEvent: EventData = {
   id: 1,
@@ -47,7 +48,7 @@ export const mockEvent: EventData = {
 인스타그램 @ssure65th
 카카오톡 ‘숭실대학교 총학생회’
 이메일 ssure65welfare@gmail.com`,
-  status: "BEFORE",
+  status: EventStatus.BEFORE,
   requireStatus: [1], // 재학생
   requireUnionFee: true,
   startTime: "2025-04-30T18:00:00+09:00",
@@ -163,7 +164,7 @@ export const eventHandlers = [
     const data: EventData = {
       ...body,
       id: 999,
-      status: "BEFORE",
+      status: EventStatus.BEFORE,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -187,7 +188,7 @@ export const eventHandlers = [
     const data: EventData = {
       ...body,
       id: Number(params.eventId),
-      status: "BEFORE",
+      status: EventStatus.BEFORE,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };

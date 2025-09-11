@@ -6,7 +6,7 @@ import {
   usePauseEvent,
   useStartEvent,
 } from "@/api/event";
-import { FinishModal } from "@/components/progress/FinishModal";
+import { ConfirmModal } from "@/components/ConfirmModal";
 import { Sidebar } from "@/components/sidebar/Sidebar";
 import { SidebarButton } from "@/components/sidebar/SidebarButton";
 import { SidebarButtonGroup } from "@/components/sidebar/SidebarButtonGroup";
@@ -196,8 +196,9 @@ function ProgressPage() {
               fixed inset-0 flex items-center justify-center bg-black/40
             `}
           >
-            <FinishModal
-              open
+            <ConfirmModal
+              title="행사를 종료하시겠습니까?"
+              subTitle="종료된 행사는 수정할 수 없습니다."
               onClose={() => startEventAPI(numberId)}
               onConfirm={navigateToResult}
             />
