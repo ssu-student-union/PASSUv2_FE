@@ -5,4 +5,3 @@ dist-ssr
 *.local
 count.txt
 .env
-public/mockServiceWorker.js
