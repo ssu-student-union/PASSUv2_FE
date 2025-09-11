@@ -26,7 +26,7 @@ export const useInfiniteEventList = (
   useInfiniteQuery<ApiResponse<PageEventResponse>, Error>({
     queryKey: ["eventList", status, size],
     queryFn: async ({ pageParam = 0 }) => {
-      const response = await apiClient.get("/api/v1/event", {
+      const response = await apiClient.get("api/v1/event", {
         searchParams: {
           status,
           page: pageParam as number,
@@ -46,7 +46,8 @@ export const useCreateEvent = (
 ) =>
   useMutation({
     mutationFn: async (data: EventRequest): Promise<EventData> => {
-      const response = await apiClient.post("/api/v1/event", { json: data });
+      console.log(data);
+      const response = await apiClient.post("api/v1/event", { json: data });
       return response.json();
     },
     ...options,
@@ -60,7 +61,7 @@ export const useEventDetail = (
   useQuery({
     queryKey: ["eventDetail", id],
     queryFn: async (): Promise<EventData> => {
-      const response = await apiClient.get(`/api/v1/event/${id}`);
+      const response = await apiClient.get(`api/v1/event/${id}`);
       return response.json();
     },
     enabled: !!id,
@@ -75,7 +76,7 @@ export const useUpdateEvent = (
 ) =>
   useMutation({
     mutationFn: async ({ id, data }): Promise<EventData> => {
-      const response = await apiClient.put(`/api/v1/event/${id}`, {
+      const response = await apiClient.put(`api/v1/event/${id}`, {
         json: data,
       });
       return response.json();
@@ -89,7 +90,7 @@ export const useDeleteEvent = (
 ) =>
   useMutation({
     mutationFn: async (id: number): Promise<void> => {
-      await apiClient.delete(`/api/v1/event/${id}`);
+      await apiClient.delete(`api/v1/event/${id}`);
     },
     ...options,
   });
@@ -100,7 +101,7 @@ export const useStartEvent = (
 ) =>
   useMutation({
     mutationFn: async (id: number): Promise<EventData> => {
-      const response = await apiClient.patch(`/api/v1/event/${id}/start`);
+      const response = await apiClient.patch(`api/v1/event/${id}/start`);
       return response.json();
     },
     ...options,
@@ -112,7 +113,7 @@ export const usePauseEvent = (
 ) =>
   useMutation({
     mutationFn: async (id: number): Promise<EventData> => {
-      const response = await apiClient.patch(`/api/v1/event/${id}/pause`);
+      const response = await apiClient.patch(`api/v1/event/${id}/pause`);
       return response.json();
     },
     ...options,
@@ -124,7 +125,7 @@ export const useEndEvent = (
 ) =>
   useMutation({
     mutationFn: async (id: number): Promise<EventData> => {
-      const response = await apiClient.patch(`/api/v1/event/${id}/end`);
+      const response = await apiClient.patch(`api/v1/event/${id}/end`);
       return response.json();
     },
     ...options,
@@ -145,7 +146,7 @@ export const useEnrollStudent = (
       eventId,
       randomKey,
     }): Promise<ApiResponse<EnrollmentData>> => {
-      const response = await apiClient.post(`/api/v1/event/${eventId}/enroll`, {
+      const response = await apiClient.post(`api/v1/event/${eventId}/enroll`, {
         json: { randomKey },
       });
       return response.json();
@@ -162,7 +163,7 @@ export const useEnrolledCount = (
     queryKey: ["enrolledCount", eventId],
     queryFn: async (): Promise<ApiResponse<EnrolledCountData>> => {
       const response = await apiClient.get(
-        `/api/v1/event/${eventId}/enrolled-count`,
+        `api/v1/event/${eventId}/enrolled-count`,
       );
       return response.json();
     },
@@ -179,7 +180,7 @@ export const useEnrollmentList = (
     queryKey: ["enrollmentList", eventId],
     queryFn: async (): Promise<ApiResponse<EnrollmentListData[]>> => {
       const response = await apiClient.get(
-        `/api/v1/event/${eventId}/enrollments`,
+        `api/v1/event/${eventId}/enrollments`,
       );
       return response.json();
     },

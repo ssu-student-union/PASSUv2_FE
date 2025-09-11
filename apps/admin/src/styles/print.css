@@ -1,4 +1,7 @@
 @media print {
+  .print\:w-full {
+    width: 100% !important;
+  }
   .print\:hidden {
     display: none;
   }
@@ -6,6 +9,6 @@
     display: block;
   }
   @page {
-    margin: 3rem;
+    margin: 2rem;
   }
 }

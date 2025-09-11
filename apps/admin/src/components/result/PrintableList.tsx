@@ -23,10 +23,10 @@ export const PrintableList = ({ ref }: PrintableListProps) => {
   const userName = userInfo?.data.name ?? userInfo?.data.major;
 
   return (
-    <div ref={ref} className="p-8">
+    <div ref={ref} className={`mx-auto w-full px-6 py-8 text-sm text-black`}>
       <div className="text-center">
         <h1 className="text-2xl font-bold">상품수령 명단</h1>
-        <p className="mt-2 text-lg">
+        <p className="mt-2 text-lg whitespace-pre-line">
           {`<${userName}, ${eventDetail?.name ?? "-"}, ${
             eventDetail?.startTime
               ? dayjs(eventDetail.startTime).format("YYYY-MM-DD")
@@ -37,20 +37,20 @@ export const PrintableList = ({ ref }: PrintableListProps) => {
 
       <table
         className={`
-          mt-8 w-full border-collapse border-2 border-black text-center
-          print:mt-12
+          mt-8 w-full table-fixed border-collapse border-3 border-black
+          text-center
         `}
       >
-        <thead>
-          <tr className="border-t-3 border-black">
-            <th className="border-3 border-black p-2">순번</th>
-            <th className="border-3 border-black p-2">이름</th>
-            <th className="border-3 border-black p-2">학과</th>
-            <th className="border-3 border-black p-2">학번</th>
-            <th className="border-3 border-black p-2">종류</th>
-            <th className="border-3 border-black p-2">타임스탬프</th>
-            <th className="border-3 border-black p-2">수량</th>
-            <th className="border-3 border-black p-2">인증번호</th>
+        <thead className="bg-gray-100 text-sm">
+          <tr>
+            <th className="border-3 border-black px-2 py-1">순번</th>
+            <th className="border-3 border-black px-2 py-1">이름</th>
+            <th className="border-3 border-black px-2 py-1">학과</th>
+            <th className="border-3 border-black px-2 py-1">학번</th>
+            <th className="border-3 border-black px-2 py-1">종류</th>
+            <th className="border-3 border-black px-2 py-1">타임스탬프</th>
+            <th className="border-3 border-black px-2 py-1">수량</th>
+            <th className="border-3 border-black px-2 py-1">인증번호</th>
           </tr>
         </thead>
         <tbody>
@@ -69,22 +69,30 @@ export const PrintableList = ({ ref }: PrintableListProps) => {
           ) : (
             enrollments.map((row, index) => (
               <tr key={row.enrollmentId} className="text-sm">
-                <td className="h-10 border-3 border-black p-2">{index + 1}</td>
-                <td className="border-3 border-black p-2 whitespace-nowrap">
+                <td className="border-3 border-black px-2 py-1">{index + 1}</td>
+                <td
+                  className={`border-3 border-black px-2 py-1 whitespace-nowrap`}
+                >
                   {row.studentName}
                 </td>
-                <td className="border-3 border-black p-2 whitespace-nowrap">
+                <td
+                  className={`border-3 border-black px-2 py-1 whitespace-nowrap`}
+                >
                   {row.studentDepartment}
                 </td>
-                <td className="border-3 border-black p-2">{row.studentId}</td>
-                <td className="border-3 border-black p-2">
+                <td className="border-3 border-black px-2 py-1">
+                  {row.studentId}
+                </td>
+                <td className="border-3 border-black px-2 py-1">
                   {eventDetail?.productName}
                 </td>
-                <td className="border-3 border-black p-2">
+                <td className="border-3 border-black px-2 py-1">
                   {dayjs(row.timestamp).format("YYYY-MM-DD HH:mm:ss")}
                 </td>
-                <td className="border-3 border-black p-2">1</td>
-                <td className="border-3 border-black p-2">{row.randomKey}</td>
+                <td className="border-3 border-black px-2 py-1">1</td>
+                <td className="border-3 border-black px-2 py-1">
+                  {row.randomKey}
+                </td>
               </tr>
             ))
           )}

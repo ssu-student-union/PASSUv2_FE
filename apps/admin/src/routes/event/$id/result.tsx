@@ -90,7 +90,7 @@ function ResultPage() {
           <SidebarButton
             onClick={() => {
               setPrintTarget("list");
-              setTimeout(() => window.print(), 100);
+              window.print();
             }}
           >
             <Printer />

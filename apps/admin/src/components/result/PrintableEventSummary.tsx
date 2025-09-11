@@ -18,16 +18,22 @@ export const PrintableEventSummary = ({
     : rows;
 
   return (
-    <div className={`flex w-full flex-col justify-center text-sm text-black`}>
+    <div
+      className={`
+        mx-auto w-full px-6 py-8 text-sm text-black
+        print:w-full
+      `}
+    >
       <h1 className="mb-6 text-center text-2xl font-bold">행사 결과 요약</h1>
 
-      <table className="mb-8 w-full border-3 border-black">
+      <table className="w-full table-fixed border-3 border-black">
         <tbody>
           {extendedRows.map((row) => (
             <tr key={row.label}>
               <th
                 className={`
                   w-1/4 border-3 border-black bg-gray-100 px-4 py-2 text-left
+                  align-top
                 `}
               >
                 {row.label}

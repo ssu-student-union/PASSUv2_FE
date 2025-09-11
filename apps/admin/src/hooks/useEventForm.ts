@@ -67,6 +67,9 @@ export function useEventForm(mode: "create" | "edit") {
 
   const { mutate: createEvent } = useCreateEvent({
     onSuccess: () => navigate({ to: "/" }),
+    onError: (error) => {
+      console.error("생성 실패:", error);
+    },
   });
 
   const { mutate: updateEvent } = useUpdateEvent({
