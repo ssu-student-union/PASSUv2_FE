@@ -68,7 +68,7 @@ export const PrintableList = ({ ref }: PrintableListProps) => {
             </tr>
           ) : (
             enrollments.map((row, index) => (
-              <tr key={row.enrollmentId}>
+              <tr key={row.enrollmentId} className="text-sm">
                 <td className="h-10 border-3 border-black p-2">{index + 1}</td>
                 <td className="border-3 border-black p-2 whitespace-nowrap">
                   {row.studentName}

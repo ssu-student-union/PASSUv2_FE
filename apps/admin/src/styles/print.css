@@ -1,5 +1,8 @@
 @media print {
+  .print\:hidden {
+    display: none;
+  }
   @page {
-    margin: 2rem;
+    margin: 3rem;
   }
 }

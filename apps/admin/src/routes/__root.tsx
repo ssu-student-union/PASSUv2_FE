@@ -16,8 +16,10 @@ function RootLayout() {
         <Outlet />
       </div>
 
-      <ReactQueryDevtools initialIsOpen={false} />
-      <TanStackRouterDevtools />
+      <div className="print:hidden">
+        <ReactQueryDevtools initialIsOpen={false} />
+        <TanStackRouterDevtools />
+      </div>
     </QueryClientProvider>
   );
 }

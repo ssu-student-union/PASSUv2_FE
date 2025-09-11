@@ -6,15 +6,14 @@ import { ResultInfoRow } from "@/components/result/ResultInfoRow";
 import { Sidebar } from "@/components/sidebar/Sidebar";
 import { SidebarButton } from "@/components/sidebar/SidebarButton";
 import { SidebarButtonGroup } from "@/components/sidebar/SidebarButtonGroup";
-import { SidebarDownloadListButton } from "@/components/sidebar/SidebarDownloadListButton";
 import { SidebarGoToEventList } from "@/components/sidebar/SidebarGoToEventList";
-import { SidebarListSection } from "@/components/sidebar/SidebarListSection";
 import { PARTICIPANT_OPTIONS } from "@/types/event";
 import { createFileRoute, useParams } from "@tanstack/react-router";
 import dayjs from "dayjs";
 import { Printer } from "lucide-react";
-import { useRef } from "react";
-import { useReactToPrint } from "react-to-print";
+import { useState } from "react";
+import "@/styles/print.css";
+import { PrintableEventSummary } from "@/components/result/PrintableEventSummary";
 
 export const Route = createFileRoute("/event/$id/result")({
   component: ResultPage,
@@ -22,11 +21,9 @@ export const Route = createFileRoute("/event/$id/result")({
 
 function ResultPage() {
   const { id } = useParams({ strict: false });
-  const contentRef = useRef<HTMLDivElement>(null);
-
-  const handlePrint = useReactToPrint({
-    contentRef,
-  });
+  const [printTarget, setPrintTarget] = useState<"summary" | "list" | null>(
+    null,
+  );
 
   const { data: eventDetail, isLoading, isError } = useEventDetail(Number(id));
   const { data: enrollCount } = useEnrolledCount(Number(id));
@@ -80,20 +77,36 @@ function ResultPage() {
     <>
       <Sidebar>
         <SidebarButtonGroup>
-          <SidebarButton onClick={() => contentRef.current && handlePrint()}>
+          <SidebarButton
+            onClick={() => {
+              setPrintTarget("summary");
+              setTimeout(() => window.print(), 100);
+            }}
+          >
+            <Printer />
+            행사 결과 인쇄
+          </SidebarButton>
+
+          <SidebarButton
+            onClick={() => {
+              setPrintTarget("list");
+              setTimeout(() => window.print(), 100);
+            }}
+          >
             <Printer />
             상품수령명단 인쇄
           </SidebarButton>
 
-          <SidebarDownloadListButton />
-
           <SidebarGoToEventList />
         </SidebarButtonGroup>
-
-        <SidebarListSection />
       </Sidebar>
 
-      <div className="flex-1 overflow-y-auto px-10 py-26">
+      <div
+        className={`
+          flex-1 overflow-y-auto px-10 py-26
+          print:hidden
+        `}
+      >
         <div className={`flex w-full flex-col gap-12`}>
           <div className="flex justify-between">
             <span className="text-4xl font-bold">행사 결과</span>
@@ -117,9 +130,30 @@ function ResultPage() {
         </div>
       </div>
 
-      <div className="hidden">
-        <PrintableList ref={contentRef} />
-      </div>
+      {printTarget === "summary" && (
+        <div
+          className={`
+            hidden
+            print:block
+          `}
+        >
+          <PrintableEventSummary
+            rows={resultInfoRows}
+            description={eventDetail.description}
+          />
+        </div>
+      )}
+
+      {printTarget === "list" && (
+        <div
+          className={`
+            hidden
+            print:block
+          `}
+        >
+          <PrintableList />
+        </div>
+      )}
     </>
   );
 }
