@@ -7,18 +7,19 @@ import {
   useStartEvent,
 } from "@/api/event";
 import { ConfirmModal } from "@/components/ConfirmModal";
+import { EventInfoTooltip } from "@/components/progress/EventInfoTooltip";
 import { Sidebar } from "@/components/sidebar/Sidebar";
 import { SidebarButton } from "@/components/sidebar/SidebarButton";
 import { SidebarButtonGroup } from "@/components/sidebar/SidebarButtonGroup";
 import { SidebarGoToEventList } from "@/components/sidebar/SidebarGoToEventList";
 import { eventStatusMessages } from "@/constants/eventstatusMessage";
-import { EventStatus } from "@/types/event";
+import { EventStatus, PARTICIPANT_OPTIONS } from "@/types/event";
 import { Button } from "@passu/ui/button";
 import { Chip } from "@passu/ui/chip";
 import { Input } from "@passu/ui/input";
 import { cn } from "@passu/ui/utils";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { Pause, Pencil, Play, Square } from "lucide-react";
+import { CircleAlert, Pause, Pencil, Play, Square } from "lucide-react";
 import { useState } from "react";
 
 export const Route = createFileRoute("/event/$id/progress")({
@@ -40,6 +41,7 @@ function ProgressPage() {
     type: "success" | "error";
     text: string;
   } | null>(null);
+  const [showTooltip, setShowTooltip] = useState(true);
 
   const { mutate: startEventAPI } = useStartEvent({
     onSuccess: () => setStatus(EventStatus.ONGOING),
@@ -123,7 +125,40 @@ function ProgressPage() {
       <main className="flex-1">
         <section className="flex h-full w-full flex-col gap-6 px-20 pt-20 pb-10">
           <header className="flex justify-between">
-            <h1 className="text-4xl font-bold">{eventDetail?.name}</h1>
+            <div className="flex items-start">
+              <h1 className="text-4xl font-bold">{eventDetail?.name}</h1>
+              <div className="relative">
+                <CircleAlert
+                  size={18}
+                  color="var(--gray-400)"
+                  className="cursor-pointer"
+                  onMouseEnter={() => setShowTooltip(true)}
+                  onMouseLeave={() => setShowTooltip(false)}
+                />
+
+                {showTooltip && eventDetail && (
+                  <EventInfoTooltip
+                    name={eventDetail.name}
+                    location={eventDetail.location}
+                    productName={eventDetail.productName}
+                    target={eventDetail.requireStatus
+                      .map(
+                        (code) =>
+                          PARTICIPANT_OPTIONS.find((opt) => opt.value === code)
+                            ?.label,
+                      )
+                      .filter(Boolean)
+                      .join(", ")}
+                    feeStatus={
+                      eventDetail.requireUnionFee
+                        ? "납부자, 미납자"
+                        : "납부자만"
+                    }
+                  />
+                )}
+              </div>
+            </div>
+
             <div className="flex h-10 gap-7">
               <Chip variant="outline">
                 {enrollCount?.data.count}/{eventDetail?.productQuantity} (명)
