@@ -41,7 +41,7 @@ function ProgressPage() {
     type: "success" | "error";
     text: string;
   } | null>(null);
-  const [showTooltip, setShowTooltip] = useState(true);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const { mutate: startEventAPI } = useStartEvent({
     onSuccess: () => setStatus(EventStatus.ONGOING),
