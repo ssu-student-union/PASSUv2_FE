@@ -10,12 +10,12 @@ export const PARTICIPANT_OPTIONS = [
   { label: "재학생", value: 1 },
   { label: "휴학생", value: 2 },
   { label: "졸업생", value: 4 },
-] as const;
+];
 
 export const FEE_OPTIONS = [
   { label: "납부자", value: "PAID" },
   { label: "미납자", value: "UNPAID" },
-] as const;
+];
 
 export type ParticipantOption = (typeof PARTICIPANT_OPTIONS)[number];
 export type FeeStatusOption = (typeof FEE_OPTIONS)[number];
