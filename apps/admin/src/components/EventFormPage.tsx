@@ -52,20 +52,13 @@ export function EventFormPage({ mode }: Props) {
         </div>
       </form>
 
-      {openModal && (
-        <div
-          className={`
-            fixed inset-0 flex items-center justify-center bg-black/40
-          `}
-        >
-          <ConfirmModal
-            title="행사를 삭제하시겠습니까?"
-            subTitle="삭제한 행사는 복구할 수 없습니다."
-            onClose={() => setOpenModal(false)}
-            onConfirm={() => deleteEvent(Number(id))}
-          />
-        </div>
-      )}
+      <ConfirmModal
+        title="행사를 삭제하시겠습니까?"
+        subTitle="삭제한 행사는 복구할 수 없습니다."
+        onClose={() => setOpenModal(false)}
+        onConfirm={() => deleteEvent(Number(id))}
+        open={openModal}
+      />
     </>
   );
 }

@@ -42,6 +42,7 @@ function ProgressPage() {
     text: string;
   } | null>(null);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const { mutate: startEventAPI } = useStartEvent({
     onSuccess: () => setStatus(EventStatus.ONGOING),
@@ -112,7 +113,7 @@ function ProgressPage() {
               </SidebarButton>
               <SidebarButton
                 variant="outline"
-                onClick={() => endEventAPI(numberId)}
+                onClick={() => setOpenModal(true)}
               >
                 <Square className="fill-hover" />
                 <span>행사 종료</span>
@@ -225,20 +226,13 @@ function ProgressPage() {
           </section>
         </section>
 
-        {status === EventStatus.AFTER && (
-          <div
-            className={`
-              fixed inset-0 flex items-center justify-center bg-black/40
-            `}
-          >
-            <ConfirmModal
-              title="행사를 종료하시겠습니까?"
-              subTitle="종료된 행사는 수정할 수 없습니다."
-              onClose={() => startEventAPI(numberId)}
-              onConfirm={navigateToResult}
-            />
-          </div>
-        )}
+        <ConfirmModal
+          title="행사를 종료하시겠습니까?"
+          subTitle="종료된 행사는 수정할 수 없습니다."
+          onClose={() => setOpenModal(false)}
+          onConfirm={navigateToResult}
+          open={openModal}
+        />
       </main>
     </>
   );

@@ -4,7 +4,7 @@ import { Sidebar } from "@/components/sidebar/Sidebar";
 import { SidebarButtonGroup } from "@/components/sidebar/SidebarButtonGroup";
 import { SidebarButton } from "@/components/sidebar/SidebarButton";
 import { EventAccordion } from "@/components/home/EventAccordion";
-import { useUserInfo } from "@/api/event";
+// import { useUserInfo } from "@/api/event";
 import { EventStatus } from "@/types/event";
 
 export const Route = createFileRoute("/")({
@@ -12,8 +12,8 @@ export const Route = createFileRoute("/")({
 });
 
 function App() {
-  const { data } = useUserInfo();
-  const userName = data?.data?.name ?? data?.data?.major;
+  // const { data } = useUserInfo();
+  // const userName = data?.data?.name ?? data?.data?.major;
   return (
     <>
       <Sidebar>
@@ -35,7 +35,7 @@ function App() {
       <div className="flex-1">
         <div className={`flex h-full w-full flex-col gap-6 px-20 pt-20 pb-10`}>
           <div className="flex items-end gap-2">
-            <span className="text-4xl font-bold">{userName}</span>
+            <span className="text-4xl font-bold">테스트</span>
             <span className="text-xl">님의 행사 목록</span>
           </div>
 

@@ -13,6 +13,7 @@ interface ConfirmModalProps {
   title: string;
   subTitle?: string;
   onConfirm: () => void;
+  open: boolean;
 }
 
 export const ConfirmModal = ({
@@ -20,9 +21,10 @@ export const ConfirmModal = ({
   onConfirm,
   title,
   subTitle,
+  open,
 }: ConfirmModalProps) => {
   return (
-    <Modal open={true} onOpenChange={onClose}>
+    <Modal open={open} onOpenChange={onClose}>
       <ModalContent className="w-110 px-6 pt-6 pb-10" showCloseButton>
         <ModalHeader className="flex flex-col items-center gap-1">
           <ModalTitle className="text-lg font-semibold">{title}</ModalTitle>
