@@ -20,7 +20,7 @@ import { Input } from "@passu/ui/input";
 import { cn } from "@passu/ui/utils";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { CircleAlert, Pause, Pencil, Play, Square } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/event/$id/progress")({
   component: ProgressPage,
@@ -33,9 +33,7 @@ function ProgressPage() {
 
   const { data: eventDetail } = useEventDetail(numberId);
 
-  const [status, setStatus] = useState<EventStatus>(
-    eventDetail?.status ?? EventStatus.BEFORE,
-  );
+  const [status, setStatus] = useState<EventStatus | null>(null);
   const [inputValue, setInputValue] = useState("");
   const [authMessage, setAuthMessage] = useState<{
     type: "success" | "error";
@@ -85,6 +83,18 @@ function ProgressPage() {
     void navigate({ to: "/event/$id/result", params: { id } });
   };
 
+  useEffect(() => {
+    if (eventDetail?.status === EventStatus.AFTER) {
+      void navigate({ to: `/event/${numberId}/result` });
+    }
+  }, [eventDetail?.status, navigate, numberId]);
+
+  useEffect(() => {
+    if (eventDetail?.status) {
+      setStatus(eventDetail.status);
+    }
+  }, [eventDetail]);
+
   return (
     <>
       <Sidebar>
@@ -97,12 +107,15 @@ function ProgressPage() {
                   {status === EventStatus.BEFORE ? "행사 시작" : "행사 재개"}
                 </span>
               </SidebarButton>
-              <SidebarButton variant="outline" asChild>
-                <Link to="/event/$id/edit" params={{ id }}>
-                  <Pencil />
-                  <span>행사 수정</span>
-                </Link>
-              </SidebarButton>
+              {status === EventStatus.BEFORE && (
+                <SidebarButton variant="outline" asChild>
+                  <Link to="/event/$id/edit" params={{ id }}>
+                    <Pencil />
+                    <span>행사 수정</span>
+                  </Link>
+                </SidebarButton>
+              )}
+
               <SidebarGoToEventList />
             </>
           ) : (
@@ -169,8 +182,8 @@ function ProgressPage() {
 
           <section
             className={`
-              flex flex-1 items-center justify-center gap-12 overflow-y-auto
-              rounded-3xl bg-white p-10
+              flex flex-1 flex-col items-center justify-center gap-3
+              overflow-y-auto rounded-3xl bg-white p-10
             `}
           >
             <div className="flex flex-col gap-10">
@@ -180,7 +193,7 @@ function ProgressPage() {
                   whitespace-normal
                 `}
               >
-                {eventStatusMessages[status]}
+                {status && eventStatusMessages[status]}
               </p>
               <Input
                 placeholder="0000"
@@ -209,20 +222,20 @@ function ProgressPage() {
                 >
                   인증 확인
                 </Button>
-                {authMessage && (
-                  <p
-                    className={cn(
-                      "text-center txt-subtitle1",
-                      authMessage.type === "success"
-                        ? "text-primary"
-                        : `text-red-500`,
-                    )}
-                  >
-                    {authMessage.text}
-                  </p>
-                )}
               </div>
             </div>
+            {authMessage && (
+              <p
+                className={cn(
+                  "text-center txt-subtitle1",
+                  authMessage.type === "success"
+                    ? "text-primary"
+                    : `text-red-500`,
+                )}
+              >
+                {authMessage.text}
+              </p>
+            )}
           </section>
         </section>
 

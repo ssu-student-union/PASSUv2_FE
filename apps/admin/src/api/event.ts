@@ -46,7 +46,6 @@ export const useCreateEvent = (
 ) =>
   useMutation({
     mutationFn: async (data: EventRequest): Promise<EventData> => {
-      console.log(data);
       const response = await apiClient.post("api/v1/event", { json: data });
       return response.json();
     },
