@@ -1,6 +1,6 @@
 import "@/styles/print.css";
 import { useParams } from "@tanstack/react-router";
-import { useEnrollmentList, useEventDetail } from "@/api/event";
+import { useEnrollmentList, useEventDetail, useUserInfo } from "@/api/event";
 import dayjs from "dayjs";
 
 interface PrintableListProps {
@@ -12,7 +12,7 @@ export const PrintableList = ({ ref }: PrintableListProps) => {
   const eventId = Number(id);
 
   const { data: eventDetail } = useEventDetail(eventId);
-  // const { data: userInfo } = useUserInfo();
+  const { data: userInfo } = useUserInfo();
   const {
     data: enrollmentData,
     isLoading,
@@ -20,14 +20,14 @@ export const PrintableList = ({ ref }: PrintableListProps) => {
   } = useEnrollmentList(eventId);
 
   const enrollments = enrollmentData?.data ?? [];
-  // const userName = userInfo?.data.name ?? userInfo?.data.major;
+  const userName = userInfo?.data.name ?? userInfo?.data.major;
 
   return (
     <div ref={ref} className={`mx-auto w-full px-6 py-8 text-sm text-black`}>
       <div className="text-center">
         <h1 className="text-2xl font-bold">상품수령 명단</h1>
         <p className="mt-2 text-lg whitespace-pre-line">
-          {`<부서명, ${eventDetail?.name ?? "-"}, ${
+          {`<${userName}, ${eventDetail?.name ?? "-"}, ${
             eventDetail?.startTime
               ? dayjs(eventDetail.startTime).format("YYYY-MM-DD")
               : "-"
