@@ -15,15 +15,17 @@
   "dependencies": {
     "@passu/ui": "workspace:*",
     "@tailwindcss/vite": "^4.1.10",
+    "@tanstack/react-query": "^5.83.0",
     "@tanstack/react-router": "^1.121.2",
     "@tanstack/react-router-devtools": "^1.121.16",
     "@tanstack/router-plugin": "^1.121.2",
+    "dayjs": "^1.11.13",
+    "ky": "^1.8.2",
     "lucide-react": "^0.515.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.61.1",
     "react-textarea-autosize": "^8.5.9",
-    "react-to-print": "^3.1.1",
     "tailwindcss": "^4.0.6",
     "zod": "^3.25.67"
   },
@@ -32,6 +34,7 @@
     "@passu/prettier-config": "workspace:*",
     "@passu/tailwind-config": "workspace:*",
     "@passu/typescript-config": "workspace:*",
+    "@tanstack/react-query-devtools": "^5.83.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.2.0",
     "@types/react": "^19.0.8",
@@ -41,6 +44,7 @@
     "eslint": "^9.29.0",
     "eslint-plugin-better-tailwindcss": "^3.2.0",
     "jsdom": "^26.0.0",
+    "msw": "^2.10.4",
     "typescript": "^5.7.2",
     "vite": "^6.1.0",
     "vitest": "^3.0.5",
@@ -48,5 +52,10 @@
   },
   "overrides": {
     "@tanstack/react-router": "^1.121.2"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }

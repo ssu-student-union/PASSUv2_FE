@@ -11,6 +11,7 @@ export const Sidebar = ({ children }: SidebarProps) => {
     <aside
       className={`
         flex h-full max-w-104 min-w-85 basis-1/5 flex-col gap-12 px-10 pt-24
+        print:hidden
       `}
     >
       <PassuLogo className="w-full" />
