@@ -64,10 +64,10 @@ function ProgressPage() {
       });
       await refetchEnrollCount();
     },
-    onError: (err: Error) => {
+    onError: () => {
       setAuthMessage({
         type: "error",
-        text: err.message || "인증 실패. 다시 시도해주세요",
+        text: "인증 실패. 다시 시도해주세요",
       });
     },
   });
