@@ -14,6 +14,11 @@ export const Route = createFileRoute("/")({
 function App() {
   // const { data } = useUserInfo();
   // const userName = data?.data?.name ?? data?.data?.major;
+
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    window.location.href = "/login";
+  };
   return (
     <>
       <Sidebar>
@@ -25,7 +30,7 @@ function App() {
             </Link>
           </SidebarButton>
 
-          <SidebarButton variant="outline">
+          <SidebarButton variant="outline" onClick={handleLogout}>
             <LogOut />
             로그아웃
           </SidebarButton>
