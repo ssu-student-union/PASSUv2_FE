@@ -1,4 +1,13 @@
 @media print {
+  .print\:w-full {
+    width: 100% !important;
+  }
+  .print\:hidden {
+    display: none;
+  }
+  .print\:block {
+    display: block;
+  }
   @page {
     margin: 2rem;
   }
