@@ -70,7 +70,7 @@ function App() {
           className={`
             flex-1 px-4 pt-4 pb-10
             sm:px-6
-            lg:px-20 lg:pt-20
+            lg:px-20 lg:pt-10
           `}
         >
           <div
