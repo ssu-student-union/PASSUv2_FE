@@ -1,3 +1,4 @@
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Outlet, createRootRoute } from "@tanstack/react-router";
@@ -13,7 +14,9 @@ function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <div className="flex h-full w-full bg-background">
-        <Outlet />
+        <SidebarProvider>
+          <Outlet />
+        </SidebarProvider>
       </div>
 
       <div className="print:hidden">

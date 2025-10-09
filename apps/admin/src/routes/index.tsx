@@ -6,7 +6,6 @@ import {
   SidebarGroup,
   SidebarMenu,
   SidebarMenuItem,
-  SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { PassuLogo } from "@passu/ui/passu-logo";
@@ -29,15 +28,8 @@ function App() {
   };
 
   return (
-    <SidebarProvider>
-      <Sidebar
-        className={`
-          w-64
-          lg:w-80
-          xl:w-96
-          2xl:w-105
-        `}
-      >
+    <>
+      <Sidebar>
         <SidebarContent>
           <div className="mt-15 p-6">
             <PassuLogo className="w-full" />
@@ -124,6 +116,6 @@ function App() {
           </div>
         </div>
       </main>
-    </SidebarProvider>
+    </>
   );
 }

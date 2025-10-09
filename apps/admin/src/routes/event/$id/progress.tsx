@@ -8,15 +8,21 @@ import {
 } from "@/api/event";
 import { ConfirmModal } from "@/components/ConfirmModal";
 import { EventInfoTooltip } from "@/components/progress/EventInfoTooltip";
-import { Sidebar } from "@/components/sidebar/Sidebar";
 import { SidebarButton } from "@/components/sidebar/SidebarButton";
-import { SidebarButtonGroup } from "@/components/sidebar/SidebarButtonGroup";
-import { SidebarGoToEventList } from "@/components/sidebar/SidebarGoToEventList";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 import { eventStatusMessages } from "@/constants/eventstatusMessage";
 import { EventStatus, PARTICIPANT_OPTIONS } from "@/types/event";
 import { Button } from "@passu/ui/button";
 import { Chip } from "@passu/ui/chip";
 import { Input } from "@passu/ui/input";
+import { PassuLogo } from "@passu/ui/passu-logo";
 import { cn } from "@passu/ui/utils";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { CircleAlert, Pause, Pencil, Play, Square } from "lucide-react";
@@ -65,6 +71,7 @@ function ProgressPage() {
       await refetchEnrollCount();
     },
     onError: () => {
+      setInputValue("");
       setAuthMessage({
         type: "error",
         text: "인증 실패. 다시 시도해주세요",
@@ -98,49 +105,103 @@ function ProgressPage() {
   return (
     <>
       <Sidebar>
-        <SidebarButtonGroup>
-          {status === EventStatus.BEFORE || status === EventStatus.PAUSE ? (
-            <>
-              <SidebarButton onClick={() => startEventAPI(numberId)}>
-                <Play />
-                <span>
-                  {status === EventStatus.BEFORE ? "행사 시작" : "행사 재개"}
-                </span>
-              </SidebarButton>
-              {status === EventStatus.BEFORE && (
-                <SidebarButton variant="outline" asChild>
-                  <Link to="/event/$id/edit" params={{ id }}>
-                    <Pencil />
-                    <span>행사 수정</span>
-                  </Link>
-                </SidebarButton>
-              )}
+        <SidebarContent>
+          <div className="mt-15 p-6">
+            <PassuLogo className="w-full" />
+          </div>
+          <SidebarGroup>
+            <SidebarMenu className="gap-4">
+              {status === EventStatus.BEFORE || status === EventStatus.PAUSE ? (
+                <>
+                  <SidebarMenuItem>
+                    <SidebarButton onClick={() => startEventAPI(numberId)}>
+                      <Play />
+                      <span>
+                        {status === EventStatus.BEFORE
+                          ? "행사 시작"
+                          : "행사 재개"}
+                      </span>
+                    </SidebarButton>
+                  </SidebarMenuItem>
 
-              <SidebarGoToEventList />
-            </>
-          ) : (
-            <>
-              <SidebarButton onClick={() => pauseEventAPI(numberId)}>
-                <Pause />
-                <span>행사 일시정지</span>
-              </SidebarButton>
-              <SidebarButton
-                variant="outline"
-                onClick={() => setOpenModal(true)}
-              >
-                <Square className="fill-hover" />
-                <span>행사 종료</span>
-              </SidebarButton>
-            </>
-          )}
-        </SidebarButtonGroup>
+                  {status === EventStatus.BEFORE && (
+                    <SidebarMenuItem>
+                      <SidebarButton variant="outline" asChild>
+                        <Link to="/event/$id/edit" params={{ id }}>
+                          <Pencil />
+                          <span>행사 수정</span>
+                        </Link>
+                      </SidebarButton>
+                    </SidebarMenuItem>
+                  )}
+
+                  <SidebarMenuItem>
+                    <SidebarButton variant="outline" asChild>
+                      <Link to="/">
+                        <span>행사 목록으로</span>
+                      </Link>
+                    </SidebarButton>
+                  </SidebarMenuItem>
+                </>
+              ) : (
+                <>
+                  <SidebarMenuItem>
+                    <SidebarButton onClick={() => pauseEventAPI(numberId)}>
+                      <Pause />
+                      <span>행사 일시정지</span>
+                    </SidebarButton>
+                  </SidebarMenuItem>
+
+                  <SidebarMenuItem>
+                    <SidebarButton
+                      variant="outline"
+                      onClick={() => setOpenModal(true)}
+                    >
+                      <Square className="fill-hover" />
+                      <span>행사 종료</span>
+                    </SidebarButton>
+                  </SidebarMenuItem>
+                </>
+              )}
+            </SidebarMenu>
+          </SidebarGroup>
+        </SidebarContent>
       </Sidebar>
 
       <main className="flex-1">
-        <section className="flex h-full w-full flex-col gap-6 px-20 pt-20 pb-10">
-          <header className="flex justify-between">
+        <header
+          className={`
+            flex items-center justify-between border-b bg-white p-4
+            lg:hidden
+          `}
+        >
+          <SidebarTrigger />
+        </header>
+
+        <section
+          className={`
+            flex h-full w-full flex-col gap-4 px-4 py-6
+            sm:gap-6 sm:px-8
+            md:px-12
+            lg:px-20 lg:pt-20 lg:pb-10
+          `}
+        >
+          <header
+            className={`
+              hidden
+              lg:flex lg:justify-between
+            `}
+          >
             <div className="flex items-start">
-              <h1 className="text-4xl font-bold">{eventDetail?.name}</h1>
+              <h1
+                className={`
+                  text-2xl font-bold
+                  sm:text-3xl
+                  lg:text-4xl
+                `}
+              >
+                {eventDetail?.name}
+              </h1>
               <div className="relative">
                 <CircleAlert
                   size={18}
@@ -173,24 +234,32 @@ function ProgressPage() {
               </div>
             </div>
 
-            <div className="flex h-10 gap-7">
-              <Chip variant="outline">
-                {enrollCount?.data.count}/{eventDetail?.productQuantity} (명)
-              </Chip>
-            </div>
+            <Chip variant="outline">
+              {enrollCount?.data.count}/{eventDetail?.productQuantity} (명)
+            </Chip>
           </header>
 
           <section
             className={`
               flex flex-1 flex-col items-center justify-center gap-3
-              overflow-y-auto rounded-3xl bg-white p-10
+              overflow-y-auto rounded-2xl bg-white p-6
+              sm:rounded-3xl sm:p-8
+              lg:p-10
             `}
           >
-            <div className="flex flex-col gap-10">
+            <div
+              className={`
+                flex w-full max-w-sm flex-col items-center gap-6
+                sm:gap-8
+                lg:gap-10
+              `}
+            >
               <p
                 className={`
-                  mx-auto max-w-[22rem] text-center text-2xl break-words
+                  text-center text-lg leading-relaxed break-words
                   whitespace-normal
+                  sm:text-xl
+                  lg:text-2xl
                 `}
               >
                 {status && eventStatusMessages[status]}
@@ -203,31 +272,36 @@ function ProgressPage() {
                   setInputValue(e.target.value.replace(/\D/g, ""))
                 }
                 className={`
-                  h-34 w-78 text-center text-8xl font-bold
-                  placeholder:text-8xl
+                  h-24 max-w-80 text-center text-5xl font-bold
+                  placeholder:text-5xl
+                  sm:h-28 sm:text-6xl sm:placeholder:text-6xl
+                  lg:text-8xl lg:placeholder:text-8xl
                 `}
                 disabled={
                   status === EventStatus.BEFORE || status === EventStatus.PAUSE
                 }
               />
-              <div className="flex flex-col gap-3">
-                <Button
-                  variant="default"
-                  className="h-12 rounded-full"
-                  disabled={
-                    status === EventStatus.BEFORE ||
-                    status === EventStatus.PAUSE
-                  }
-                  onClick={handleAuthentication}
-                >
-                  인증 확인
-                </Button>
-              </div>
+              <Button
+                variant="default"
+                className={`
+                  h-11 w-full max-w-80 rounded-full text-base
+                  sm:h-12
+                `}
+                disabled={
+                  status === EventStatus.BEFORE || status === EventStatus.PAUSE
+                }
+                onClick={handleAuthentication}
+              >
+                인증 확인
+              </Button>
             </div>
             {authMessage && (
               <p
                 className={cn(
-                  "text-center txt-subtitle1",
+                  `
+                    text-center text-sm
+                    sm:txt-subtitle1
+                  `,
                   authMessage.type === "success"
                     ? "text-primary"
                     : `text-red-500`,
