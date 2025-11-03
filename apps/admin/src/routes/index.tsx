@@ -59,8 +59,8 @@ function App() {
       <main className="flex flex-1 flex-col">
         <header
           className={`
-            flex items-center justify-between border-b bg-white p-4
-            lg:hidden
+            flex items-center justify-between p-4
+            md:hidden
           `}
         >
           <SidebarTrigger />
@@ -68,7 +68,7 @@ function App() {
 
         <div
           className={`
-            flex-1 px-4 pt-4 pb-10
+            flex-1 px-8 pt-4 pb-10
             sm:px-6
             lg:px-20 lg:pt-10
           `}

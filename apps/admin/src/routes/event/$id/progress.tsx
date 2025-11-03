@@ -168,11 +168,11 @@ function ProgressPage() {
         </SidebarContent>
       </Sidebar>
 
-      <main className="flex-1">
+      <main className="flex flex-1 flex-col">
         <header
           className={`
-            flex items-center justify-between border-b bg-white p-4
-            lg:hidden
+            flex items-center justify-between p-4
+            md:hidden
           `}
         >
           <SidebarTrigger />
@@ -180,16 +180,15 @@ function ProgressPage() {
 
         <section
           className={`
-            flex h-full w-full flex-col gap-4 px-4 py-6
-            sm:gap-6 sm:px-8
-            md:px-12
+            flex w-full flex-1 flex-col gap-4 px-8 py-4
+            sm:gap-6 sm:px-6
             lg:px-20 lg:pt-20 lg:pb-10
           `}
         >
           <header
             className={`
-              hidden
-              lg:flex lg:justify-between
+              flex flex-col
+              sm:flex-row sm:justify-between
             `}
           >
             <div className="flex items-start">
@@ -202,7 +201,12 @@ function ProgressPage() {
               >
                 {eventDetail?.name}
               </h1>
-              <div className="relative">
+              <div
+                className={`
+                  relative hidden
+                  sm:block
+                `}
+              >
                 <CircleAlert
                   size={18}
                   color="var(--gray-400)"
@@ -241,8 +245,8 @@ function ProgressPage() {
 
           <section
             className={`
-              flex flex-1 flex-col items-center justify-center gap-3
-              overflow-y-auto rounded-2xl bg-white p-6
+              flex flex-1 flex-col items-center justify-center gap-3 rounded-2xl
+              bg-white p-6
               sm:rounded-3xl sm:p-8
               lg:p-10
             `}

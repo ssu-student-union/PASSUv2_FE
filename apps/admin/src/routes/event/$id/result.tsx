@@ -127,14 +127,14 @@ function ResultPage() {
 
       <main
         className={`
-          flex flex-1 flex-col
+          flex flex-1 flex-col overflow-y-auto
           print:hidden
         `}
       >
         <header
           className={`
-            flex items-center justify-between border-b bg-white p-4
-            lg:hidden
+            flex items-center justify-between p-4
+            md:hidden
           `}
         >
           <SidebarTrigger />
@@ -142,10 +142,9 @@ function ResultPage() {
 
         <div
           className={`
-            flex-1 py-6
-            sm:px-8
-            md:px-12
-            lg:px-20 lg:py-26
+            flex-1 px-8 pt-4 pb-10
+            sm:px-6
+            lg:px-20 lg:pt-10
           `}
         >
           <div className="flex w-full flex-col gap-2">

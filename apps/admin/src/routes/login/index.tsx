@@ -1,5 +1,5 @@
-import { Button } from "@passu/ui/button";
-import { PassuLogo } from "@passu/ui/passu-logo";
+import { Button } from "@/components/ui/src/button";
+import { PassuLogo } from "@/components/ui/src/passu-logo";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/login/")({
