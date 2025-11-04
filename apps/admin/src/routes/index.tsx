@@ -56,11 +56,11 @@ function App() {
         </SidebarContent>
       </Sidebar>
 
-      <main className="flex flex-1 flex-col">
+      <main className="flex flex-1 flex-col overflow-y-auto">
         <header
           className={`
-            flex items-center justify-between p-4
-            md:hidden
+            flex items-center justify-between p-3
+            sm:!hidden
           `}
         >
           <SidebarTrigger />
@@ -68,7 +68,7 @@ function App() {
 
         <div
           className={`
-            flex-1 px-8 pt-4 pb-10
+            flex flex-1 flex-col px-8 pt-4 pb-10
             sm:px-6
             lg:px-20 lg:pt-10
           `}
@@ -101,8 +101,8 @@ function App() {
 
           <div
             className={`
-              flex h-[calc(100vh-200px)] flex-col gap-6 overflow-y-auto
-              rounded-2xl bg-white p-4
+              flex flex-1 flex-col gap-6 overflow-y-auto rounded-2xl bg-white
+              p-4
               lg:gap-12 lg:rounded-3xl lg:p-5
             `}
             style={{

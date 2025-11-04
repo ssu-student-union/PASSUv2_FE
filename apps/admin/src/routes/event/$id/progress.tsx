@@ -171,8 +171,8 @@ function ProgressPage() {
       <main className="flex flex-1 flex-col">
         <header
           className={`
-            flex items-center justify-between p-4
-            md:hidden
+            flex items-center justify-between p-3
+            sm:!hidden
           `}
         >
           <SidebarTrigger />
@@ -180,7 +180,7 @@ function ProgressPage() {
 
         <section
           className={`
-            flex w-full flex-1 flex-col gap-4 px-8 py-4
+            flex w-full flex-1 flex-col gap-4 px-8 py-10
             sm:gap-6 sm:px-6
             lg:px-20 lg:pt-20 lg:pb-10
           `}

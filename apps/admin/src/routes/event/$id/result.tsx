@@ -133,8 +133,8 @@ function ResultPage() {
       >
         <header
           className={`
-            flex items-center justify-between p-4
-            md:hidden
+            flex items-center justify-between p-3
+            sm:!hidden
           `}
         >
           <SidebarTrigger />
@@ -142,7 +142,7 @@ function ResultPage() {
 
         <div
           className={`
-            flex-1 px-8 pt-4 pb-10
+            flex-1 px-8 pt-4 pb-15
             sm:px-6
             lg:px-20 lg:pt-10
           `}
