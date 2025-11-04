@@ -17,6 +17,7 @@ import {
   SidebarMenuItem,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+
 import { eventStatusMessages } from "@/constants/eventstatusMessage";
 import { EventStatus, PARTICIPANT_OPTIONS } from "@/types/event";
 import { Button } from "@passu/ui/button";
@@ -25,7 +26,7 @@ import { Input } from "@passu/ui/input";
 import { PassuLogo } from "@passu/ui/passu-logo";
 import { cn } from "@passu/ui/utils";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { CircleAlert, Pause, Pencil, Play, Square } from "lucide-react";
+import { Pause, Pencil, Play, Square } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/event/$id/progress")({
@@ -45,7 +46,6 @@ function ProgressPage() {
     type: "success" | "error";
     text: string;
   } | null>(null);
-  const [showTooltip, setShowTooltip] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
   const { mutate: startEventAPI } = useStartEvent({
@@ -207,15 +207,7 @@ function ProgressPage() {
                   sm:block
                 `}
               >
-                <CircleAlert
-                  size={18}
-                  color="var(--gray-400)"
-                  className="cursor-pointer"
-                  onMouseEnter={() => setShowTooltip(true)}
-                  onMouseLeave={() => setShowTooltip(false)}
-                />
-
-                {showTooltip && eventDetail && (
+                {eventDetail && (
                   <EventInfoTooltip
                     name={eventDetail.name}
                     location={eventDetail.location}
