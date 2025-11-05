@@ -24,11 +24,7 @@ export const EventInfoTooltip = ({
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <CircleAlert
-          size={18}
-          color="var(--gray-400)"
-          className="cursor-pointer"
-        />
+        <CircleAlert size={18} className="cursor-pointer text-gray-400" />
       </TooltipTrigger>
 
       <TooltipContent
