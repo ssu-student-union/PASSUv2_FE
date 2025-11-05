@@ -3,4 +3,5 @@
 @import "@passu/ui/styles.css";
 @import "tw-animate-css";
 
+@custom-variant custom-print (@media print);
 @custom-variant dark (&:is(.dark *));

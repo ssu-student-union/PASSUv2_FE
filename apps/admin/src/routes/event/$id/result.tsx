@@ -17,11 +17,9 @@ import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import dayjs from "dayjs";
 import { Printer } from "lucide-react";
 import { useState } from "react";
-import "@/styles/print.css";
 import { PrintableEventSummary } from "@/components/result/PrintableEventSummary";
 import { PassuLogo } from "@passu/ui/passu-logo";
 import { authGuard } from "@/lib/authGuard";
-
 export const Route = createFileRoute("/event/$id/result")({
   beforeLoad: authGuard,
   component: ResultPage,

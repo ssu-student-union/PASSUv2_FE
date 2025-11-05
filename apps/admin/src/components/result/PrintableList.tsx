@@ -1,4 +1,3 @@
-import "@/styles/print.css";
 import { useParams } from "@tanstack/react-router";
 import { useEnrollmentList, useEventDetail, useUserInfo } from "@/api/event";
 import dayjs from "dayjs";
