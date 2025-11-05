@@ -13,8 +13,10 @@ import { EventAccordion } from "@/components/home/EventAccordion";
 // import { useUserInfo } from "@/api/event";
 import { EventStatus } from "@/types/event";
 import { SidebarButton } from "@/components/sidebar/SidebarButton";
+import { authGuard } from "@/lib/authGuard";
 
 export const Route = createFileRoute("/")({
+  beforeLoad: authGuard,
   component: App,
 });
 

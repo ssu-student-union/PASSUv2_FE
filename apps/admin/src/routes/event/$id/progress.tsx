@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/sidebar";
 
 import { eventStatusMessages } from "@/constants/eventstatusMessage";
+import { authGuard } from "@/lib/authGuard";
 import { EventStatus, PARTICIPANT_OPTIONS } from "@/types/event";
 import { Button } from "@passu/ui/button";
 import { Chip } from "@passu/ui/chip";
@@ -30,6 +31,7 @@ import { Pause, Pencil, Play, Square } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/event/$id/progress")({
+  beforeLoad: authGuard,
   component: ProgressPage,
 });
 
