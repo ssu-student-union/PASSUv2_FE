@@ -12,7 +12,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { SidebarButton } from "@/components/sidebar/SidebarButton";
-import { PARTICIPANT_OPTIONS } from "@/types/event";
+import { PARTICIPANT_OPTIONS_MAP } from "@/types/event";
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import dayjs from "dayjs";
 import { Printer } from "lucide-react";
@@ -41,9 +41,7 @@ function ResultPage() {
 
   const participantLabel = (codes: number[]) => {
     return codes
-      .map(
-        (code) => PARTICIPANT_OPTIONS.find((opt) => opt.value === code)?.label,
-      )
+      .map((code) => PARTICIPANT_OPTIONS_MAP[code])
       .filter(Boolean)
       .join(", ");
   };
