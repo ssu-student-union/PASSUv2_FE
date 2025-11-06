@@ -18,6 +18,15 @@ export interface StudentInfoResponse {
   data: StudentInfoData;
 }
 
+const enum EventRequireStatus {
+  /** 재학생 */
+  ATTENDED = 1,
+  /** 휴학생 */
+  ON_LEAVE = 2,
+  /** 졸업생 */
+  GRADUATED = 4,
+}
+
 // Event Info Response (from /user-api/events/{eventId})
 export interface EventInfoData {
   id: number;
@@ -26,9 +35,9 @@ export interface EventInfoData {
   product_name: string;
   product_quantity: number;
   location: string;
-  require_status: number;
+  require_status: EventRequireStatus;
   require_union_fee: boolean;
-  allowed_departments: number[];
+  allowed_departments: string[];
   status: "BEFORE" | "ONGOING" | "PAUSE" | "FINISHED";
   start_time: string;
   end_time: string;
