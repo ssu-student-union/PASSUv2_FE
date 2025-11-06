@@ -3,13 +3,13 @@ info:
   title: Passu Backend API
   description: |
     Passu 인증 시스템 백엔드 API
-    
+
     이 API는 학생 이벤트 등록 및 관리 시스템을 제공합니다.
     - 학생 인증 (SSUPORT 연동)
     - 이벤트 정보 조회
     - 랜덤 키 발급
     - 등록 상태 확인
-    
+
   version: 1.0.0
   contact:
     name: Passu Team
@@ -38,7 +38,7 @@ paths:
       description: API 서버의 상태를 확인합니다.
       security: []
       responses:
-        '200':
+        "200":
           description: 서비스가 정상적으로 동작 중
           content:
             application/json:
@@ -62,24 +62,24 @@ paths:
       summary: 학생 정보 조회
       description: JWT 토큰을 통해 현재 로그인한 학생의 정보를 조회합니다.
       responses:
-        '200':
+        "200":
           description: 학생 정보 조회 성공
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StudentInfoResponse'
-        '401':
+                $ref: "#/components/schemas/StudentInfoResponse"
+        "401":
           description: 인증 실패
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: 내부 서버 오류
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
   /user-api/events/{eventId}:
     get:
@@ -96,30 +96,30 @@ paths:
             type: integer
             example: 1
       responses:
-        '200':
+        "200":
           description: 이벤트 정보 조회 성공
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventInfoResponse'
-        '400':
+                $ref: "#/components/schemas/EventInfoResponse"
+        "400":
           description: 잘못된 요청 (eventId 누락)
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
           description: 이벤트를 찾을 수 없음
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: 내부 서버 오류
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
   /user-api/events/{eventId}/count:
     get:
@@ -136,30 +136,30 @@ paths:
             type: integer
             example: 1
       responses:
-        '200':
+        "200":
           description: 등록자 수 조회 성공
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductCountResponse'
-        '400':
+                $ref: "#/components/schemas/ProductCountResponse"
+        "400":
           description: 잘못된 요청 (eventId 누락)
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
           description: 이벤트를 찾을 수 없음
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: 내부 서버 오류
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
   /user-api/events/{eventId}/issue-random-key:
     post:
@@ -168,7 +168,7 @@ paths:
       summary: 랜덤 키 발급
       description: |
         학생이 이벤트에 참여하기 위한 랜덤 키를 발급받습니다.
-        
+
         **발급 조건:**
         - 학생회 계정은 참여 불가
         - 이벤트 요구사항 충족 (학과, 학생회비 등)
@@ -196,48 +196,48 @@ paths:
                   description: SSUPORT에서 발급받은 JWT 토큰
                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
       responses:
-        '201':
+        "201":
           description: 랜덤 키 발급 성공
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RandomKeyResponse'
-        '400':
+                $ref: "#/components/schemas/RandomKeyResponse"
+        "400":
           description: 잘못된 요청 (토큰 또는 eventId 누락)
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '401':
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
           description: 인증 실패
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '403':
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
           description: 참여 불가 (자격 미달, 매진 등)
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
           description: 이벤트를 찾을 수 없음
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '429':
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
           description: 요청 한도 초과
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: 내부 서버 오류
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
 components:
   securitySchemes:
@@ -314,9 +314,9 @@ components:
         allowed_departments:
           type: array
           items:
-            type: integer
-          description: 참여 가능한 학과 코드 목록
-          example: [101, 102, 56]
+            type: string
+          description: 참여 가능한 학과 목록
+          example: ["컴퓨터학부", "글로벌미디어학부", "소프트웨어학부"]
         status:
           type: string
           enum: [BEFORE, ONGOING, PAUSE, FINISHED]
@@ -350,7 +350,7 @@ components:
           type: string
           example: "Student information retrieved successfully"
         data:
-          $ref: '#/components/schemas/Student'
+          $ref: "#/components/schemas/Student"
 
     EventInfoResponse:
       type: object
@@ -359,7 +359,7 @@ components:
           type: string
           example: "Event retrieved successfully"
         data:
-          $ref: '#/components/schemas/Event'
+          $ref: "#/components/schemas/Event"
 
     ProductCountResponse:
       type: object
