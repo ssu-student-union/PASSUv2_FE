@@ -10,7 +10,7 @@ import {
 } from "@passu/ui/sidebar";
 import { PassuLogo } from "@passu/ui/passu-logo";
 import { EventAccordion } from "@/components/home/EventAccordion";
-// import { useUserInfo } from "@/api/event";
+import { useUserInfo } from "@/api/event";
 import { EventStatus } from "@/types/event";
 import { SidebarButton } from "@/components/sidebar/SidebarButton";
 import { authGuard } from "@/lib/authGuard";
@@ -21,8 +21,8 @@ export const Route = createFileRoute("/")({
 });
 
 function App() {
-  // const { data } = useUserInfo();
-  // const userName = data?.data?.name ?? data?.data?.major;
+  const { data } = useUserInfo();
+  const userName = data?.data?.name ?? data?.data?.major;
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
@@ -88,7 +88,7 @@ function App() {
                 lg:text-4xl
               `}
             >
-              사용자
+              {userName}
             </span>
             <span
               className={`
