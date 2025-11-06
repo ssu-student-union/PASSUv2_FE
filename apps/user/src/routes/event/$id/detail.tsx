@@ -5,6 +5,7 @@ import { Chip } from "@passu/ui/chip";
 import { Divider } from "@passu/ui/divider";
 import { useNavigate } from "@tanstack/react-router";
 import { useEventDetail, useEnrolledCount } from "@/api/event";
+import { EventRequireStatus } from "@/model/api";
 
 export const Route = createFileRoute("/event/$id/detail")({
   component: EventDetailPage,
@@ -80,7 +81,7 @@ function EventDetailPage() {
   }
 
   const event = eventData.data;
-  const enrolledCount = enrolledCountData?.data?.count ?? 0;
+  const enrolledCount = enrolledCountData?.data?.enrolled_count ?? 0;
 
   return (
     <div className="flex size-full flex-col items-center justify-between">
@@ -111,12 +112,21 @@ function EventDetailPage() {
                 <span> 명</span>
               </span>
             </Chip>
-            {event.conditions.major?.map((major) => (
+            {event.allowed_departments.map((major) => (
               <Chip key={major}>{major}</Chip>
             ))}
-            {event.conditions.year?.map((year) => (
-              <Chip key={year}>{year}학년</Chip>
-            ))}
+            {(() => {
+              switch (event.require_status) {
+                case EventRequireStatus.ATTENDED:
+                  return <Chip key="attended">재학생</Chip>;
+                case EventRequireStatus.ON_LEAVE:
+                  return <Chip key="on_leave">휴학생</Chip>;
+                case EventRequireStatus.GRADUATED:
+                  return <Chip key="graduated">졸업생</Chip>;
+                default:
+                  return <Chip key="unknown">알 수 없음</Chip>;
+              }
+            })()}
           </div>
           <Divider />
         </div>

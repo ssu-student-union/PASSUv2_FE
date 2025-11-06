@@ -18,7 +18,9 @@ export interface StudentInfoResponse {
   data: StudentInfoData;
 }
 
-const enum EventRequireStatus {
+export const enum EventRequireStatus {
+  /** 기타 */
+  OTHER = 0,
   /** 재학생 */
   ATTENDED = 1,
   /** 휴학생 */

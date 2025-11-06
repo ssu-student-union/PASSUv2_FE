@@ -15,30 +15,35 @@ import type {
   EventInfoResponse,
   EventDetailErrorResponse,
 } from "@/model/api";
+import { getDefaultStore } from "jotai";
+import { accessTokenAtom } from "@/atoms/auth";
+
+const store = getDefaultStore();
 
 // 1. 랜덤 키 발급 API
 export const useIssueRandomKey = (
   options?: Partial<
-    UseMutationOptions<
-      RandomKeyResponse,
-      Error,
-      { eventId: string; token: string }
-    >
+    UseMutationOptions<RandomKeyResponse, Error, { eventId: string }>
   >,
 ) => {
   return useMutation({
     mutationFn: async ({
       eventId,
-      token,
     }: {
       eventId: string;
-      token: string;
     }): Promise<RandomKeyResponse> => {
-      const requestBody: IssueRandomKeyRequest = {
+      const token = store.get(accessTokenAtom);
+      if (token === null) {
+        throw new Error("Access token is required");
+      }
+      // TODO: remove event_id after backend fix
+      const requestBody: IssueRandomKeyRequest & { event_id: number } = {
         token,
+        event_id: Number(eventId),
       };
+
       const response = await apiClient.post(
-        `user-api/events/${eventId}/issue-random-key`,
+        `/user-api/events/${eventId}/issue-random-key`,
         {
           json: requestBody,
         },
@@ -95,7 +100,7 @@ export const useEnrolledCount = (
     queryFn: async (): Promise<ProductCountResponse> => {
       try {
         const response = await apiClient.get(
-          `user-api/events/${eventId}/count`,
+          `/user-api/events/${eventId}/count`,
         );
         return response.json();
       } catch (error) {
@@ -122,7 +127,7 @@ export const useEventDetail = (
     queryKey: ["eventDetail", eventId],
     queryFn: async (): Promise<EventInfoResponse> => {
       try {
-        const response = await apiClient.get(`user-api/events/${eventId}`);
+        const response = await apiClient.get(`/user-api/events/${eventId}`);
         return response.json();
       } catch (error) {
         // 에러 처리

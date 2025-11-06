@@ -2,10 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { UseQueryOptions } from "@tanstack/react-query";
 import { HTTPError } from "ky";
 import { authenticatedApiClient, apiClient } from "./client";
-import type {
-  StudentInfoResponse,
-  ApiErrorResponse,
-} from "@/model/api";
+import type { StudentInfoResponse, ApiErrorResponse } from "@/model/api";
 
 // 사용자 정보 조회 API
 export const useUserInfo = (options?: {
