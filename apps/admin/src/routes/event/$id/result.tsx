@@ -1,3 +1,4 @@
+import "@/style/print.css";
 import { useEnrolledCount, useEventDetail } from "@/api/event";
 import { EventFormRow } from "@/components/event/EventFormRow";
 import { EventDescription } from "@/components/result/EventDescription";
@@ -10,7 +11,7 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarTrigger,
-} from "@/components/ui/sidebar";
+} from "@passu/ui/sidebar";
 import { SidebarButton } from "@/components/sidebar/SidebarButton";
 import { PARTICIPANT_OPTIONS_MAP } from "@/types/event";
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";

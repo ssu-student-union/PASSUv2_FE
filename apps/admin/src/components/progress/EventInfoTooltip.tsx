@@ -1,8 +1,4 @@
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@passu/ui/tooltip";
 import { CircleAlert } from "lucide-react";
 
 interface EventInfoTooltipProps {

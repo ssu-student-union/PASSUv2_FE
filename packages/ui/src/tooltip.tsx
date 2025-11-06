@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import { cn } from "@passu/ui/utils";
+import { cn } from "./utils";
 
 function TooltipProvider({
   delayDuration = 0,
@@ -54,7 +54,7 @@ function TooltipContent({
             data-[state=closed]:animate-out data-[state=closed]:fade-out-0
             data-[state=closed]:zoom-out-95
           `,
-          className,
+          className
         )}
         {...props}
       >

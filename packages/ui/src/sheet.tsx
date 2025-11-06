@@ -3,7 +3,7 @@
 import * as React from "react";
 import * as SheetPrimitive from "@radix-ui/react-dialog";
 import { XIcon } from "lucide-react";
-import { cn } from "@passu/ui/utils";
+import { cn } from "./utils";
 
 function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
   return <SheetPrimitive.Root data-slot="sheet" {...props} />;
@@ -40,7 +40,7 @@ function SheetOverlay({
           data-[state=closed]:animate-out data-[state=closed]:fade-out-0
           data-[state=open]:animate-in data-[state=open]:fade-in-0
         `,
-        className,
+        className
       )}
       {...props}
     />
@@ -93,7 +93,7 @@ function SheetContent({
               data-[state=closed]:slide-out-to-bottom
               data-[state=open]:slide-in-from-bottom
             `,
-          className,
+          className
         )}
         {...props}
       >

@@ -7,7 +7,7 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarTrigger,
-} from "@/components/ui/sidebar";
+} from "@passu/ui/sidebar";
 import { PassuLogo } from "@passu/ui/passu-logo";
 import { EventAccordion } from "@/components/home/EventAccordion";
 // import { useUserInfo } from "@/api/event";

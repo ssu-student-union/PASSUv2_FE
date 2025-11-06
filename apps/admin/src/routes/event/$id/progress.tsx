@@ -16,7 +16,7 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarTrigger,
-} from "@/components/ui/sidebar";
+} from "@passu/ui/sidebar";
 
 import { eventStatusMessages } from "@/constants/eventstatusMessage";
 import { authGuard } from "@/lib/authGuard";
