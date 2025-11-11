@@ -12,16 +12,26 @@ function Login() {
   return (
     <div
       className={`
-        flex h-screen w-screen flex-col items-center justify-center gap-8
+        flex h-screen w-screen flex-col items-center justify-center gap-6 px-6
+        sm:gap-8 sm:px-10
       `}
     >
-      <PassuLogo className="h-auto w-120" />
+      <PassuLogo
+        className={`
+          h-auto w-48
+          sm:w-60
+          md:w-80
+          lg:w-96
+        `}
+      />
       <Button
         asChild
         className={`
-          h-19 w-124 rounded-full border-2 !border-primary !bg-white text-2xl
-          font-bold text-hover
+          h-14 w-full max-w-xs rounded-full border-2 !border-primary !bg-white
+          text-lg font-bold text-hover
           hover:text-hover
+          sm:h-16 sm:max-w-md sm:text-xl
+          md:h-18 md:max-w-lg md:text-2xl
         `}
         variant={"outline"}
       >
