@@ -19,7 +19,8 @@ function Login() {
       <Button
         asChild
         className={`
-          h-19 w-124 rounded-full border-2 text-2xl font-bold text-hover
+          h-19 w-124 rounded-full border-2 !border-primary !bg-white text-2xl
+          font-bold text-hover
           hover:text-hover
         `}
         variant={"outline"}

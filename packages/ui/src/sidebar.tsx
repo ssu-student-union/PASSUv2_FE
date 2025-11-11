@@ -218,7 +218,7 @@ function Sidebar({
     <div
       className={`
         group peer hidden text-sidebar-foreground
-        md:block
+        sm:block
       `}
       data-state={state}
       data-collapsible={state === "collapsed" ? collapsible : ""}
@@ -302,7 +302,7 @@ function SidebarTrigger({
       data-slot="sidebar-trigger"
       variant="ghost"
       size="icon"
-      className={cn("size-7", className)}
+      className={cn("block md:hidden size-7", className)}
       onClick={(event) => {
         onClick?.(event);
         toggleSidebar();

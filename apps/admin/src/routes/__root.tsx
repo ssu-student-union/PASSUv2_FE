@@ -13,16 +13,18 @@ export const Route = createRootRoute({
 function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex h-full w-full bg-background">
-        <SidebarProvider>
-          <Outlet />
-        </SidebarProvider>
-      </div>
+      <>
+        <div className="flex h-full w-full bg-background">
+          <SidebarProvider>
+            <Outlet />
+          </SidebarProvider>
+        </div>
 
-      <div className="print:hidden">
-        <ReactQueryDevtools initialIsOpen={false} />
-        <TanStackRouterDevtools />
-      </div>
+        {/* <div className="print:hidden">
+          <ReactQueryDevtools initialIsOpen={false} />
+          <TanStackRouterDevtools />
+        </div> */}
+      </>
     </QueryClientProvider>
   );
 }

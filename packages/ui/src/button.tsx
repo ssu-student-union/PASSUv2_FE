@@ -44,7 +44,7 @@ const buttonVariants = cva(
         variantType: "sidebar",
         variant: "outline",
         className:
-          "border-2 border-primary bg-white text-primary hover:text-primary",
+          "border-1 !border-primary !bg-white text-primary hover:text-primary",
       },
       {
         variantType: "form-actions",
