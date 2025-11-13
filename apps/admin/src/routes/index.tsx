@@ -21,8 +21,8 @@ export const Route = createFileRoute("/")({
 });
 
 function App() {
-  // const { data } = useUserInfo();
-  // const userName = data?.data?.name ?? data?.data?.major;
+  const { data } = useUserInfo();
+  const userName = data?.data?.name ?? data?.data?.major;
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
@@ -83,7 +83,7 @@ function App() {
                 lg:text-4xl
               `}
             >
-              {/* {userName} */}
+              {userName}
             </span>
             <span
               className={`
