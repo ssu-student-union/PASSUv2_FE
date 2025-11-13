@@ -20,10 +20,10 @@ function RootLayout() {
           </SidebarProvider>
         </div>
 
-        {/* <div className="print:hidden">
+        <div className="print:hidden">
           <ReactQueryDevtools initialIsOpen={false} />
           <TanStackRouterDevtools />
-        </div> */}
+        </div>
       </>
     </QueryClientProvider>
   );
