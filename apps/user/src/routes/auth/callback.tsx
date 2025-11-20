@@ -42,7 +42,7 @@ function AuthCallback() {
   const progressValue = useMotionValue(0);
 
   // 사용자 정보 조회 쿼리 (토큰 검증용)
-  const { data, isError, isSuccess } = useUserInfo({
+  const { data, isError, isSuccess, error } = useUserInfo({
     accessToken,
     queryOptions: {
       enabled: !!accessToken,
@@ -63,7 +63,7 @@ function AuthCallback() {
       // 토큰 검증 성공 - 토큰 저장 후 리다이렉트
       setAccessToken(accessToken);
       void navigate({ to: to ?? "/" });
-    } else if (isError || !(data && "data" in data)) {
+    } else if (isError || !isSuccess || data === undefined) {
       // 토큰 검증 실패 - 에러 모달 표시
       setShowErrorModal(true);
     }
@@ -99,6 +99,9 @@ function AuthCallback() {
             <ModalTitle>로그인 실패</ModalTitle>
             <ModalDescription>
               올바르지 않은 사용자 정보입니다. 다시 로그인해 주세요.
+              {isError && error instanceof Error && (
+                <p className="mt-2 text-sm text-red-600">{error.message}</p>
+              )}
             </ModalDescription>
           </ModalHeader>
           <ModalFooter>
