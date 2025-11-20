@@ -105,9 +105,15 @@ function EventIdPage() {
             {eventData.data.name}
           </h2>
           {eventData.data.description && (
-            <p className="w-full text-center text-base text-gray-600">
-              {eventData.data.description}
-            </p>
+            <div>
+              <p
+                className={`
+                  w-full max-w-md truncate text-center text-base text-gray-600
+                `}
+              >
+                {eventData.data.description}
+              </p>
+            </div>
           )}
         </div>
         <Button size="footer" onClick={handleParticipateClick}>
