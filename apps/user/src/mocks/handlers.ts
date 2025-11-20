@@ -2,17 +2,13 @@ import { http, HttpResponse } from "msw";
 import {
   type RandomKeyResponse,
   type RandomKeyData,
-  type IssueRandomKeyRequest,
   type EnrollStudentRequest,
   type EnrollmentData,
   type EnrollmentResponse,
-  type ApiErrorResponse,
-  type ProductCountData,
+  type PassuErrorResponse,
   type ProductCountResponse,
-  type EnrolledCountErrorResponse,
   type EventInfoData,
   type EventInfoResponse,
-  type EventDetailErrorResponse,
   type StudentInfoData,
   type StudentInfoResponse,
   EventRequireStatus,
@@ -22,41 +18,39 @@ export const handlers = [
   // 1. 랜덤 키 발급 API
   http.post<
     { eventId: string }, // Params
-    IssueRandomKeyRequest, // RequestBody
-    RandomKeyResponse | ApiErrorResponse
-  >(
-    "*/user-api/events/:eventId/issue-random-key",
-    async ({ request, params }) => {
-      const { eventId } = params;
-      console.log(`Mock: Issuing random key for event ${eventId}`);
+    undefined, // RequestBody
+    RandomKeyResponse | PassuErrorResponse
+  >("*/user-api/v2/events/:eventId/issue-random-key", ({ request, params }) => {
+    const { eventId } = params;
+    console.log(`Mock: Issuing random key for event ${eventId}`);
 
-      const { token } = await request.json();
-
-      if (!token) {
-        const errorResponse: ApiErrorResponse = {
-          message: "Invalid token or failed to retrieve user information",
-        };
-        return HttpResponse.json(errorResponse, { status: 400 });
-      }
-
-      const data: RandomKeyData = {
-        random_key: Math.floor(1000 + Math.random() * 9000).toString(),
-        expire_time: 900, // 15 minutes in seconds
-        event_id: Number(eventId),
+    // Check for Authorization header
+    const authHeader = request.headers.get("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      const errorResponse: PassuErrorResponse = {
+        result: false,
+        message: "Invalid token or failed to retrieve user information",
       };
-      const response: RandomKeyResponse = {
-        message: "Random key issued successfully",
-        data,
-      };
-      return HttpResponse.json(response, { status: 201 });
-    },
-  ),
+      return HttpResponse.json(errorResponse, { status: 422 });
+    }
+
+    const data: RandomKeyData = {
+      random_key: Math.floor(1000 + Math.random() * 9000).toString(),
+      expire_time: 900, // 15 minutes in seconds
+    };
+    const response: RandomKeyResponse = {
+      result: true,
+      message: "Random key issued successfully",
+      data,
+    };
+    return HttpResponse.json(response, { status: 200 });
+  }),
 
   // 2. 학생 등록 API
   http.post<
     { eventId: string }, // Params
     EnrollStudentRequest, // RequestBody
-    EnrollmentResponse | ApiErrorResponse
+    EnrollmentResponse | PassuErrorResponse
   >("*/api/v1/event/:eventId/enroll", async ({ request, params }) => {
     const { eventId } = params;
     console.log(`Mock: Enrolling student for event ${eventId}`);
@@ -64,7 +58,8 @@ export const handlers = [
     // Check for Authorization header
     const authHeader = request.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
-      const errorResponse: ApiErrorResponse = {
+      const errorResponse: PassuErrorResponse = {
+        result: false,
         message: "Unauthorized",
       };
       return HttpResponse.json(errorResponse, { status: 401 });
@@ -74,7 +69,8 @@ export const handlers = [
     console.log(`Mock: Using random key ${randomKey}`);
 
     if (randomKey === "invalid") {
-      const errorResponse: ApiErrorResponse = {
+      const errorResponse: PassuErrorResponse = {
+        result: false,
         message: "Invalid random key",
       };
       return HttpResponse.json(errorResponse, { status: 400 });
@@ -100,24 +96,23 @@ export const handlers = [
   http.get<
     { eventId: string }, // Params
     undefined, // RequestBody
-    ProductCountResponse | EnrolledCountErrorResponse // ResponseBody
-  >("*/user-api/events/:eventId/count", ({ params }) => {
+    ProductCountResponse | PassuErrorResponse // ResponseBody
+  >("*/user-api/v2/events/:eventId/count", ({ params }) => {
     const { eventId } = params;
     console.log(`Mock: Getting enrolled count for event ${eventId}`);
 
     if (eventId === "notfound") {
-      const errorResponse: EnrolledCountErrorResponse = {
+      const errorResponse: PassuErrorResponse = {
+        result: false,
         message: "Event not found",
       };
-      return HttpResponse.json(errorResponse, { status: 404 });
+      return HttpResponse.json(errorResponse, { status: 422 });
     }
 
-    const data: ProductCountData = {
-      enrolled_count: 123, // Mock count
-    };
     const response: ProductCountResponse = {
+      result: true,
       message: "Product count retrieved successfully",
-      data,
+      data: 123, // Mock count
     };
     return HttpResponse.json(response, { status: 200 });
   }),
@@ -126,16 +121,17 @@ export const handlers = [
   http.get<
     { eventId: string }, // Params
     undefined, // RequestBody
-    EventInfoResponse | EventDetailErrorResponse // ResponseBody
-  >("*/user-api/events/:eventId", ({ params }) => {
+    EventInfoResponse | PassuErrorResponse // ResponseBody
+  >("*/user-api/v2/events/:eventId", ({ params }) => {
     const { eventId } = params;
     console.log(`Mock: Getting event detail for event ${eventId}`);
 
     if (eventId === "notfound") {
-      const errorResponse: EventDetailErrorResponse = {
+      const errorResponse: PassuErrorResponse = {
+        result: false,
         message: "Event not found",
       };
-      return HttpResponse.json(errorResponse, { status: 404 });
+      return HttpResponse.json(errorResponse, { status: 422 });
     }
 
     const data: EventInfoData = {
@@ -144,6 +140,7 @@ export const handlers = [
       description: `Description for mock event ${eventId}`,
       product_name: "축제 티켓",
       product_quantity: 1000,
+      product_enrolled_count: 123,
       location: "대강당",
       require_status: EventRequireStatus.ATTENDED,
       require_union_fee: true,
@@ -155,6 +152,7 @@ export const handlers = [
       updated_at: "2024-01-01 00:00:00",
     };
     const response: EventInfoResponse = {
+      result: true,
       message: "Event retrieved successfully",
       data,
     };
@@ -165,28 +163,30 @@ export const handlers = [
   http.get<
     Record<string, never>, // Params
     undefined, // RequestBody
-    StudentInfoResponse | ApiErrorResponse
-  >("*/user-api/student-info", ({ request }) => {
+    StudentInfoResponse | PassuErrorResponse
+  >("*/user-api/v2/student-info", ({ request }) => {
     console.log("Mock: Getting student info");
 
     // Check for Authorization header
     const authHeader = request.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
-      const errorResponse: ApiErrorResponse = {
+      const errorResponse: PassuErrorResponse = {
+        result: false,
         message: "Invalid token or failed to retrieve user information",
       };
-      return HttpResponse.json(errorResponse, { status: 401 });
+      return HttpResponse.json(errorResponse, { status: 422 });
     }
 
     const data: StudentInfoData = {
       studentId: "20211234",
       name: "홍길동",
-      status: 1,
+      major: "컴퓨터학부",
+      status: "1",
       isPaidUnionFee: true,
       isCouncil: false,
-      majorCode: 101,
     };
     const response: StudentInfoResponse = {
+      result: true,
       message: "Student information retrieved successfully",
       data,
     };

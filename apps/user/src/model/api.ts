@@ -1,22 +1,28 @@
-// Common API Response Structures
-export interface ApiErrorResponse {
+// Common API Response Structures (PassuResponse)
+export type PassuResponse<T> = PassuSuccessResponse<T> | PassuErrorResponse;
+
+export interface PassuSuccessResponse<T> {
+  result: true;
+  message: string;
+  data: T;
+}
+
+export interface PassuErrorResponse {
+  result: false;
   message: string;
 }
 
-// Student Info Response (from /user-api/student-info)
+// Student Info Response (from /user-api/v2/student-info)
 export interface StudentInfoData {
   studentId: string;
   name: string;
-  status: number;
+  major: string;
+  status: string | null;
   isPaidUnionFee: boolean;
   isCouncil: boolean;
-  majorCode: number;
 }
 
-export interface StudentInfoResponse {
-  message: string;
-  data: StudentInfoData;
-}
+export type StudentInfoResponse = PassuResponse<StudentInfoData>;
 
 export const enum EventRequireStatus {
   /** 기타 */
@@ -29,40 +35,31 @@ export const enum EventRequireStatus {
   GRADUATED = 4,
 }
 
-// Event Info Response (from /user-api/events/{eventId})
+// Event Info Response (from /user-api/v2/events/{eventId})
 export interface EventInfoData {
   id: number;
   name: string;
   description: string;
   product_name: string;
   product_quantity: number;
+  product_enrolled_count: number;
   location: string;
   require_status: EventRequireStatus;
   require_union_fee: boolean;
   allowed_departments: string[];
-  status: "BEFORE" | "ONGOING" | "PAUSE" | "FINISHED";
+  status: "BEFORE" | "ONGOING" | "PAUSE" | "AFTER";
   start_time: string;
   end_time: string;
   created_at: string;
   updated_at: string;
 }
 
-export interface EventInfoResponse {
-  message: string;
-  data: EventInfoData;
-}
+export type EventInfoResponse = PassuResponse<EventInfoData>;
 
-// Product Count Response (from /user-api/events/{eventId}/count)
-export interface ProductCountData {
-  enrolled_count: number;
-}
+// Product Count Response (from /user-api/v2/events/{eventId}/count)
+export type ProductCountResponse = PassuResponse<number>;
 
-export interface ProductCountResponse {
-  message: string;
-  data: ProductCountData;
-}
-
-// Random Key Response (from /user-api/events/{eventId}/issue-random-key)
+// Random Key Response (from /user-api/v2/events/{eventId}/issue-random-key)
 export interface IssueRandomKeyRequest {
   token: string;
 }
@@ -70,13 +67,9 @@ export interface IssueRandomKeyRequest {
 export interface RandomKeyData {
   random_key: string;
   expire_time: number;
-  event_id: number;
 }
 
-export interface RandomKeyResponse {
-  message: string;
-  data: RandomKeyData;
-}
+export type RandomKeyResponse = PassuResponse<RandomKeyData>;
 
 // Enrollment API (from /api/v1/event/{eventId}/enroll)
 export interface EnrollStudentRequest {
@@ -97,31 +90,3 @@ export interface EnrollmentResponse {
   data: EnrollmentData;
   success: boolean;
 }
-
-// Legacy types for backward compatibility
-export type UserInfoData = StudentInfoData;
-export type UserInfoResponse = StudentInfoResponse;
-export type IssueRandomKeyResponse = RandomKeyResponse;
-export type EnrollStudentResponse = EnrollmentResponse;
-export type EnrolledCountData = ProductCountData;
-export type EnrolledCountResponse = ProductCountResponse;
-export type EventDetailData = EventInfoData;
-export type EventDetailResponse = EventInfoResponse;
-
-export interface EnrolledCountErrorResponse {
-  message: string;
-}
-
-export interface EventDetailErrorResponse {
-  message: string;
-}
-
-// Generic API Response type for backward compatibility
-export interface ApiSuccessResponse<T> {
-  message: string;
-  detail: string;
-  data: T;
-  success: boolean;
-}
-
-export type ApiResponse<T> = ApiSuccessResponse<T> | ApiErrorResponse;

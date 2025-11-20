@@ -108,7 +108,7 @@ function EventDetailPage() {
                   {isCountLoading ? "..." : enrolledCount}
                 </span>
                 <span>/</span>
-                <span>300</span> {/* 예시로 300명으로 설정 */}
+                <span>{event.product_quantity}</span>
                 <span> 명</span>
               </span>
             </Chip>
@@ -131,7 +131,10 @@ function EventDetailPage() {
           <Divider />
         </div>
         <p
-          className={`w-full text-left txt-body1 leading-[normal] text-gray-800`}
+          className={`
+            w-full overflow-y-auto text-left txt-body1 leading-[normal]
+            text-gray-800
+          `}
         >
           {event.description}
         </p>

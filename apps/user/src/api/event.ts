@@ -7,13 +7,11 @@ import { HTTPError } from "ky";
 import { authenticatedApiClient, apiClient } from "./client";
 import type {
   RandomKeyResponse,
-  IssueRandomKeyRequest,
   EnrollStudentRequest,
   EnrollmentResponse,
   ProductCountResponse,
-  EnrolledCountErrorResponse,
   EventInfoResponse,
-  EventDetailErrorResponse,
+  PassuErrorResponse,
 } from "@/model/api";
 import { getDefaultStore } from "jotai";
 import { accessTokenAtom } from "@/atoms/auth";
@@ -36,17 +34,8 @@ export const useIssueRandomKey = (
       if (token === null) {
         throw new Error("Access token is required");
       }
-      // TODO: remove event_id after backend fix
-      const requestBody: IssueRandomKeyRequest & { event_id: number } = {
-        token,
-        event_id: Number(eventId),
-      };
-
-      const response = await apiClient.post(
-        `/user-api/events/${eventId}/issue-random-key`,
-        {
-          json: requestBody,
-        },
+      const response = await authenticatedApiClient.post(
+        `user-api/v2/events/${eventId}/issue-random-key`,
       );
       return response.json();
     },
@@ -79,7 +68,7 @@ export const useEnrollStudent = (
         randomKey: randomKey,
       };
       const response = await authenticatedApiClient.post(
-        `/api/v1/event/${eventId}/enroll`,
+        `user-api/v1/event/${eventId}/enroll`,
         {
           json: requestBody,
         },
@@ -100,14 +89,13 @@ export const useEnrolledCount = (
     queryFn: async (): Promise<ProductCountResponse> => {
       try {
         const response = await apiClient.get(
-          `/user-api/events/${eventId}/count`,
+          `user-api/v2/events/${eventId}/count`,
         );
         return response.json();
       } catch (error) {
-        // 404 에러 처리
-        if (error instanceof HTTPError && error.response.status === 404) {
-          const errorResponse: EnrolledCountErrorResponse =
-            await error.response.json();
+        // 422 에러 처리
+        if (error instanceof HTTPError && error.response.status === 422) {
+          const errorResponse: PassuErrorResponse = await error.response.json();
           throw new Error(errorResponse.message);
         }
         throw error;
@@ -127,13 +115,12 @@ export const useEventDetail = (
     queryKey: ["eventDetail", eventId],
     queryFn: async (): Promise<EventInfoResponse> => {
       try {
-        const response = await apiClient.get(`/user-api/events/${eventId}`);
+        const response = await apiClient.get(`user-api/v2/events/${eventId}`);
         return response.json();
       } catch (error) {
-        // 에러 처리
-        if (error instanceof HTTPError && error.response.status === 404) {
-          const errorResponse: EventDetailErrorResponse =
-            await error.response.json();
+        // 422 에러 처리
+        if (error instanceof HTTPError && error.response.status === 422) {
+          const errorResponse: PassuErrorResponse = await error.response.json();
           throw new Error(errorResponse.message);
         }
         throw error;
