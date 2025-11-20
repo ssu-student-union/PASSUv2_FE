@@ -74,7 +74,7 @@ function EventIdPage() {
   }
 
   // 이벤트 데이터가 없는 경우
-  if (!eventData?.data) {
+  if (!eventData?.result) {
     return (
       <div className="flex size-full flex-col items-center justify-center">
         <div

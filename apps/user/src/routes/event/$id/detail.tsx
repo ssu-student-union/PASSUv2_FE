@@ -62,7 +62,7 @@ function EventDetailPage() {
   }
 
   // 이벤트 데이터가 없는 경우
-  if (!eventData?.data) {
+  if (!eventData?.result) {
     return (
       <div className="flex size-full flex-col items-center justify-center">
         <div
@@ -81,7 +81,7 @@ function EventDetailPage() {
   }
 
   const event = eventData.data;
-  const enrolledCount = enrolledCountData?.data?.enrolled_count ?? 0;
+  const enrolledCount = enrolledCountData?.result ? enrolledCountData.data : 0;
 
   return (
     <div className="flex size-full flex-col items-center justify-between">
@@ -112,7 +112,7 @@ function EventDetailPage() {
                 <span> 명</span>
               </span>
             </Chip>
-            {event.allowed_departments.map((major) => (
+            {event.allowed_departments.map((major: string) => (
               <Chip key={major}>{major}</Chip>
             ))}
             {(() => {

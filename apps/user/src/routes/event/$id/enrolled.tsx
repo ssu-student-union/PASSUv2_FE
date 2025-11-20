@@ -40,8 +40,8 @@ function EventEnrolledPage() {
     );
   }
 
-  const event = eventData?.data;
-  const user = userInfo?.data;
+  const event = eventData?.result ? eventData.data : undefined;
+  const user = userInfo?.result ? userInfo.data : undefined;
 
   return (
     <div
