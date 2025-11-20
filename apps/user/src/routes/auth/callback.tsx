@@ -71,7 +71,7 @@ function AuthCallback() {
 
   const handleErrorModalClose = () => {
     setShowErrorModal(false);
-    // void navigate({ to: "/" });
+    void navigate({ to: "/" });
   };
 
   return (
@@ -94,7 +94,7 @@ function AuthCallback() {
       </div>
 
       <Modal open={showErrorModal} onOpenChange={setShowErrorModal}>
-        <ModalContent>
+        <ModalContent showCloseButton={false}>
           <ModalHeader>
             <ModalTitle>로그인 실패</ModalTitle>
             <ModalDescription>
