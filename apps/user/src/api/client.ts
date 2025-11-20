@@ -5,7 +5,7 @@ import { accessTokenAtom } from "@/atoms/auth";
 const store = getDefaultStore();
 
 // API 베이스 URL 설정
-const API_BASE_URL = (import.meta.env.VITE_API_URL as string) || "";
+const API_BASE_URL = (import.meta.env.VITE_API_URL as string) || "/";
 
 // ky 인스턴스 생성 - 자동으로 Authorization 헤더 추가
 export const apiClient = ky.create({
