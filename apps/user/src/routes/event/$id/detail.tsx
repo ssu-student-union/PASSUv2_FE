@@ -6,6 +6,7 @@ import { Divider } from "@passu/ui/divider";
 import { useNavigate } from "@tanstack/react-router";
 import { useEventDetail, useEnrolledCount } from "@/api/event";
 import { EventRequireStatus } from "@/model/api";
+import { getRequireStatuses } from "@/utils/requireStatus";
 
 export const Route = createFileRoute("/event/$id/detail")({
   component: EventDetailPage,
@@ -82,6 +83,7 @@ function EventDetailPage() {
 
   const event = eventData.data;
   const enrolledCount = enrolledCountData?.result ? enrolledCountData.data : 0;
+  const requiredStatuses = getRequireStatuses(event.require_status);
 
   return (
     <div className="flex size-full flex-col items-center justify-between">
@@ -115,8 +117,8 @@ function EventDetailPage() {
             {event.allowed_departments.map((major: string) => (
               <Chip key={major}>{major}</Chip>
             ))}
-            {(() => {
-              switch (event.require_status) {
+            {requiredStatuses.map((status: EventRequireStatus) => {
+              switch (status) {
                 case EventRequireStatus.ATTENDED:
                   return <Chip key="attended">재학생</Chip>;
                 case EventRequireStatus.ON_LEAVE:
@@ -126,7 +128,7 @@ function EventDetailPage() {
                 default:
                   return <Chip key="unknown">알 수 없음</Chip>;
               }
-            })()}
+            })}
           </div>
           <Divider />
         </div>
