@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Button } from "@passu/ui/button";
 import { PassuLogo } from "@passu/ui/passu-logo";
 import { useNavigate } from "@tanstack/react-router";
-import { useEventDetail, useUserInfo } from "@/api/event";
+import { useEventDetail } from "@/api/event";
 
 export const Route = createFileRoute("/event/$id/enrolled")({
   component: EventEnrolledPage,
@@ -10,6 +10,7 @@ export const Route = createFileRoute("/event/$id/enrolled")({
 
 // Import local party popper emoji asset
 import partyPopperSvg from "@/assets/party-popper.svg";
+import { useUserInfo } from "@/api/user";
 
 function EventEnrolledPage() {
   const { id } = Route.useParams();
@@ -39,8 +40,8 @@ function EventEnrolledPage() {
     );
   }
 
-  const event = eventData?.data;
-  const user = userInfo?.data;
+  const event = eventData?.result ? eventData.data : undefined;
+  const user = userInfo?.result ? userInfo.data : undefined;
 
   return (
     <div

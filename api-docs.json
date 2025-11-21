@@ -1,0 +1,336 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "FastAPI", "version": "0.1.0" },
+  "paths": {
+    "/user-api/v2/events": {
+      "get": {
+        "summary": "Get All Events",
+        "operationId": "get_all_events_user_api_v2_events_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PassuResponse_list_Event__"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PassuResponse_Any_" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user-api/v2/events/{event_id}": {
+      "get": {
+        "summary": "Get Event Info",
+        "operationId": "get_event_info_user_api_v2_events__event_id__get",
+        "parameters": [
+          {
+            "name": "event_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Event Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PassuResponse_Event_"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PassuResponse_Any_" }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/user-api/v2/events/{event_id}/count": {
+      "get": {
+        "summary": "Get Product Count",
+        "operationId": "get_product_count_user_api_v2_events__event_id__count_get",
+        "parameters": [
+          {
+            "name": "event_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Event Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PassuResponse_int_" }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PassuResponse_Any_" }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/user-api/v2/events/{event_id}/issue-random-key": {
+      "post": {
+        "summary": "Issue Random Key",
+        "description": "이벤트 참여용 랜덤 키를 발급합니다. bearer 토큰 필요합니다.",
+        "operationId": "issue_random_key_user_api_v2_events__event_id__issue_random_key_post",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "event_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Event Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PassuResponse_IssueRandomKeyResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PassuResponse_Any_" }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/user-api/v2/student-info": {
+      "get": {
+        "summary": "Get Student Info",
+        "description": "bearer 토큰을 통해 학생 정보를 조회합니다.",
+        "operationId": "get_student_info_user_api_v2_student_info_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PassuResponse_Student_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PassuResponse_Any_" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Event": {
+        "properties": {
+          "id": { "type": "integer", "title": "Id" },
+          "name": { "type": "string", "title": "Name" },
+          "description": { "type": "string", "title": "Description" },
+          "product_name": { "type": "string", "title": "Product Name" },
+          "product_quantity": {
+            "type": "integer",
+            "title": "Product Quantity",
+            "description": "상품 전체 수량"
+          },
+          "product_enrolled_count": {
+            "type": "integer",
+            "title": "Product Enrolled Count",
+            "description": "배부된 상품 수량"
+          },
+          "location": { "type": "string", "title": "Location" },
+          "require_status": { "type": "integer", "title": "Require Status" },
+          "require_union_fee": {
+            "type": "boolean",
+            "title": "Require Union Fee"
+          },
+          "allowed_departments": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Allowed Departments"
+          },
+          "status": { "$ref": "#/components/schemas/EventStatus" },
+          "start_time": { "type": "string", "title": "Start Time" },
+          "end_time": { "type": "string", "title": "End Time" },
+          "created_at": { "type": "string", "title": "Created At" },
+          "updated_at": { "type": "string", "title": "Updated At" }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "product_name",
+          "product_quantity",
+          "product_enrolled_count",
+          "location",
+          "require_status",
+          "require_union_fee",
+          "allowed_departments",
+          "status",
+          "start_time",
+          "end_time",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "Event"
+      },
+      "EventStatus": {
+        "type": "string",
+        "enum": ["BEFORE", "ONGOING", "PAUSE", "AFTER"],
+        "title": "EventStatus"
+      },
+      "IssueRandomKeyResponse": {
+        "properties": {
+          "random_key": {
+            "type": "string",
+            "title": "Random Key",
+            "description": "4자리 숫자로 이루어진 문자열"
+          },
+          "expire_time": {
+            "type": "integer",
+            "title": "Expire Time",
+            "description": "키 만료까지 남은 시간 (초 단위)"
+          }
+        },
+        "type": "object",
+        "required": ["random_key", "expire_time"],
+        "title": "IssueRandomKeyResponse"
+      },
+      "PassuResponse_Any_": {
+        "properties": {
+          "result": { "type": "boolean", "title": "Result" },
+          "message": { "type": "string", "title": "Message" },
+          "data": { "title": "Data" }
+        },
+        "type": "object",
+        "required": ["result", "message", "data"],
+        "title": "PassuResponse[Any]"
+      },
+      "PassuResponse_Event_": {
+        "properties": {
+          "result": { "type": "boolean", "title": "Result" },
+          "message": { "type": "string", "title": "Message" },
+          "data": { "$ref": "#/components/schemas/Event" }
+        },
+        "type": "object",
+        "required": ["result", "message", "data"],
+        "title": "PassuResponse[Event]"
+      },
+      "PassuResponse_IssueRandomKeyResponse_": {
+        "properties": {
+          "result": { "type": "boolean", "title": "Result" },
+          "message": { "type": "string", "title": "Message" },
+          "data": { "$ref": "#/components/schemas/IssueRandomKeyResponse" }
+        },
+        "type": "object",
+        "required": ["result", "message", "data"],
+        "title": "PassuResponse[IssueRandomKeyResponse]"
+      },
+      "PassuResponse_Student_": {
+        "properties": {
+          "result": { "type": "boolean", "title": "Result" },
+          "message": { "type": "string", "title": "Message" },
+          "data": { "$ref": "#/components/schemas/Student" }
+        },
+        "type": "object",
+        "required": ["result", "message", "data"],
+        "title": "PassuResponse[Student]"
+      },
+      "PassuResponse_int_": {
+        "properties": {
+          "result": { "type": "boolean", "title": "Result" },
+          "message": { "type": "string", "title": "Message" },
+          "data": { "type": "integer", "title": "Data" }
+        },
+        "type": "object",
+        "required": ["result", "message", "data"],
+        "title": "PassuResponse[int]"
+      },
+      "PassuResponse_list_Event__": {
+        "properties": {
+          "result": { "type": "boolean", "title": "Result" },
+          "message": { "type": "string", "title": "Message" },
+          "data": {
+            "items": { "$ref": "#/components/schemas/Event" },
+            "type": "array",
+            "title": "Data"
+          }
+        },
+        "type": "object",
+        "required": ["result", "message", "data"],
+        "title": "PassuResponse[list[Event]]"
+      },
+      "Student": {
+        "properties": {
+          "studentId": { "type": "string", "title": "Studentid" },
+          "name": { "type": "string", "title": "Name" },
+          "major": { "type": "string", "title": "Major" },
+          "status": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "description": "재학 상태, bitmask 형태로 저장됩니다. StudentStatus 타입 참고"
+          },
+          "isPaidUnionFee": { "type": "boolean", "title": "Ispaidunionfee" },
+          "isCouncil": { "type": "boolean", "title": "Iscouncil" }
+        },
+        "type": "object",
+        "required": [
+          "studentId",
+          "name",
+          "major",
+          "status",
+          "isPaidUnionFee",
+          "isCouncil"
+        ],
+        "title": "Student",
+        "description": "학생 정보 객체로 총학 인적정보 API의 결과값을 저장하는 객체이다"
+      },
+      "StudentStatus": {
+        "type": "integer",
+        "enum": [0, 1, 2, 4, 8],
+        "title": "StudentStatus",
+        "description": "0: 미정, 1: 재학, 2: 휴학, 4: 졸업, 8: 학생회"
+      }
+    },
+    "securitySchemes": { "HTTPBearer": { "type": "http", "scheme": "bearer" } }
+  }
+}

@@ -74,7 +74,7 @@ function EventIdPage() {
   }
 
   // 이벤트 데이터가 없는 경우
-  if (!eventData?.data) {
+  if (!eventData?.result) {
     return (
       <div className="flex size-full flex-col items-center justify-center">
         <div
@@ -105,9 +105,15 @@ function EventIdPage() {
             {eventData.data.name}
           </h2>
           {eventData.data.description && (
-            <p className="w-full text-center text-base text-gray-600">
-              {eventData.data.description}
-            </p>
+            <div>
+              <p
+                className={`
+                  w-full max-w-md truncate text-center text-base text-gray-600
+                `}
+              >
+                {eventData.data.description}
+              </p>
+            </div>
           )}
         </div>
         <Button size="footer" onClick={handleParticipateClick}>

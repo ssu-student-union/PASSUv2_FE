@@ -1,85 +1,92 @@
-// Common API Response Structures (OpenAPI format)
-export interface ApiErrorResponse {
-  message: string;
-  detail: string;
-  success: boolean;
-}
+// Common API Response Structures (PassuResponse)
+export type PassuResponse<T> = PassuSuccessResponse<T> | PassuErrorResponse;
 
-export interface ApiSuccessResponse<T> {
+export interface PassuSuccessResponse<T> {
+  result: true;
   message: string;
-  detail: string;
   data: T;
-  success: boolean;
 }
 
-export type ApiResponse<T> = ApiSuccessResponse<T> | ApiErrorResponse;
-
-// 1. Random Key Issuance API
-export interface IssueRandomKeyData {
-  randomKey: string;
-  expiredAt: string; // ISO8601 timestamp
+export interface PassuErrorResponse {
+  result: false;
+  message: string;
 }
 
-export type IssueRandomKeyResponse = ApiSuccessResponse<IssueRandomKeyData>;
+// Student Info Response (from /user-api/v2/student-info)
+export interface StudentInfoData {
+  studentId: string;
+  name: string;
+  major: string;
+  status: string | null;
+  isPaidUnionFee: boolean;
+  isCouncil: boolean;
+}
 
-// 2. Student Enrollment API
+export type StudentInfoResponse = PassuResponse<StudentInfoData>;
+
+export const enum EventRequireStatus {
+  /** 기타 */
+  OTHER = 0,
+  /** 재학생 */
+  ATTENDED = 1,
+  /** 휴학생 */
+  ON_LEAVE = 2,
+  /** 졸업생 */
+  GRADUATED = 4,
+}
+
+// Event Info Response (from /user-api/v2/events/{eventId})
+export interface EventInfoData {
+  id: number;
+  name: string;
+  description: string;
+  product_name: string;
+  product_quantity: number;
+  product_enrolled_count: number;
+  location: string;
+  require_status: EventRequireStatus;
+  require_union_fee: boolean;
+  allowed_departments: string[];
+  status: "BEFORE" | "ONGOING" | "PAUSE" | "AFTER";
+  start_time: string;
+  end_time: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export type EventInfoResponse = PassuResponse<EventInfoData>;
+
+// Product Count Response (from /user-api/v2/events/{eventId}/count)
+export type ProductCountResponse = PassuResponse<number>;
+
+// Random Key Response (from /user-api/v2/events/{eventId}/issue-random-key)
+export interface IssueRandomKeyRequest {
+  token: string;
+}
+
+export interface RandomKeyData {
+  random_key: string;
+  expire_time: number;
+}
+
+export type RandomKeyResponse = PassuResponse<RandomKeyData>;
+
+// Enrollment API (from /api/v1/event/{eventId}/enroll)
 export interface EnrollStudentRequest {
   randomKey: string;
 }
 
-export interface EnrollStudentData {
+export interface EnrollmentData {
   eventId: number;
   studentId: string;
+  studentName: string;
   enrollmentId: number;
-  timestamp: string; // ISO8601 timestamp (enrolled time)
+  timestamp: string;
 }
 
-export type EnrollStudentResponse = ApiSuccessResponse<EnrollStudentData>;
-
-// 3. Enrolled Student Count API
-export interface EnrolledCountData {
-  count: number;
+export interface EnrollmentResponse {
+  message: string;
+  detail: string;
+  data: EnrollmentData;
+  success: boolean;
 }
-
-export type EnrolledCountResponse = ApiSuccessResponse<EnrolledCountData>;
-
-export interface EnrolledCountErrorResponse {
-  error: string;
-}
-
-// 6. Event Detail Lookup API
-export interface EventDetailData {
-  eventId: number;
-  name: string;
-  description: string;
-  conditions: EventConditions; // Reusing EventConditions from Event Management API
-  createdAt: string; // ISO8601 timestamp
-}
-
-export type EventDetailResponse = ApiSuccessResponse<EventDetailData>;
-
-// Note: EventDetailErrorResponse can reuse ApiErrorResponse or a specific error type if needed.
-// For now, assuming it can be covered by ApiErrorResponse if the error structure is consistent.
-// If not, a specific interface like EventManagementErrorResponse would be needed.
-// Based on API-ARCHITECTURE.md, it's { "error": "..." }, so EventManagementErrorResponse is a good fit.
-// I will define it as EventDetailErrorResponse for clarity, even if it's identical.
-export interface EventDetailErrorResponse {
-  error: string;
-}
-
-// Re-adding EventConditions as it's used by EventDetailData
-export interface EventConditions {
-  major?: string[];
-  year?: string[];
-  other_criteria?: unknown; // Placeholder for other criteria
-}
-
-// User Info API
-export interface UserInfoData {
-  name?: string;
-  studentId?: string;
-  major?: string;
-  isCouncil?: boolean;
-}
-
-export type UserInfoResponse = ApiSuccessResponse<UserInfoData>;

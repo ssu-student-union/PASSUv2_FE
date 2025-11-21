@@ -5,6 +5,8 @@ import { Chip } from "@passu/ui/chip";
 import { Divider } from "@passu/ui/divider";
 import { useNavigate } from "@tanstack/react-router";
 import { useEventDetail, useEnrolledCount } from "@/api/event";
+import { EventRequireStatus } from "@/model/api";
+import { getRequireStatuses } from "@/utils/requireStatus";
 
 export const Route = createFileRoute("/event/$id/detail")({
   component: EventDetailPage,
@@ -61,7 +63,7 @@ function EventDetailPage() {
   }
 
   // 이벤트 데이터가 없는 경우
-  if (!eventData?.data) {
+  if (!eventData?.result) {
     return (
       <div className="flex size-full flex-col items-center justify-center">
         <div
@@ -80,7 +82,8 @@ function EventDetailPage() {
   }
 
   const event = eventData.data;
-  const enrolledCount = enrolledCountData?.data?.count ?? 0;
+  const enrolledCount = enrolledCountData?.result ? enrolledCountData.data : 0;
+  const requiredStatuses = getRequireStatuses(event.require_status);
 
   return (
     <div className="flex size-full flex-col items-center justify-between">
@@ -107,21 +110,33 @@ function EventDetailPage() {
                   {isCountLoading ? "..." : enrolledCount}
                 </span>
                 <span>/</span>
-                <span>300</span> {/* 예시로 300명으로 설정 */}
+                <span>{event.product_quantity}</span>
                 <span> 명</span>
               </span>
             </Chip>
-            {event.conditions.major?.map((major) => (
+            {event.allowed_departments.map((major: string) => (
               <Chip key={major}>{major}</Chip>
             ))}
-            {event.conditions.year?.map((year) => (
-              <Chip key={year}>{year}학년</Chip>
-            ))}
+            {requiredStatuses.map((status: EventRequireStatus) => {
+              switch (status) {
+                case EventRequireStatus.ATTENDED:
+                  return <Chip key="attended">재학생</Chip>;
+                case EventRequireStatus.ON_LEAVE:
+                  return <Chip key="on_leave">휴학생</Chip>;
+                case EventRequireStatus.GRADUATED:
+                  return <Chip key="graduated">졸업생</Chip>;
+                default:
+                  return <Chip key="unknown">알 수 없음</Chip>;
+              }
+            })}
           </div>
           <Divider />
         </div>
         <p
-          className={`w-full text-left txt-body1 leading-[normal] text-gray-800`}
+          className={`
+            w-full overflow-y-auto text-left txt-body1 leading-[normal]
+            text-gray-800
+          `}
         >
           {event.description}
         </p>
