@@ -19,6 +19,7 @@ export const EventAccordion = ({ type }: EventAccordionProps) => {
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   const [openItems, setOpenItems] = useState<string[]>([
     EventStatus.BEFORE,
+    EventStatus.ONGOING,
     EventStatus.PAUSE,
   ]);
 
