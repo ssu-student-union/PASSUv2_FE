@@ -108,6 +108,7 @@ function App() {
             }}
           >
             <EventAccordion type={EventStatus.BEFORE} />
+            <EventAccordion type={EventStatus.ONGOING} />
             <EventAccordion type={EventStatus.PAUSE} />
             <EventAccordion type={EventStatus.AFTER} />
           </div>

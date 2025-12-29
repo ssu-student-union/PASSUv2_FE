@@ -27,9 +27,11 @@ export const EventAccordion = ({ type }: EventAccordionProps) => {
   const title =
     type === EventStatus.BEFORE
       ? "예정된 행사"
-      : type === EventStatus.PAUSE
+      : type === EventStatus.ONGOING
         ? "진행중인 행사"
-        : "완료된 행사";
+        : type === EventStatus.PAUSE
+          ? "일시중지된 행사"
+          : "완료된 행사";
 
   const textColor: string =
     type === EventStatus.AFTER ? "text-gray-600" : "text-gray-900";
