@@ -1,6 +1,6 @@
 import ky from "ky";
 
-const API_BASE_URL = (import.meta.env.VITE_API_URL as string) || "";
+const API_BASE_URL = (import.meta.env.VITE_API_URL as string) || "/";
 
 const apiClient = ky.create({
   prefixUrl: API_BASE_URL,
