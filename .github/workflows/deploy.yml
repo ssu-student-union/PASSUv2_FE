@@ -46,6 +46,7 @@ jobs:
         run: pnpm build:apps -- --mode=${{ inputs.mode }}
         env:
           VITE_ENABLE_MSW: ${{ vars.ENABLE_MSW }}
+          VITE_ACCOUNT_API_URL: ${{ vars.ACCOUNT_API_URL }} # Account API URL for Admin
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
