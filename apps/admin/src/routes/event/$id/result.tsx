@@ -1,21 +1,28 @@
+import "@/style/print.css";
 import { useEnrolledCount, useEventDetail } from "@/api/event";
 import { EventFormRow } from "@/components/event/EventFormRow";
 import { EventDescription } from "@/components/result/EventDescription";
 import { PrintableList } from "@/components/result/PrintableList";
 import { ResultInfoRow } from "@/components/result/ResultInfoRow";
-import { Sidebar } from "@/components/sidebar/Sidebar";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarTrigger,
+} from "@passu/ui/sidebar";
 import { SidebarButton } from "@/components/sidebar/SidebarButton";
-import { SidebarButtonGroup } from "@/components/sidebar/SidebarButtonGroup";
-import { SidebarGoToEventList } from "@/components/sidebar/SidebarGoToEventList";
-import { PARTICIPANT_OPTIONS } from "@/types/event";
-import { createFileRoute, useParams } from "@tanstack/react-router";
+import { PARTICIPANT_OPTIONS_MAP } from "@/types/event";
+import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import dayjs from "dayjs";
 import { Printer } from "lucide-react";
 import { useState } from "react";
-import "@/styles/print.css";
 import { PrintableEventSummary } from "@/components/result/PrintableEventSummary";
-
+import { PassuLogo } from "@passu/ui/passu-logo";
+import { authGuard } from "@/lib/authGuard";
 export const Route = createFileRoute("/event/$id/result")({
+  beforeLoad: authGuard,
   component: ResultPage,
 });
 
@@ -33,9 +40,7 @@ function ResultPage() {
 
   const participantLabel = (codes: number[]) => {
     return codes
-      .map(
-        (code) => PARTICIPANT_OPTIONS.find((opt) => opt.value === code)?.label,
-      )
+      .map((code) => PARTICIPANT_OPTIONS_MAP[code])
       .filter(Boolean)
       .join(", ");
   };
@@ -76,59 +81,105 @@ function ResultPage() {
   return (
     <>
       <Sidebar>
-        <SidebarButtonGroup>
-          <SidebarButton
-            onClick={() => {
-              setPrintTarget("summary");
-              setTimeout(() => window.print(), 100);
-            }}
-          >
-            <Printer />
-            행사 결과 인쇄
-          </SidebarButton>
+        <SidebarContent>
+          <div className="mt-15 p-6">
+            <PassuLogo className="w-full" />
+          </div>
 
-          <SidebarButton
-            onClick={() => {
-              setPrintTarget("list");
-              setTimeout(() => window.print(), 100);
-            }}
-          >
-            <Printer />
-            상품수령명단 인쇄
-          </SidebarButton>
+          <SidebarGroup>
+            <SidebarMenu className="gap-4">
+              <SidebarMenuItem>
+                <SidebarButton
+                  onClick={() => {
+                    setPrintTarget("summary");
+                    setTimeout(() => window.print(), 100);
+                  }}
+                >
+                  <Printer />
+                  행사 결과 인쇄
+                </SidebarButton>
+              </SidebarMenuItem>
 
-          <SidebarGoToEventList />
-        </SidebarButtonGroup>
+              <SidebarMenuItem>
+                <SidebarButton
+                  onClick={() => {
+                    setPrintTarget("list");
+                    setTimeout(() => window.print(), 100);
+                  }}
+                >
+                  <Printer />
+                  상품수령명단 인쇄
+                </SidebarButton>
+              </SidebarMenuItem>
+
+              <SidebarMenuItem>
+                <SidebarButton variant="outline" asChild>
+                  <Link to="/">
+                    <span>행사 목록으로</span>
+                  </Link>
+                </SidebarButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroup>
+        </SidebarContent>
       </Sidebar>
 
-      <div
+      <main
         className={`
-          flex-1 overflow-y-auto px-10 py-26
+          flex flex-1 flex-col overflow-y-auto
           print:hidden
         `}
       >
-        <div className={`flex w-full flex-col gap-12`}>
-          <div className="flex justify-between">
-            <span className="text-4xl font-bold">행사 결과</span>
-          </div>
+        <header
+          className={`
+            flex items-center justify-between p-3
+            md:!hidden
+          `}
+        >
+          <SidebarTrigger />
+        </header>
 
-          <div
-            className={`flex w-full flex-col gap-8 rounded-3xl bg-white p-10`}
-          >
-            {resultInfoRows?.map((info) => (
-              <ResultInfoRow
-                key={info.label}
-                label={info.label}
-                value={info.value ?? ""}
-              />
-            ))}
+        <div
+          className={`
+            flex-1 px-8 pt-4 pb-15
+            sm:px-6
+            lg:px-20 lg:pt-10
+          `}
+        >
+          <div className="flex w-full flex-col gap-2">
+            <h1
+              className={`
+                px-4 text-2xl font-bold
+                sm:text-3xl
+                lg:text-4xl
+              `}
+            >
+              행사 결과
+            </h1>
 
-            <EventFormRow label="행사 설명">
-              <EventDescription description={eventDetail.description} />
-            </EventFormRow>
+            <div
+              className={`
+                flex w-full flex-col gap-5 overflow-y-auto rounded-2xl bg-white
+                p-5
+                sm:gap-6 sm:rounded-3xl sm:p-8
+                lg:gap-8 lg:p-10
+              `}
+            >
+              {resultInfoRows?.map((info) => (
+                <ResultInfoRow
+                  key={info.label}
+                  label={info.label}
+                  value={info.value ?? ""}
+                />
+              ))}
+
+              <EventFormRow label="행사 설명">
+                <EventDescription description={eventDetail.description} />
+              </EventFormRow>
+            </div>
           </div>
         </div>
-      </div>
+      </main>
 
       {printTarget === "summary" && (
         <div

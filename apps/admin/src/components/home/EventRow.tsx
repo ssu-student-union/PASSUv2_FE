@@ -17,8 +17,8 @@ export const EventRow = ({ event, className }: EventRowProps) => {
     <div
       className={cn(
         `
-          flex w-full justify-between border-b-1 border-gray-400 px-4 py-3
-          txt-subtitle1
+          flex w-full justify-between overflow-x-auto border-b-1 border-gray-400
+          px-4 py-3 txt-subtitle1 whitespace-nowrap
         `,
         className,
       )}

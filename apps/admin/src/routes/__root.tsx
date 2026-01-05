@@ -1,3 +1,4 @@
+import { SidebarProvider } from "@passu/ui/sidebar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Outlet, createRootRoute } from "@tanstack/react-router";
@@ -12,14 +13,18 @@ export const Route = createRootRoute({
 function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex h-full w-full bg-background">
-        <Outlet />
-      </div>
+      <>
+        <div className="flex h-full w-full bg-background">
+          <SidebarProvider>
+            <Outlet />
+          </SidebarProvider>
+        </div>
 
-      <div className="print:hidden">
-        <ReactQueryDevtools initialIsOpen={false} />
-        <TanStackRouterDevtools />
-      </div>
+        <div className="print:hidden">
+          <ReactQueryDevtools initialIsOpen={false} />
+          <TanStackRouterDevtools />
+        </div>
+      </>
     </QueryClientProvider>
   );
 }

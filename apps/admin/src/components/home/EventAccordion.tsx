@@ -19,6 +19,7 @@ export const EventAccordion = ({ type }: EventAccordionProps) => {
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   const [openItems, setOpenItems] = useState<string[]>([
     EventStatus.BEFORE,
+    EventStatus.ONGOING,
     EventStatus.PAUSE,
   ]);
 
@@ -27,11 +28,14 @@ export const EventAccordion = ({ type }: EventAccordionProps) => {
   const title =
     type === EventStatus.BEFORE
       ? "예정된 행사"
-      : type === EventStatus.PAUSE
+      : type === EventStatus.ONGOING
         ? "진행중인 행사"
-        : "완료된 행사";
+        : type === EventStatus.PAUSE
+          ? "일시중지된 행사"
+          : "완료된 행사";
+
   const textColor: string =
-    type === EventStatus.AFTER ? "text-gray-900" : "text-gray-600";
+    type === EventStatus.AFTER ? "text-gray-600" : "text-gray-900";
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteEventList(type);

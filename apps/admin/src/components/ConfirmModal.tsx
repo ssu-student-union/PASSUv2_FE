@@ -34,10 +34,7 @@ export const ConfirmModal = ({
         </ModalHeader>
 
         <ModalFooter
-          className={`
-            mt-6 flex justify-center gap-4
-            sm:justify-center
-          `}
+          className={`mt-6 flex flex-row items-center justify-center gap-4`}
         >
           <Button
             variant="outline"

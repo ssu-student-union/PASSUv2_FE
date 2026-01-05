@@ -12,6 +12,9 @@ export const PARTICIPANT_OPTIONS = [
   { label: "졸업생", value: 4 },
 ];
 
+export const PARTICIPANT_OPTIONS_MAP: Record<number, string> =
+  Object.fromEntries(PARTICIPANT_OPTIONS.map((opt) => [opt.value, opt.label]));
+
 export const FEE_OPTIONS = [
   { label: "납부자", value: "PAID" },
   { label: "미납자", value: "UNPAID" },

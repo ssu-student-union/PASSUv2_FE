@@ -43,7 +43,10 @@ const buttonVariants = cva(
       {
         variantType: "sidebar",
         variant: "outline",
-        className: "border-2 text-primary hover:text-primary",
+        // NOTE: Button outline 스타일이 현재 적용되지 않아 임시로 "!important" 처리했습니다.
+        // TODO: 스타일 우선순위 원인 확인 후 개선 예정입니다.
+        className:
+          "border-1 !border-primary !bg-white text-primary hover:text-primary",
       },
       {
         variantType: "form-actions",
