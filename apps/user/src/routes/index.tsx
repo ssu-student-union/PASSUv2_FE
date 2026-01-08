@@ -1,23 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useMemo } from "react";
 import { useEventList } from "@/api/event";
 import { EventCard } from "@/components/EventCard";
 import type { EventInfoData } from "@/model/api";
 import { Skeleton } from "@passu/ui/skeleton";
 import { Separator } from "@passu/ui/separator";
 import { Header } from "@/components/Header";
-import { formatEventDate } from "@/utils/date";
+import { isSameDay } from "@/utils/date";
 
 export const Route = createFileRoute("/")({
   component: App,
 });
-
-function isSameDay(date1: Date, date2: Date): boolean {
-  return (
-    date1.getFullYear() === date2.getFullYear() &&
-    date1.getMonth() === date2.getMonth() &&
-    date1.getDate() === date2.getDate()
-  );
-}
 
 function filterTodayEvents(events: EventInfoData[]): EventInfoData[] {
   const today = new Date();
@@ -27,9 +20,12 @@ function filterTodayEvents(events: EventInfoData[]): EventInfoData[] {
   });
 }
 
-function formatTodayDate(): string {
-  return formatEventDate(new Date().toISOString()).split(" ")[0];
-}
+const todayDateFormatter = new Intl.DateTimeFormat("ko-KR", {
+  year: "numeric",
+  month: "numeric",
+  day: "numeric",
+  weekday: "short",
+});
 
 function EventCardSkeleton() {
   return (
@@ -64,8 +60,12 @@ function EventCardSkeleton() {
 function App() {
   const { data, isLoading, isError, error } = useEventList();
 
-  const todayEvents =
-    data?.result && data.data ? filterTodayEvents(data.data) : [];
+  const todayEvents = useMemo(
+    () => (data?.result && data.data ? filterTodayEvents(data.data) : []),
+    [data],
+  );
+
+  const todayDate = todayDateFormatter.format(new Date());
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -82,7 +82,7 @@ function App() {
             sm:text-xl
           `}
         >
-          {formatTodayDate()}
+          {todayDate}
         </span>
         <h1
           className={`

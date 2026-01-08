@@ -20,7 +20,7 @@ function EventEnrollPage() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // 랜덤 키 발급 mutation
-  const issueKeyMutation = useIssueRandomKey({
+  const { mutate: issueRandomKey } = useIssueRandomKey({
     onSuccess: (data) => {
       if (data.result) {
         setRandomKey(data.data.random_key);
@@ -36,14 +36,14 @@ function EventEnrollPage() {
   useEffect(() => {
     if (enrollmentStatus === "idle") {
       setEnrollmentStatus("issuing");
-      issueKeyMutation.mutate({ eventId: id });
+      issueRandomKey({ eventId: id });
     }
-  }, [enrollmentStatus, id, issueKeyMutation]);
+  }, [enrollmentStatus, id, issueRandomKey]);
 
   const handleRetry = () => {
     setEnrollmentStatus("issuing");
     setErrorMessage("");
-    issueKeyMutation.mutate({ eventId: id });
+    issueRandomKey({ eventId: id });
   };
 
   const handleGoBack = () => {
