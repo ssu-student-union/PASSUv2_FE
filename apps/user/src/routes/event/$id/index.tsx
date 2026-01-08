@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@passu/ui/button";
-import { PassuLogo } from "@passu/ui/passu-logo";
+import { Header } from "@/components/Header";
 import {
   Modal,
   ModalContent,
@@ -45,9 +45,10 @@ function EventIdPage() {
   // 로딩 상태
   if (isLoading) {
     return (
-      <div className="flex size-full flex-col items-center justify-center">
-        <div className="w-full text-center txt-h2 text-gray-800">
-          <p>이벤트 정보를 불러오는 중...</p>
+      <div className="flex size-full flex-col">
+        <Header />
+        <div className="flex grow items-center justify-center">
+          <p className="txt-h2 text-gray-800">이벤트 정보를 불러오는 중...</p>
         </div>
       </div>
     );
@@ -56,14 +57,16 @@ function EventIdPage() {
   // 에러 상태
   if (error) {
     return (
-      <div className="flex size-full flex-col items-center justify-center">
+      <div className="flex size-full flex-col">
+        <Header />
         <div
           className={`
-            flex w-full grow flex-col items-center justify-center text-center
-            txt-h2 text-gray-800
+            flex grow flex-col items-center justify-center text-center
           `}
         >
-          <p>이벤트를 불러오는 중 오류가 발생했습니다.</p>
+          <p className="txt-h2 text-gray-800">
+            이벤트를 불러오는 중 오류가 발생했습니다.
+          </p>
           <p className="mt-2 text-sm text-gray-600">{error.message}</p>
         </div>
         <Button size="footer" asChild>
@@ -76,14 +79,14 @@ function EventIdPage() {
   // 이벤트 데이터가 없는 경우
   if (!eventData?.result) {
     return (
-      <div className="flex size-full flex-col items-center justify-center">
+      <div className="flex size-full flex-col">
+        <Header />
         <div
           className={`
-            flex w-full grow flex-col items-center justify-center text-center
-            txt-h2 text-gray-800
+            flex grow flex-col items-center justify-center text-center
           `}
         >
-          <p>이벤트를 찾을 수 없습니다.</p>
+          <p className="txt-h2 text-gray-800">이벤트를 찾을 수 없습니다.</p>
         </div>
         <Button size="footer" asChild>
           <Link to="/">홈으로 돌아가기</Link>
@@ -94,26 +97,14 @@ function EventIdPage() {
 
   return (
     <>
-      <div className="flex size-full flex-col items-center justify-center">
-        <div
-          className={`
-            flex grow basis-0 flex-col items-center justify-center gap-8
-          `}
-        >
-          <PassuLogo className="h-9" />
-          <h2 className="w-full text-center txt-h2 text-gray-800">
-            {eventData.data.name}
-          </h2>
+      <div className="flex size-full flex-col">
+        <Header />
+        <div className="flex grow flex-col items-center justify-center gap-8">
+          <h2 className="txt-h2 text-gray-800">{eventData.data.name}</h2>
           {eventData.data.description && (
-            <div>
-              <p
-                className={`
-                  w-full max-w-md truncate text-center text-base text-gray-600
-                `}
-              >
-                {eventData.data.description}
-              </p>
-            </div>
+            <p className="max-w-md truncate text-center text-base text-gray-600">
+              {eventData.data.description}
+            </p>
           )}
         </div>
         <Button size="footer" onClick={handleParticipateClick}>
