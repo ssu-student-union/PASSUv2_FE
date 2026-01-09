@@ -15,7 +15,8 @@ interface EventEnrolledPageProps {
 }
 
 function EventEnrolledPage({ eventId }: EventEnrolledPageProps) {
-  const { data: eventData, isLoading: isEventLoading } = useEventDetail(eventId);
+  const { data: eventData, isLoading: isEventLoading } =
+    useEventDetail(eventId);
   const { data: userInfo, isLoading: isUserLoading } = useUserInfo();
 
   const handleSurveyClick = () => {
