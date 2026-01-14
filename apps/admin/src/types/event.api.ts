@@ -78,3 +78,18 @@ export interface UserInfoData {
   };
   isSuccess: boolean;
 }
+
+// 학부별 행사 종료 이벤트 목록
+export interface FinishedEvent extends EventData {
+  allowAllDepartments: boolean;
+}
+
+export interface FinishedEventSection {
+  organizationName: string;
+  events: FinishedEvent[];
+  eventCount: number;
+}
+
+export interface FinishedEventListData {
+  sections: FinishedEventSection[];
+}

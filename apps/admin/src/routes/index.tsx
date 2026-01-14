@@ -10,10 +10,11 @@ import {
 } from "@passu/ui/sidebar";
 import { PassuLogo } from "@passu/ui/passu-logo";
 import { EventAccordion } from "@/components/home/EventAccordion";
-import { useUserInfo } from "@/api/event";
+import { useFinishedEventList, useUserInfo } from "@/api/event";
 import { EventStatus } from "@/types/event";
 import { SidebarButton } from "@/components/sidebar/SidebarButton";
 import { authGuard } from "@/lib/authGuard";
+import { FinishedEventAccordion } from "@/components/home/FinishedEventAccordion";
 
 export const Route = createFileRoute("/")({
   beforeLoad: authGuard,
@@ -23,6 +24,9 @@ export const Route = createFileRoute("/")({
 function App() {
   const { data } = useUserInfo();
   const userName = data?.data?.name ?? data?.data?.major;
+
+  const { data: finishedEvent } = useFinishedEventList();
+  const sections = finishedEvent?.data.sections ?? [];
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
@@ -39,14 +43,17 @@ function App() {
 
           <SidebarGroup>
             <SidebarMenu className="gap-4">
-              <SidebarMenuItem>
-                <SidebarButton asChild>
-                  <Link to="/event/create">
-                    <Plus />
-                    <span>행사 생성</span>
-                  </Link>
-                </SidebarButton>
-              </SidebarMenuItem>
+              {userName !== "중앙감사위원회" && (
+                <SidebarMenuItem>
+                  <SidebarButton asChild>
+                    <Link to="/event/create">
+                      <Plus />
+                      <span>행사 생성</span>
+                    </Link>
+                  </SidebarButton>
+                </SidebarMenuItem>
+              )}
+
               <SidebarMenuItem>
                 <SidebarButton variant="outline" onClick={handleLogout}>
                   <LogOut />
@@ -107,10 +114,16 @@ function App() {
               msOverflowStyle: "none",
             }}
           >
-            <EventAccordion type={EventStatus.BEFORE} />
-            <EventAccordion type={EventStatus.ONGOING} />
-            <EventAccordion type={EventStatus.PAUSE} />
-            <EventAccordion type={EventStatus.AFTER} />
+            {userName === "중앙감사위원회" ? (
+              <FinishedEventAccordion sections={sections} />
+            ) : (
+              <>
+                <EventAccordion type={EventStatus.BEFORE} />
+                <EventAccordion type={EventStatus.ONGOING} />
+                <EventAccordion type={EventStatus.PAUSE} />
+                <EventAccordion type={EventStatus.AFTER} />
+              </>
+            )}
           </div>
         </div>
       </main>
