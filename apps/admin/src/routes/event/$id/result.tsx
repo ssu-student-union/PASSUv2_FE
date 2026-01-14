@@ -82,53 +82,51 @@ function ResultPage() {
 
   return (
     <>
-      <div className="print:hidden">
-        <Sidebar>
-          <SidebarContent>
-            <div className="mt-15 p-6">
-              <PassuLogo className="w-full" />
-            </div>
+      <Sidebar className="print:hidden">
+        <SidebarContent>
+          <div className="mt-15 p-6">
+            <PassuLogo className="w-full" />
+          </div>
 
-            <SidebarGroup>
-              <SidebarMenu className="gap-4">
-                <SidebarMenuItem>
-                  <SidebarButton
-                    onClick={() => {
-                      setOpenMobile(false);
-                      setPrintTarget("summary");
-                      setTimeout(() => window.print(), 400);
-                    }}
-                  >
-                    <Printer />
-                    행사 결과 인쇄
-                  </SidebarButton>
-                </SidebarMenuItem>
+          <SidebarGroup>
+            <SidebarMenu className="gap-4">
+              <SidebarMenuItem>
+                <SidebarButton
+                  onClick={() => {
+                    setOpenMobile(false);
+                    setPrintTarget("summary");
+                    setTimeout(() => window.print(), 400);
+                  }}
+                >
+                  <Printer />
+                  행사 결과 인쇄
+                </SidebarButton>
+              </SidebarMenuItem>
 
-                <SidebarMenuItem>
-                  <SidebarButton
-                    onClick={() => {
-                      setPrintTarget("list");
-                      setOpenMobile(false);
-                      setTimeout(() => window.print(), 400);
-                    }}
-                  >
-                    <Printer />
-                    상품수령명단 인쇄
-                  </SidebarButton>
-                </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarButton
+                  onClick={() => {
+                    setPrintTarget("list");
+                    setOpenMobile(false);
+                    setTimeout(() => window.print(), 400);
+                  }}
+                >
+                  <Printer />
+                  상품수령명단 인쇄
+                </SidebarButton>
+              </SidebarMenuItem>
 
-                <SidebarMenuItem>
-                  <SidebarButton variant="outline" asChild>
-                    <Link to="/">
-                      <span>행사 목록으로</span>
-                    </Link>
-                  </SidebarButton>
-                </SidebarMenuItem>
-              </SidebarMenu>
-            </SidebarGroup>
-          </SidebarContent>
-        </Sidebar>
-      </div>
+              <SidebarMenuItem>
+                <SidebarButton variant="outline" asChild>
+                  <Link to="/">
+                    <span>행사 목록으로</span>
+                  </Link>
+                </SidebarButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroup>
+        </SidebarContent>
+      </Sidebar>
 
       <main
         className={`

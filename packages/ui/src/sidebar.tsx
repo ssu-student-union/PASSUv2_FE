@@ -216,10 +216,13 @@ function Sidebar({
 
   return (
     <div
-      className={`
+      className={cn(
+        `
         group peer hidden text-sidebar-foreground
         sm:block
-      `}
+      `,
+        className
+      )}
       data-state={state}
       data-collapsible={state === "collapsed" ? collapsible : ""}
       data-variant={variant}
