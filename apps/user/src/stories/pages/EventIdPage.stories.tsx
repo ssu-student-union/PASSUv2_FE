@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Button } from "@passu/ui/button";
 import { Header } from "@/components/Header";
 import {
@@ -9,40 +9,37 @@ import {
   ModalDescription,
   ModalFooter,
 } from "@passu/ui/modal";
-import { useAtom } from "jotai";
-import { accessTokenAtom } from "@/atoms/auth";
 import { useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
 import { useEventDetail } from "@/api/event";
+import {
+  eventDetailSuccessHandler,
+  eventDetailErrorHandler,
+  studentInfoSuccessHandler,
+  notLoggedInStudentInfoHandler,
+} from "@/mocks/storybook-handlers";
 
-export const Route = createFileRoute("/event/$id/")({
-  component: EventIdPage,
-});
+interface EventIdPageProps {
+  eventId: string;
+  isLoggedIn?: boolean;
+}
 
-function EventIdPage() {
-  const { id } = Route.useParams();
-  const [accessToken] = useAtom(accessTokenAtom);
+function EventIdPage({ eventId, isLoggedIn = false }: EventIdPageProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const navigate = useNavigate();
 
-  // 이벤트 상세 정보 조회
-  const { data: eventData, isLoading, error } = useEventDetail(id);
+  const { data: eventData, isLoading, error } = useEventDetail(eventId);
 
   const handleParticipateClick = () => {
-    if (!accessToken) {
+    if (!isLoggedIn) {
       setIsModalOpen(true);
     } else {
-      void navigate({ to: "/event/$id/detail", params: { id } });
+      alert("참여하기 클릭 - 실제로는 상세 페이지로 이동합니다");
     }
   };
 
   const handleLoginRedirect = () => {
-    const redirectUrl = `${window.location.origin}/auth/callback?to=/event/${id}/detail`;
-    const encodedRedirectUrl = encodeURIComponent(redirectUrl);
-    window.location.href = `https://stu.ssu.ac.kr/register/redirect?redirect=${encodedRedirectUrl}`;
+    alert("로그인 페이지로 이동합니다");
   };
 
-  // 로딩 상태
   if (isLoading) {
     return (
       <div className="flex size-full flex-col">
@@ -54,7 +51,6 @@ function EventIdPage() {
     );
   }
 
-  // 에러 상태
   if (error) {
     return (
       <div className="flex size-full flex-col">
@@ -69,14 +65,13 @@ function EventIdPage() {
           </p>
           <p className="mt-2 text-sm text-gray-600">{error.message}</p>
         </div>
-        <Button size="footer" asChild>
-          <Link to="/">홈으로 돌아가기</Link>
+        <Button size="footer" onClick={() => alert("홈으로 이동")}>
+          홈으로 돌아가기
         </Button>
       </div>
     );
   }
 
-  // 이벤트 데이터가 없는 경우
   if (!eventData?.result) {
     return (
       <div className="flex size-full flex-col">
@@ -88,8 +83,8 @@ function EventIdPage() {
         >
           <p className="txt-h2 text-gray-800">이벤트를 찾을 수 없습니다.</p>
         </div>
-        <Button size="footer" asChild>
-          <Link to="/">홈으로 돌아가기</Link>
+        <Button size="footer" onClick={() => alert("홈으로 이동")}>
+          홈으로 돌아가기
         </Button>
       </div>
     );
@@ -131,3 +126,64 @@ function EventIdPage() {
     </>
   );
 }
+
+const meta: Meta<typeof EventIdPage> = {
+  title: "Pages/이벤트 진입",
+  component: EventIdPage,
+  parameters: {
+    layout: "fullscreen",
+  },
+  args: {
+    eventId: "1",
+  },
+};
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const SuccessLoggedIn: Story = {
+  name: "성공 - 로그인 상태",
+  args: {
+    eventId: "1",
+    isLoggedIn: true,
+  },
+  parameters: {
+    msw: {
+      handlers: {
+        eventDetail: eventDetailSuccessHandler,
+        studentInfo: studentInfoSuccessHandler,
+      },
+    },
+  },
+};
+
+export const SuccessNotLoggedIn: Story = {
+  name: "성공 - 비로그인 상태",
+  args: {
+    eventId: "1",
+    isLoggedIn: false,
+  },
+  parameters: {
+    msw: {
+      handlers: {
+        eventDetail: eventDetailSuccessHandler,
+        studentInfo: notLoggedInStudentInfoHandler,
+      },
+    },
+  },
+};
+
+export const Error: Story = {
+  name: "실패 - 이벤트 조회 실패",
+  args: {
+    eventId: "999",
+  },
+  parameters: {
+    msw: {
+      handlers: {
+        eventDetail: eventDetailErrorHandler,
+        studentInfo: studentInfoSuccessHandler,
+      },
+    },
+  },
+};

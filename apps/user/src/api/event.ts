@@ -11,12 +11,36 @@ import type {
   EnrollmentResponse,
   ProductCountResponse,
   EventInfoResponse,
+  EventListResponse,
   PassuErrorResponse,
 } from "@/model/api";
 import { getDefaultStore } from "jotai";
 import { accessTokenAtom } from "@/atoms/auth";
 
 const store = getDefaultStore();
+
+// 0. 전체 이벤트 목록 조회 API
+export const useEventList = (
+  options?: Partial<UseQueryOptions<EventListResponse, Error>>,
+) => {
+  return useQuery({
+    queryKey: ["eventList"],
+    queryFn: async (): Promise<EventListResponse> => {
+      try {
+        const response = await apiClient.get("user-api/v2/events");
+        return response.json();
+      } catch (error) {
+        // 422 에러 처리
+        if (error instanceof HTTPError && error.response.status === 422) {
+          const errorResponse: PassuErrorResponse = await error.response.json();
+          throw new Error(errorResponse.message);
+        }
+        throw error;
+      }
+    },
+    ...options,
+  });
+};
 
 // 1. 랜덤 키 발급 API
 export const useIssueRandomKey = (

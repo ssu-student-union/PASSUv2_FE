@@ -5,6 +5,7 @@
     "build": "turbo run build",
     "build:apps": "turbo run build --filter=\"./apps/*\"",
     "dev": "turbo run dev",
+    "dev:storybook": "turbo run dev:storybook",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,md}\""

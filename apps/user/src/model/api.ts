@@ -35,6 +35,9 @@ export const enum EventRequireStatus {
   GRADUATED = 4,
 }
 
+// Event Status Enum
+export type EventStatus = "BEFORE" | "ONGOING" | "PAUSE" | "AFTER";
+
 // Event Info Response (from /user-api/v2/events/{eventId})
 export interface EventInfoData {
   id: number;
@@ -46,8 +49,9 @@ export interface EventInfoData {
   location: string;
   require_status: EventRequireStatus;
   require_union_fee: boolean;
+  allow_all_departments: boolean;
   allowed_departments: string[];
-  status: "BEFORE" | "ONGOING" | "PAUSE" | "AFTER";
+  status: EventStatus;
   start_time: string;
   end_time: string;
   created_at: string;
@@ -55,6 +59,9 @@ export interface EventInfoData {
 }
 
 export type EventInfoResponse = PassuResponse<EventInfoData>;
+
+// Event List Response (from /user-api/v2/events)
+export type EventListResponse = PassuResponse<EventInfoData[]>;
 
 // Product Count Response (from /user-api/v2/events/{eventId}/count)
 export type ProductCountResponse = PassuResponse<number>;

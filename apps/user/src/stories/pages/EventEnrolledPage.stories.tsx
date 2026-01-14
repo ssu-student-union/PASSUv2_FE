@@ -1,34 +1,28 @@
-import { createFileRoute } from "@tanstack/react-router";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Button } from "@passu/ui/button";
 import { Header } from "@/components/Header";
-import { useNavigate } from "@tanstack/react-router";
 import { useEventDetail } from "@/api/event";
-
-export const Route = createFileRoute("/event/$id/enrolled")({
-  component: EventEnrolledPage,
-});
-
-// Import local party popper emoji asset
 import partyPopperSvg from "@/assets/party-popper.svg";
 import { useUserInfo } from "@/api/user";
+import {
+  eventDetailSuccessHandler,
+  studentInfoSuccessHandler,
+  notLoggedInStudentInfoHandler,
+} from "@/mocks/storybook-handlers";
 
-function EventEnrolledPage() {
-  const { id } = Route.useParams();
-  const navigate = useNavigate();
+interface EventEnrolledPageProps {
+  eventId: string;
+}
 
-  // 이벤트 정보 조회
-  const { data: eventData, isLoading: isEventLoading } = useEventDetail(id);
-
-  // 사용자 정보 조회
+function EventEnrolledPage({ eventId }: EventEnrolledPageProps) {
+  const { data: eventData, isLoading: isEventLoading } =
+    useEventDetail(eventId);
   const { data: userInfo, isLoading: isUserLoading } = useUserInfo();
 
   const handleSurveyClick = () => {
-    // 실제 설문조사 URL로 이동하거나 외부 링크 처리
-    // 현재는 이벤트 목록으로 돌아가기
-    void navigate({ to: "/" });
+    alert("설문조사 참여하기 - 실제로는 설문 페이지로 이동합니다");
   };
 
-  // 로딩 중일 때
   if (isEventLoading || isUserLoading) {
     return (
       <div className="flex size-full flex-col">
@@ -71,3 +65,47 @@ function EventEnrolledPage() {
     </div>
   );
 }
+
+const meta: Meta<typeof EventEnrolledPage> = {
+  title: "Pages/등록 완료",
+  component: EventEnrolledPage,
+  parameters: {
+    layout: "fullscreen",
+  },
+  args: {
+    eventId: "1",
+  },
+};
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Success: Story = {
+  name: "성공 - 등록 완료 (로그인 사용자)",
+  args: {
+    eventId: "1",
+  },
+  parameters: {
+    msw: {
+      handlers: {
+        eventDetail: eventDetailSuccessHandler,
+        studentInfo: studentInfoSuccessHandler,
+      },
+    },
+  },
+};
+
+export const SuccessNoUser: Story = {
+  name: "성공 - 등록 완료 (비로그인)",
+  args: {
+    eventId: "1",
+  },
+  parameters: {
+    msw: {
+      handlers: {
+        eventDetail: eventDetailSuccessHandler,
+        studentInfo: notLoggedInStudentInfoHandler,
+      },
+    },
+  },
+};

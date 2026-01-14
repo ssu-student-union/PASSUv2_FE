@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useMemo } from "react";
 import { useEventList } from "@/api/event";
 import { EventCard } from "@/components/EventCard";
@@ -7,10 +7,13 @@ import { Skeleton } from "@passu/ui/skeleton";
 import { Separator } from "@passu/ui/separator";
 import { Header } from "@/components/Header";
 import { isSameDay } from "@/utils/date";
-
-export const Route = createFileRoute("/")({
-  component: App,
-});
+import {
+  eventListSuccessHandler,
+  eventListErrorHandler,
+  emptyEventListHandler,
+  studentInfoSuccessHandler,
+  notLoggedInStudentInfoHandler,
+} from "@/mocks/storybook-handlers";
 
 function filterTodayEvents(events: EventInfoData[]): EventInfoData[] {
   const today = new Date();
@@ -57,7 +60,7 @@ function EventCardSkeleton() {
   );
 }
 
-function App() {
+function EventListPage() {
   const { data, isLoading, isError, error } = useEventList();
 
   const todayEvents = useMemo(
@@ -125,19 +128,88 @@ function App() {
         {!isLoading &&
           !isError &&
           todayEvents.map((event) => (
-            <Link
+            <div
               key={event.id}
-              to="/event/$id"
-              params={{ id: String(event.id) }}
               className={`
                 block transition-transform
                 active:scale-[0.98]
               `}
             >
               <EventCard event={event} />
-            </Link>
+            </div>
           ))}
       </main>
     </div>
   );
 }
+
+const meta: Meta<typeof EventListPage> = {
+  title: "Pages/이벤트 목록",
+  component: EventListPage,
+  parameters: {
+    layout: "fullscreen",
+  },
+};
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Success: Story = {
+  name: "성공 - 이벤트 목록 표시",
+  parameters: {
+    msw: {
+      handlers: {
+        eventList: eventListSuccessHandler,
+        studentInfo: studentInfoSuccessHandler,
+      },
+    },
+  },
+};
+
+export const SuccessLoggedIn: Story = {
+  name: "성공 - 로그인한 사용자",
+  parameters: {
+    msw: {
+      handlers: {
+        eventList: eventListSuccessHandler,
+        studentInfo: studentInfoSuccessHandler,
+      },
+    },
+  },
+};
+
+export const SuccessNotLoggedIn: Story = {
+  name: "성공 - 비로그인 사용자",
+  parameters: {
+    msw: {
+      handlers: {
+        eventList: eventListSuccessHandler,
+        studentInfo: notLoggedInStudentInfoHandler,
+      },
+    },
+  },
+};
+
+export const Empty: Story = {
+  name: "성공 - 오늘 행사 없음",
+  parameters: {
+    msw: {
+      handlers: {
+        eventList: emptyEventListHandler,
+        studentInfo: studentInfoSuccessHandler,
+      },
+    },
+  },
+};
+
+export const Error: Story = {
+  name: "실패 - 서버 오류",
+  parameters: {
+    msw: {
+      handlers: {
+        eventList: eventListErrorHandler,
+        studentInfo: studentInfoSuccessHandler,
+      },
+    },
+  },
+};

@@ -1,25 +1,26 @@
-import { createFileRoute } from "@tanstack/react-router";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Button } from "@passu/ui/button";
 import { Header } from "@/components/Header";
-import { useNavigate } from "@tanstack/react-router";
 import { useIssueRandomKey } from "@/api/event";
 import { useEffect, useState } from "react";
 import { Divider } from "@passu/ui/divider";
+import {
+  randomKeySuccessHandler,
+  randomKeyErrorHandler,
+  studentInfoSuccessHandler,
+} from "@/mocks/storybook-handlers";
 
-export const Route = createFileRoute("/event/$id/enroll")({
-  component: EventEnrollPage,
-});
+interface EventEnrollPageProps {
+  eventId: string;
+}
 
-function EventEnrollPage() {
-  const { id } = Route.useParams();
-  const navigate = useNavigate();
+function EventEnrollPage({ eventId }: EventEnrollPageProps) {
   const [randomKey, setRandomKey] = useState<string | null>(null);
   const [enrollmentStatus, setEnrollmentStatus] = useState<
     "idle" | "issuing" | "ready" | "error"
   >("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // 랜덤 키 발급 mutation
   const { mutate: issueRandomKey } = useIssueRandomKey({
     onSuccess: (data) => {
       if (data.result) {
@@ -36,21 +37,20 @@ function EventEnrollPage() {
   useEffect(() => {
     if (enrollmentStatus === "idle") {
       setEnrollmentStatus("issuing");
-      issueRandomKey({ eventId: id });
+      issueRandomKey({ eventId });
     }
-  }, [enrollmentStatus, id, issueRandomKey]);
+  }, [enrollmentStatus, eventId, issueRandomKey]);
 
   const handleRetry = () => {
     setEnrollmentStatus("issuing");
     setErrorMessage("");
-    issueRandomKey({ eventId: id });
+    issueRandomKey({ eventId });
   };
 
   const handleGoBack = () => {
-    void navigate({ to: "/event/$id/detail", params: { id } });
+    alert("뒤로가기 - 실제로는 상세 페이지로 이동합니다");
   };
 
-  // 에러 상태
   if (enrollmentStatus === "error") {
     return (
       <div className="flex size-full flex-col">
@@ -88,3 +88,47 @@ function EventEnrollPage() {
     </div>
   );
 }
+
+const meta: Meta<typeof EventEnrollPage> = {
+  title: "Pages/랜덤 키 발급",
+  component: EventEnrollPage,
+  parameters: {
+    layout: "fullscreen",
+  },
+  args: {
+    eventId: "1",
+  },
+};
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Success: Story = {
+  name: "성공 - 랜덤 키 발급",
+  args: {
+    eventId: "1",
+  },
+  parameters: {
+    msw: {
+      handlers: {
+        randomKey: randomKeySuccessHandler,
+        studentInfo: studentInfoSuccessHandler,
+      },
+    },
+  },
+};
+
+export const Error: Story = {
+  name: "실패 - 랜덤 키 발급 실패",
+  args: {
+    eventId: "1",
+  },
+  parameters: {
+    msw: {
+      handlers: {
+        randomKey: randomKeyErrorHandler,
+        studentInfo: studentInfoSuccessHandler,
+      },
+    },
+  },
+};

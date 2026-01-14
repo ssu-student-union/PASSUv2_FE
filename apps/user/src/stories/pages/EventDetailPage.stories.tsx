@@ -1,37 +1,36 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Button } from "@passu/ui/button";
 import { Header } from "@/components/Header";
 import { Chip } from "@passu/ui/chip";
 import { Divider } from "@passu/ui/divider";
-import { useNavigate } from "@tanstack/react-router";
 import { useEventDetail, useEnrolledCount } from "@/api/event";
 import { EventRequireStatus } from "@/model/api";
 import { getRequireStatuses } from "@/utils/requireStatus";
+import {
+  eventDetailSuccessHandler,
+  eventDetailErrorHandler,
+  enrolledCountSuccessHandler,
+  studentInfoSuccessHandler,
+} from "@/mocks/storybook-handlers";
 
-export const Route = createFileRoute("/event/$id/detail")({
-  component: EventDetailPage,
-});
+interface EventDetailPageProps {
+  eventId: string;
+}
 
-function EventDetailPage() {
-  const { id } = Route.useParams();
-  const navigate = useNavigate();
-
-  // 이벤트 상세 정보 조회
+function EventDetailPage({ eventId }: EventDetailPageProps) {
   const {
     data: eventData,
     isLoading: isEventLoading,
     error: eventError,
-  } = useEventDetail(id);
+  } = useEventDetail(eventId);
 
-  // 등록 학생 수 조회
   const { data: enrolledCountData, isLoading: isCountLoading } =
-    useEnrolledCount(id);
+    useEnrolledCount(eventId);
 
   const handleParticipateClick = () => {
-    void navigate({ to: "/event/$id/enroll", params: { id } });
+    alert("참여하기 클릭 - 실제로는 등록 페이지로 이동합니다");
   };
 
-  // 로딩 상태
   if (isEventLoading) {
     return (
       <div className="flex size-full flex-col">
@@ -43,7 +42,6 @@ function EventDetailPage() {
     );
   }
 
-  // 에러 상태
   if (eventError) {
     return (
       <div className="flex size-full flex-col">
@@ -58,14 +56,13 @@ function EventDetailPage() {
           </p>
           <p className="mt-2 text-sm text-gray-600">{eventError.message}</p>
         </div>
-        <Button size="footer" asChild>
-          <Link to="/">홈으로 돌아가기</Link>
+        <Button size="footer" onClick={() => alert("홈으로 이동")}>
+          홈으로 돌아가기
         </Button>
       </div>
     );
   }
 
-  // 이벤트 데이터가 없는 경우
   if (!eventData?.result) {
     return (
       <div className="flex size-full flex-col">
@@ -77,8 +74,8 @@ function EventDetailPage() {
         >
           <p className="txt-h2 text-gray-800">이벤트를 찾을 수 없습니다.</p>
         </div>
-        <Button size="footer" asChild>
-          <Link to="/">홈으로 돌아가기</Link>
+        <Button size="footer" onClick={() => alert("홈으로 이동")}>
+          홈으로 돌아가기
         </Button>
       </div>
     );
@@ -132,3 +129,48 @@ function EventDetailPage() {
     </div>
   );
 }
+
+const meta: Meta<typeof EventDetailPage> = {
+  title: "Pages/이벤트 상세",
+  component: EventDetailPage,
+  parameters: {
+    layout: "fullscreen",
+  },
+  args: {
+    eventId: "1",
+  },
+};
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Success: Story = {
+  name: "성공 - 이벤트 상세 표시",
+  args: {
+    eventId: "1",
+  },
+  parameters: {
+    msw: {
+      handlers: {
+        eventDetail: eventDetailSuccessHandler,
+        enrolledCount: enrolledCountSuccessHandler,
+        studentInfo: studentInfoSuccessHandler,
+      },
+    },
+  },
+};
+
+export const Error: Story = {
+  name: "실패 - 이벤트 조회 실패",
+  args: {
+    eventId: "999",
+  },
+  parameters: {
+    msw: {
+      handlers: {
+        eventDetail: eventDetailErrorHandler,
+        studentInfo: studentInfoSuccessHandler,
+      },
+    },
+  },
+};

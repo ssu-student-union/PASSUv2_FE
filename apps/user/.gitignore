@@ -6,3 +6,6 @@ dist-ssr
 count.txt
 .env
 public/mockServiceWorker.js
+storybook-static
+
+*storybook.log

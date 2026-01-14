@@ -59,11 +59,11 @@ function AuthCallback() {
   }, [progressValue]);
 
   useEffect(() => {
-    if (isSuccess && data) {
+    if (isSuccess && data?.result) {
       // 토큰 검증 성공 - 토큰 저장 후 리다이렉트
       setAccessToken(accessToken);
       void navigate({ to: to ?? "/" });
-    } else if (isError || !isSuccess || data === undefined) {
+    } else if (isError) {
       // 토큰 검증 실패 - 에러 모달 표시
       setShowErrorModal(true);
     }
@@ -76,20 +76,10 @@ function AuthCallback() {
 
   return (
     <>
-      <div
-        className={`flex size-full flex-col items-center justify-center gap-16`}
-      >
-        <div
-          className={`
-            flex w-60 flex-col items-center justify-center gap-16 pb-[120px]
-          `}
-        >
-          <div className="w-full text-center txt-h2 text-gray-800">
-            <p>로그인 중</p>
-          </div>
-          <div className="flex w-full flex-col gap-2 rounded bg-blue-50">
-            <Progress value={progressValue.get()} />
-          </div>
+      <div className="flex size-full flex-col items-center justify-center">
+        <div className="flex w-60 flex-col items-center gap-8 pb-32">
+          <p className="txt-h2 text-gray-800">로그인 중</p>
+          <Progress value={progressValue.get()} className="w-full" />
         </div>
       </div>
 
