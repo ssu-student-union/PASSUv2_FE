@@ -1,6 +1,6 @@
 import { cn } from "@passu/ui/utils";
 import { Chip } from "@passu/ui/chip";
-import type { EventInfoData, EventStatus } from "../model/api";
+import type { EventInfoData, EventStatus } from "@/model/api";
 import { formatEventDate } from "@/utils/date";
 
 interface EventCardProps {
