@@ -11,6 +11,7 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarTrigger,
+  useSidebar,
 } from "@passu/ui/sidebar";
 import { SidebarButton } from "@/components/sidebar/SidebarButton";
 import { PARTICIPANT_OPTIONS_MAP } from "@/types/event";
@@ -34,6 +35,7 @@ function ResultPage() {
 
   const { data: eventDetail, isLoading, isError } = useEventDetail(Number(id));
   const { data: enrollCount } = useEnrolledCount(Number(id));
+  const { setOpenMobile } = useSidebar();
 
   if (isLoading) return <div>로딩 중...</div>;
   if (isError || !eventDetail) return <div>데이터를 불러오지 못했습니다.</div>;
@@ -80,7 +82,7 @@ function ResultPage() {
 
   return (
     <>
-      <Sidebar>
+      <Sidebar className="print:hidden">
         <SidebarContent>
           <div className="mt-15 p-6">
             <PassuLogo className="w-full" />
@@ -91,8 +93,9 @@ function ResultPage() {
               <SidebarMenuItem>
                 <SidebarButton
                   onClick={() => {
+                    setOpenMobile(false);
                     setPrintTarget("summary");
-                    setTimeout(() => window.print(), 100);
+                    setTimeout(() => window.print(), 400);
                   }}
                 >
                   <Printer />
@@ -104,7 +107,8 @@ function ResultPage() {
                 <SidebarButton
                   onClick={() => {
                     setPrintTarget("list");
-                    setTimeout(() => window.print(), 100);
+                    setOpenMobile(false);
+                    setTimeout(() => window.print(), 400);
                   }}
                 >
                   <Printer />
