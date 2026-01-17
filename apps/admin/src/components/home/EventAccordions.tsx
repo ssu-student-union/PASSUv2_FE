@@ -9,13 +9,11 @@ import {
 } from "@passu/ui/accordion";
 import { Link } from "@tanstack/react-router";
 
-interface FinishedEventAccordionProps {
+interface EventAccordionsProps {
   sections: FinishedEventSection[];
 }
 
-export const FinishedEventAccordion = ({
-  sections,
-}: FinishedEventAccordionProps) => {
+export const EventAccordions = ({ sections }: EventAccordionsProps) => {
   return (
     <Accordion type="multiple" className="flex w-full flex-col gap-12">
       {sections.map((section) => (

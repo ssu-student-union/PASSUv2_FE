@@ -14,8 +14,8 @@ import { useFinishedEventList, useUserInfo } from "@/api/event";
 import { EventStatus } from "@/types/event";
 import { SidebarButton } from "@/components/sidebar/SidebarButton";
 import { authGuard } from "@/lib/authGuard";
-import { FinishedEventAccordion } from "@/components/home/FinishedEventAccordion";
 import { isAuditorName } from "@/constants/user";
+import { EventAccordions } from "@/components/home/EventAccordions";
 
 export const Route = createFileRoute("/")({
   beforeLoad: authGuard,
@@ -117,7 +117,7 @@ function App() {
             }}
           >
             {isAuditor ? (
-              <FinishedEventAccordion sections={sections} />
+              <EventAccordions sections={sections} />
             ) : (
               <>
                 <EventAccordion type={EventStatus.BEFORE} />
