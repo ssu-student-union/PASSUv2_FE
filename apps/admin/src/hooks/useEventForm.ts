@@ -8,6 +8,11 @@ import {
   PARTICIPANT_OPTIONS,
   type EventFormValues,
 } from "@/types/event";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export function useEventForm(mode: "create" | "edit") {
   const { id } = useParams({ strict: false });
@@ -41,8 +46,8 @@ export function useEventForm(mode: "create" | "edit") {
 
   useEffect(() => {
     if (isEdit && eventDetail) {
-      const start = dayjs(eventDetail.startTime);
-      const end = dayjs(eventDetail.endTime);
+      const start = dayjs.utc(eventDetail.startTime).tz("Asia/Seoul");
+      const end = dayjs.utc(eventDetail.endTime).tz("Asia/Seoul");
 
       reset({
         title: eventDetail.name,

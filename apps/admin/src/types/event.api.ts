@@ -26,6 +26,7 @@ export interface EventData {
   endTime: string;
   createdAt: string;
   updatedAt: string;
+  allowAllDepartments?: boolean;
 }
 
 export interface PageEventResponse {
@@ -77,4 +78,15 @@ export interface UserInfoData {
     isPaidUnionFee: boolean;
   };
   isSuccess: boolean;
+}
+
+// 학부별 행사 종료 이벤트 목록
+export interface FinishedEventSection {
+  organizationName: string;
+  events: EventData[];
+  eventCount: number;
+}
+
+export interface FinishedEventListData {
+  sections: FinishedEventSection[];
 }

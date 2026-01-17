@@ -1,6 +1,11 @@
 import type { EventData } from "@/types/event.api";
 import { cn } from "@passu/ui/utils";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 interface EventRowProps {
   event: EventData;
@@ -8,7 +13,7 @@ interface EventRowProps {
 }
 
 export const EventRow = ({ event, className }: EventRowProps) => {
-  const startTime = dayjs(event.startTime);
+  const startTime = dayjs.utc(event.startTime).tz("Asia/Seoul");
 
   const formattedDate = startTime.format("YYYY/MM/DD");
   const formattedStartTime = startTime.format("HH:mm");

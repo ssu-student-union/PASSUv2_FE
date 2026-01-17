@@ -10,10 +10,12 @@ import {
 } from "@passu/ui/sidebar";
 import { PassuLogo } from "@passu/ui/passu-logo";
 import { EventAccordion } from "@/components/home/EventAccordion";
-import { useUserInfo } from "@/api/event";
+import { useFinishedEventList, useUserInfo } from "@/api/event";
 import { EventStatus } from "@/types/event";
 import { SidebarButton } from "@/components/sidebar/SidebarButton";
 import { authGuard } from "@/lib/authGuard";
+import { isAuditorName } from "@/constants/user";
+import { EventAccordions } from "@/components/home/EventAccordions";
 
 export const Route = createFileRoute("/")({
   beforeLoad: authGuard,
@@ -23,6 +25,12 @@ export const Route = createFileRoute("/")({
 function App() {
   const { data } = useUserInfo();
   const userName = data?.data?.name ?? data?.data?.major;
+  const isAuditor = isAuditorName(userName);
+
+  const { data: finishedEvent } = useFinishedEventList({
+    enabled: isAuditor,
+  });
+  const sections = finishedEvent?.data.sections ?? [];
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
@@ -39,14 +47,17 @@ function App() {
 
           <SidebarGroup>
             <SidebarMenu className="gap-4">
-              <SidebarMenuItem>
-                <SidebarButton asChild>
-                  <Link to="/event/create">
-                    <Plus />
-                    <span>행사 생성</span>
-                  </Link>
-                </SidebarButton>
-              </SidebarMenuItem>
+              {!isAuditor && (
+                <SidebarMenuItem>
+                  <SidebarButton asChild>
+                    <Link to="/event/create">
+                      <Plus />
+                      <span>행사 생성</span>
+                    </Link>
+                  </SidebarButton>
+                </SidebarMenuItem>
+              )}
+
               <SidebarMenuItem>
                 <SidebarButton variant="outline" onClick={handleLogout}>
                   <LogOut />
@@ -107,10 +118,16 @@ function App() {
               msOverflowStyle: "none",
             }}
           >
-            <EventAccordion type={EventStatus.BEFORE} />
-            <EventAccordion type={EventStatus.ONGOING} />
-            <EventAccordion type={EventStatus.PAUSE} />
-            <EventAccordion type={EventStatus.AFTER} />
+            {isAuditor ? (
+              <EventAccordions sections={sections} />
+            ) : (
+              <>
+                <EventAccordion type={EventStatus.BEFORE} />
+                <EventAccordion type={EventStatus.ONGOING} />
+                <EventAccordion type={EventStatus.PAUSE} />
+                <EventAccordion type={EventStatus.AFTER} />
+              </>
+            )}
           </div>
         </div>
       </main>

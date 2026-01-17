@@ -13,6 +13,7 @@ import type {
   EventData,
   PageEventResponse,
   UserInfoData,
+  FinishedEventListData,
 } from "@/types/event.api";
 import type { ApiResponse } from "@/types/api-response";
 import apiClient from "@/api/apiClient";
@@ -209,3 +210,16 @@ export const useUserInfo = (
     ...options,
   });
 };
+
+// 13. 학부별 종료된 행사 목록 조회
+export const useFinishedEventList = (
+  options?: Partial<UseQueryOptions<ApiResponse<FinishedEventListData>, Error>>,
+) =>
+  useQuery({
+    queryKey: ["finishedEventList"],
+    queryFn: async (): Promise<ApiResponse<FinishedEventListData>> => {
+      const response = await apiClient.get("api/v1/event/grouped-by-creator");
+      return response.json();
+    },
+    ...options,
+  });
