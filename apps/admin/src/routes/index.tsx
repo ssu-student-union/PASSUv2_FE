@@ -15,6 +15,7 @@ import { EventStatus } from "@/types/event";
 import { SidebarButton } from "@/components/sidebar/SidebarButton";
 import { authGuard } from "@/lib/authGuard";
 import { FinishedEventAccordion } from "@/components/home/FinishedEventAccordion";
+import { isAuditorName } from "@/constants/user";
 
 export const Route = createFileRoute("/")({
   beforeLoad: authGuard,
@@ -24,6 +25,7 @@ export const Route = createFileRoute("/")({
 function App() {
   const { data } = useUserInfo();
   const userName = data?.data?.name ?? data?.data?.major;
+  const isAuditor = isAuditorName(userName);
 
   const { data: finishedEvent } = useFinishedEventList();
   const sections = finishedEvent?.data.sections ?? [];
@@ -43,7 +45,7 @@ function App() {
 
           <SidebarGroup>
             <SidebarMenu className="gap-4">
-              {userName !== "중앙감사위원회" && (
+              {!isAuditor && (
                 <SidebarMenuItem>
                   <SidebarButton asChild>
                     <Link to="/event/create">
@@ -114,7 +116,7 @@ function App() {
               msOverflowStyle: "none",
             }}
           >
-            {userName === "중앙감사위원회" ? (
+            {isAuditor ? (
               <FinishedEventAccordion sections={sections} />
             ) : (
               <>
