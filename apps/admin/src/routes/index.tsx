@@ -27,7 +27,9 @@ function App() {
   const userName = data?.data?.name ?? data?.data?.major;
   const isAuditor = isAuditorName(userName);
 
-  const { data: finishedEvent } = useFinishedEventList();
+  const { data: finishedEvent } = useFinishedEventList({
+    enabled: isAuditor,
+  });
   const sections = finishedEvent?.data.sections ?? [];
 
   const handleLogout = () => {
