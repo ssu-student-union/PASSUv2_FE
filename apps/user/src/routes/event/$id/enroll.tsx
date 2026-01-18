@@ -1,8 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Header } from "@/components/Header";
-import { useIssueRandomKey } from "@/api/event";
+import { useIssueRandomKey, useEnrollStudent } from "@/api/event";
 import { useEffect, useState } from "react";
 import { Divider } from "@passu/ui/divider";
+import { Button } from "@passu/ui/button";
 
 export const Route = createFileRoute("/event/$id/enroll")({
   component: EventEnrollPage,
@@ -10,6 +11,7 @@ export const Route = createFileRoute("/event/$id/enroll")({
 
 function EventEnrollPage() {
   const { id } = Route.useParams();
+  const navigate = useNavigate();
   const [randomKey, setRandomKey] = useState<string | null>(null);
   const [isIssuing, setIsIssuing] = useState(true);
 
@@ -24,9 +26,25 @@ function EventEnrollPage() {
     throwOnError: true,
   });
 
+  // 학생 등록 mutation
+  const { mutate: enrollStudent, isPending: isEnrolling } = useEnrollStudent({
+    onSuccess: (data) => {
+      if (data.success) {
+        void navigate({ to: "/event/$id/enrolled", params: { id } });
+      }
+    },
+    throwOnError: true,
+  });
+
   useEffect(() => {
     issueRandomKey({ eventId: id });
   }, [id, issueRandomKey]);
+
+  const handleConfirm = () => {
+    if (randomKey) {
+      enrollStudent({ eventId: id, randomKey });
+    }
+  };
 
   return (
     <div className="flex size-full flex-col">
@@ -44,6 +62,13 @@ function EventEnrollPage() {
             : "화면을 학생회에게 보여주세요."}
         </p>
       </div>
+      <Button
+        size="footer"
+        disabled={isIssuing || !randomKey || isEnrolling}
+        onClick={handleConfirm}
+      >
+        {isEnrolling ? "처리 중..." : "확인 완료"}
+      </Button>
     </div>
   );
 }
