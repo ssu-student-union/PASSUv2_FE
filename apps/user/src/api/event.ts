@@ -3,7 +3,7 @@ import type {
   UseMutationOptions,
   UseQueryOptions,
 } from "@tanstack/react-query";
-import type { HTTPError } from "ky";
+import { HTTPError } from "ky";
 import { authenticatedApiClient, apiClient } from "./client";
 import type {
   RandomKeyResponse,
@@ -102,10 +102,17 @@ export const useEnrolledCount = (
   return useQuery({
     queryKey: ["enrolledCount", eventId],
     queryFn: async (): Promise<ProductCountResponse> => {
-      const response = await apiClient.get(
-        `user-api/v2/events/${eventId}/count`,
-      );
-      return response.json();
+      try {
+        const response = await apiClient.get(
+          `user-api/v2/events/${eventId}/count`,
+        );
+        return response.json();
+      } catch (error) {
+        if (error instanceof HTTPError && error.response.status === 404) {
+          return { result: true, message: "", data: 0 };
+        }
+        throw error;
+      }
     },
     enabled: !!eventId,
     ...options,
