@@ -6,7 +6,11 @@ import { useUserInfo } from "@/api/user";
 type HeaderProps = ComponentProps<"div">;
 
 export const Header = ({ className, ...props }: HeaderProps) => {
-  const { data: userInfo } = useUserInfo();
+  const { data: userInfo } = useUserInfo({
+    queryOptions: {
+      throwOnError: false,
+    },
+  });
   const name = userInfo?.result ? userInfo.data.name : null;
 
   return (
