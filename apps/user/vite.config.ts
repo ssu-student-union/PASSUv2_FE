@@ -30,45 +30,45 @@ export default defineConfig(({ mode }) => {
       },
     },
     plugins: [
-    tanstackRouter({
-      autoCodeSplitting: true,
-    }),
-    viteReact(),
-    tailwindcss(),
-  ],
-  test: {
-    globals: true,
-    environment: "jsdom",
-    projects: [
-      {
-        extends: true,
-        plugins: [
-          // The plugin will run tests for the stories defined in your Storybook config
-          // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
-          storybookTest({
-            configDir: path.join(dirname, ".storybook"),
-          }),
-        ],
-        test: {
-          name: "storybook",
-          browser: {
-            enabled: true,
-            headless: true,
-            instances: [
-              {
-                browser: "chromium",
-              },
-            ],
-          },
-          setupFiles: [".storybook/vitest.setup.ts"],
-        },
-      },
+      tanstackRouter({
+        autoCodeSplitting: true,
+      }),
+      viteReact(),
+      tailwindcss(),
     ],
-  },
-  resolve: {
-    alias: {
-      "@": resolve(__dirname, "./src"),
+    test: {
+      globals: true,
+      environment: "jsdom",
+      projects: [
+        {
+          extends: true,
+          plugins: [
+            // The plugin will run tests for the stories defined in your Storybook config
+            // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+            storybookTest({
+              configDir: path.join(dirname, ".storybook"),
+            }),
+          ],
+          test: {
+            name: "storybook",
+            browser: {
+              enabled: true,
+              headless: true,
+              instances: [
+                {
+                  browser: "chromium",
+                },
+              ],
+            },
+            setupFiles: [".storybook/vitest.setup.ts"],
+          },
+        },
+      ],
     },
-  },
+    resolve: {
+      alias: {
+        "@": resolve(__dirname, "./src"),
+      },
+    },
   };
 });
