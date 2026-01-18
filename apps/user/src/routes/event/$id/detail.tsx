@@ -99,7 +99,7 @@ function EventDetailPage() {
         <div className="flex flex-col gap-5">
           <h2 className="txt-h2 text-gray-800">{event.name}</h2>
           <div className="flex flex-wrap gap-2">
-            <Chip>
+            <Chip variant={event.status === "ONGOING" ? "primary" : "default"}>
               {event.status === "BEFORE" && "시작 전"}
               {event.status === "ONGOING" && "진행 중"}
               {event.status === "PAUSE" && "일시 중지"}
