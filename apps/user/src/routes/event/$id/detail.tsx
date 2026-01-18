@@ -5,8 +5,10 @@ import { Chip } from "@passu/ui/chip";
 import { Divider } from "@passu/ui/divider";
 import { useNavigate } from "@tanstack/react-router";
 import { useEventDetail, useEnrolledCount } from "@/api/event";
+import { useUserInfo } from "@/api/user";
 import { EventRequireStatus } from "@/model/api";
 import { getRequireStatuses } from "@/utils/requireStatus";
+import { useMemo } from "react";
 
 export const Route = createFileRoute("/event/$id/detail")({
   component: EventDetailPage,
@@ -23,9 +25,37 @@ function EventDetailPage() {
   const { data: enrolledCountData, isLoading: isCountLoading } =
     useEnrolledCount(id);
 
+  // 사용자 정보 조회
+  const { data: userInfoData, isLoading: isUserLoading } = useUserInfo();
+
   const handleParticipateClick = () => {
     void navigate({ to: "/event/$id/enroll", params: { id } });
   };
+
+  // 참여 가능 여부 확인
+  const canParticipate = useMemo(() => {
+    if (!eventData?.result || !userInfoData?.result) return false;
+
+    const event = eventData.data;
+    const user = userInfoData.data;
+
+    // 진행 중인 행사가 아닌 경우
+    if (event.status !== "ONGOING") return false;
+
+    // 학적 상태 확인 (사용자의 status가 이벤트의 require_status 비트마스크에 포함되는지)
+    const userStatusNum = Number(user.status);
+    if (userStatusNum && !(event.require_status & userStatusNum)) return false;
+
+    // 학과 확인 (모든 학과 허용이 아닌 경우)
+    if (
+      !event.allow_all_departments &&
+      !event.allowed_departments.includes(user.major)
+    ) {
+      return false;
+    }
+
+    return true;
+  }, [eventData, userInfoData]);
 
   // 로딩 상태
   if (isEventLoading) {
@@ -70,6 +100,12 @@ function EventDetailPage() {
           <h2 className="txt-h2 text-gray-800">{event.name}</h2>
           <div className="flex flex-wrap gap-2">
             <Chip>
+              {event.status === "BEFORE" && "시작 전"}
+              {event.status === "ONGOING" && "진행 중"}
+              {event.status === "PAUSE" && "일시 중지"}
+              {event.status === "AFTER" && "종료"}
+            </Chip>
+            <Chip>
               <span>잔여수량</span>
               <span className="ml-1">
                 <span className="font-bold">
@@ -100,8 +136,16 @@ function EventDetailPage() {
           {event.description}
         </p>
       </div>
-      <Button size="footer" onClick={handleParticipateClick}>
-        참여하기
+      <Button
+        size="footer"
+        disabled={isUserLoading || !canParticipate}
+        onClick={handleParticipateClick}
+      >
+        {isUserLoading
+          ? "사용자 정보를 불러오는 중..."
+          : canParticipate
+            ? "참여하기"
+            : "참여할 수 없는 이벤트입니다"}
       </Button>
     </div>
   );
