@@ -16,7 +16,7 @@ const meta = {
   argTypes: {
     variant: {
       control: { type: "select" },
-      options: ["default", "secondary", "destructive", "outline"],
+      options: ["default", "primary", "secondary", "destructive", "outline"],
     },
   },
 } satisfies Meta<typeof Chip>;
@@ -32,10 +32,17 @@ export const Default: Story = {
   },
 };
 
+export const Primary: Story = {
+  args: {
+    variant: "primary",
+    children: "소프트웨어학부",
+  },
+};
+
 export const Secondary: Story = {
   args: {
     variant: "secondary",
-    children: "컴퓨터공학과",
+    children: "컴퓨터학부",
   },
 };
 
