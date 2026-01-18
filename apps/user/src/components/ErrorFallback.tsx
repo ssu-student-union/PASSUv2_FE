@@ -32,22 +32,19 @@ export function ErrorFallback({ error, reset }: ErrorBoundaryFallbackProps) {
     void parseErrorMessage();
   }, [error]);
 
-  const handleReload = () => {
-    window.location.reload();
-  };
-
-  const handleGoHome = () => {
-    window.location.href = "/";
-  };
-
   return (
-    <div className="flex w-full flex-col items-center justify-start gap-8">
+    <div className="flex w-full flex-col items-center justify-start gap-8 p-4">
       <PassuLogo className="h-9" />
       <div className="flex flex-col items-center justify-start gap-6">
         <div className="flex flex-col items-center justify-start gap-1">
           <h1 className="text-center text-2xl font-semibold text-gray-900">
             오류가 발생했습니다
           </h1>
+          {error instanceof HTTPError && (
+            <p className="text-center text-sm text-gray-600">
+              {error.response.status} {error.response.statusText}
+            </p>
+          )}
           <p className="text-center text-base text-gray-600">{errorMessage}</p>
         </div>
       </div>
@@ -66,11 +63,8 @@ export function ErrorFallback({ error, reset }: ErrorBoundaryFallbackProps) {
           <Button variant="outline" className="flex-1" onClick={reset}>
             다시 시도
           </Button>
-          <Button variant="outline" className="flex-1" onClick={handleReload}>
-            새로고침
-          </Button>
-          <Button className="flex-1" onClick={handleGoHome}>
-            홈으로 가기
+          <Button className="flex-1" asChild>
+            <a href="/">홈으로 가기</a>
           </Button>
         </div>
       </div>
