@@ -17,11 +17,7 @@ function EventDetailPage() {
   const navigate = useNavigate();
 
   // 이벤트 상세 정보 조회
-  const {
-    data: eventData,
-    isLoading: isEventLoading,
-    error: eventError,
-  } = useEventDetail(id);
+  const { data: eventData, isLoading: isEventLoading } = useEventDetail(id);
 
   // 등록 학생 수 조회
   const { data: enrolledCountData, isLoading: isCountLoading } =
@@ -39,28 +35,6 @@ function EventDetailPage() {
         <div className="flex grow items-center justify-center">
           <p className="txt-h2 text-gray-800">이벤트 정보를 불러오는 중...</p>
         </div>
-      </div>
-    );
-  }
-
-  // 에러 상태
-  if (eventError) {
-    return (
-      <div className="flex size-full flex-col">
-        <Header />
-        <div
-          className={`
-            flex grow flex-col items-center justify-center text-center
-          `}
-        >
-          <p className="txt-h2 text-gray-800">
-            이벤트를 불러오는 중 오류가 발생했습니다.
-          </p>
-          <p className="mt-2 text-sm text-gray-600">{eventError.message}</p>
-        </div>
-        <Button size="footer" asChild>
-          <Link to="/">홈으로 돌아가기</Link>
-        </Button>
       </div>
     );
   }

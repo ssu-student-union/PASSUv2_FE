@@ -10,7 +10,13 @@ import { ErrorBoundary } from "@suspensive/react";
 import { ErrorFallback } from "../components/ErrorFallback";
 
 // QueryClient 인스턴스 생성
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      throwOnError: true,
+    },
+  },
+});
 
 export const Route = createRootRoute({
   component: () => (
