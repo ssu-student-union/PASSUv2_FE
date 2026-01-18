@@ -1,8 +1,37 @@
+import { useEffect, useState } from "react";
 import { Button } from "@passu/ui/button";
 import { PassuLogo } from "@passu/ui/passu-logo";
 import type { ErrorBoundaryFallbackProps } from "@suspensive/react";
+import type { PassuErrorResponse } from "@/model/api";
+import { HTTPError } from "ky";
 
 export function ErrorFallback({ error, reset }: ErrorBoundaryFallbackProps) {
+  const [errorMessage, setErrorMessage] = useState<string>(error.message);
+
+  useEffect(() => {
+    const parseErrorMessage = async () => {
+      // HTTPError인 경우 응답 본문에서 메시지 추출
+      if (error instanceof HTTPError) {
+        try {
+          const response = error.response as Response;
+          const body: unknown = await response.clone().json();
+          if (
+            typeof body === "object" &&
+            body !== null &&
+            "message" in body &&
+            typeof (body as PassuErrorResponse).message === "string"
+          ) {
+            setErrorMessage((body as PassuErrorResponse).message);
+          }
+        } catch {
+          // JSON 파싱 실패 시 기본 메시지 유지
+        }
+      }
+    };
+
+    void parseErrorMessage();
+  }, [error]);
+
   const handleReload = () => {
     window.location.reload();
   };
@@ -19,7 +48,7 @@ export function ErrorFallback({ error, reset }: ErrorBoundaryFallbackProps) {
           <h1 className="text-center text-2xl font-semibold text-gray-900">
             오류가 발생했습니다
           </h1>
-          <p className="text-center text-base text-gray-600">{error.message}</p>
+          <p className="text-center text-base text-gray-600">{errorMessage}</p>
         </div>
       </div>
       <div className="flex w-full flex-col items-start justify-start gap-3">
