@@ -50,8 +50,6 @@ function ResultPage() {
   const feeStatusLabel = (requireUnionFee: boolean) =>
     requireUnionFee ? "납부자, 미납자" : "납부자만";
 
-  console.log(eventDetail);
-
   const resultInfoRows = [
     { label: "행사명", value: eventDetail.name },
     { label: "행사 장소", value: eventDetail.location },
