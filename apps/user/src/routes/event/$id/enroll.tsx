@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Header } from "@/components/Header";
-import { useIssueRandomKey, useEnrollStudent } from "@/api/event";
+import { useIssueRandomKey } from "@/api/event";
 import { useEffect, useState } from "react";
 import { Divider } from "@passu/ui/divider";
 import { Button } from "@passu/ui/button";
@@ -26,24 +26,12 @@ function EventEnrollPage() {
     throwOnError: true,
   });
 
-  // 학생 등록 mutation
-  const { mutate: enrollStudent, isPending: isEnrolling } = useEnrollStudent({
-    onSuccess: (data) => {
-      if (data.success) {
-        void navigate({ to: "/event/$id/enrolled", params: { id } });
-      }
-    },
-    throwOnError: true,
-  });
-
   useEffect(() => {
     issueRandomKey({ eventId: id });
   }, [id, issueRandomKey]);
 
   const handleConfirm = () => {
-    if (randomKey) {
-      enrollStudent({ eventId: id, randomKey });
-    }
+    void navigate({ to: "/event/$id/enrolled", params: { id } });
   };
 
   return (
@@ -64,10 +52,10 @@ function EventEnrollPage() {
       </div>
       <Button
         size="footer"
-        disabled={isIssuing || !randomKey || isEnrolling}
+        disabled={isIssuing || !randomKey}
         onClick={handleConfirm}
       >
-        {isEnrolling ? "처리 중..." : "확인 완료"}
+        확인 완료
       </Button>
     </div>
   );

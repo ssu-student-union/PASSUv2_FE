@@ -7,8 +7,6 @@ import { HTTPError } from "ky";
 import { authenticatedApiClient, apiClient } from "./client";
 import type {
   RandomKeyResponse,
-  EnrollStudentRequest,
-  EnrollmentResponse,
   ProductCountResponse,
   EventInfoResponse,
   EventListResponse,
@@ -49,42 +47,6 @@ export const useIssueRandomKey = (
     }): Promise<RandomKeyResponse> => {
       const response = await authenticatedApiClient.post(
         `user-api/v2/events/${eventId}/issue-random-key`,
-      );
-      return response.json();
-    },
-    ...options,
-  });
-};
-
-// 2. 학생 등록 API
-export const useEnrollStudent = (
-  options?: Partial<
-    UseMutationOptions<
-      EnrollmentResponse,
-      HTTPError<PassuErrorResponse>,
-      {
-        eventId: string;
-        randomKey: string;
-      }
-    >
-  >,
-) => {
-  return useMutation({
-    mutationFn: async ({
-      eventId,
-      randomKey,
-    }: {
-      eventId: string;
-      randomKey: string;
-    }): Promise<EnrollmentResponse> => {
-      const requestBody: EnrollStudentRequest = {
-        randomKey: randomKey,
-      };
-      const response = await authenticatedApiClient.post(
-        `user-api/v1/event/${eventId}/enroll`,
-        {
-          json: requestBody,
-        },
       );
       return response.json();
     },
