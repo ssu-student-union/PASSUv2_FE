@@ -62,13 +62,14 @@ function ResultPage() {
       value: dayjs(eventDetail.endTime).format("YYYY/MM/DD"),
     },
     { label: "상품명", value: eventDetail.productName },
-    { label: "전체 수량", value: eventDetail.productQuantity.toString() },
+    {
+      label: "전체 수량",
+      value: eventDetail.productQuantity + (enrollCount?.data.count ?? 0),
+    },
     { label: "소진 수량", value: enrollCount?.data.count },
     {
       label: "잔여 수량",
-      value: enrollCount
-        ? eventDetail.productQuantity - enrollCount?.data.count
-        : eventDetail.productQuantity,
+      value: eventDetail.productQuantity,
     },
     {
       label: "대상자",
