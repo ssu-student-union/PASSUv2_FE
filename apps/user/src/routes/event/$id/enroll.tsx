@@ -31,6 +31,8 @@ function EventEnrollPage() {
   }, [id, issueRandomKey]);
 
   const handleConfirm = () => {
+    // Navigate directly to enrolled page as per issue #42
+    // The v1 enroll API is non-existent, so we skip the enrollment call
     void navigate({ to: "/event/$id/enrolled", params: { id } });
   };
 

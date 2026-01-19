@@ -79,6 +79,9 @@ export interface RandomKeyData {
 export type RandomKeyResponse = PassuResponse<RandomKeyData>;
 
 // Enrollment API (from /api/v1/event/{eventId}/enroll)
+// NOTE: These types are currently unused in production code as the v1 enroll API
+// does not exist (see issue #42). They are kept for mock handlers and potential
+// future API implementation.
 export interface EnrollStudentRequest {
   randomKey: string;
 }
