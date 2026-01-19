@@ -1,6 +1,7 @@
 {
-  "short_name": "TanStack App",
-  "name": "Create TanStack App Sample",
+  "short_name": "PASSU Admin",
+  "name": "PASSU Admin",
+  "description": "PASSU - 숭실대학교 행사 수령 플랫폼 관리자",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +21,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#2563eb",
   "background_color": "#ffffff"
 }
