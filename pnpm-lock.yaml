@@ -171,6 +171,9 @@ importers:
       '@passu/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@suspensive/react':
+        specifier: ^3.18.0
+        version: 3.18.0(react@19.1.0)
       '@tailwindcss/vite':
         specifier: ^4.1.10
         version: 4.1.10(vite@6.3.5(@types/node@24.0.3)(jiti@2.4.2)(lightningcss@1.30.1)(tsx@4.20.3)(yaml@2.8.0))
@@ -1709,6 +1712,11 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+
+  '@suspensive/react@3.18.0':
+    resolution: {integrity: sha512-jd7FagMo5Evn7fOyqE8klOI663oVkt0e/bhC5Lr0la3ikcXyVV/V7MlkGUcH4BypAVDfZs4NcwEyscg4de2Aig==}
+    peerDependencies:
+      react: ^18 || ^19
 
   '@tailwindcss/cli@4.1.10':
     resolution: {integrity: sha512-TuO7IOUpTG1JeqtMQbQXjR4RIhfZ43mor/vpCp3S5X9h0WxUom5NYgxfNO0PiFoLMJ6/eYCelC7KGvUOmqqK6A==}
@@ -5120,6 +5128,10 @@ snapshots:
       typescript: 5.8.3
     transitivePeerDependencies:
       - supports-color
+
+  '@suspensive/react@3.18.0(react@19.1.0)':
+    dependencies:
+      react: 19.1.0
 
   '@tailwindcss/cli@4.1.10':
     dependencies:

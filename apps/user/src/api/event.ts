@@ -14,29 +14,18 @@ import type {
   EventListResponse,
   PassuErrorResponse,
 } from "@/model/api";
-import { getDefaultStore } from "jotai";
-import { accessTokenAtom } from "@/atoms/auth";
-
-const store = getDefaultStore();
 
 // 0. 전체 이벤트 목록 조회 API
 export const useEventList = (
-  options?: Partial<UseQueryOptions<EventListResponse, Error>>,
+  options?: Partial<
+    UseQueryOptions<EventListResponse, HTTPError<PassuErrorResponse>>
+  >,
 ) => {
   return useQuery({
     queryKey: ["eventList"],
     queryFn: async (): Promise<EventListResponse> => {
-      try {
-        const response = await apiClient.get("user-api/v2/events");
-        return response.json();
-      } catch (error) {
-        // 422 에러 처리
-        if (error instanceof HTTPError && error.response.status === 422) {
-          const errorResponse: PassuErrorResponse = await error.response.json();
-          throw new Error(errorResponse.message);
-        }
-        throw error;
-      }
+      const response = await apiClient.get("user-api/v2/events");
+      return response.json();
     },
     ...options,
   });
@@ -45,7 +34,11 @@ export const useEventList = (
 // 1. 랜덤 키 발급 API
 export const useIssueRandomKey = (
   options?: Partial<
-    UseMutationOptions<RandomKeyResponse, Error, { eventId: string }>
+    UseMutationOptions<
+      RandomKeyResponse,
+      HTTPError<PassuErrorResponse>,
+      { eventId: string }
+    >
   >,
 ) => {
   return useMutation({
@@ -54,10 +47,6 @@ export const useIssueRandomKey = (
     }: {
       eventId: string;
     }): Promise<RandomKeyResponse> => {
-      const token = store.get(accessTokenAtom);
-      if (token === null) {
-        throw new Error("Access token is required");
-      }
       const response = await authenticatedApiClient.post(
         `user-api/v2/events/${eventId}/issue-random-key`,
       );
@@ -72,7 +61,7 @@ export const useEnrollStudent = (
   options?: Partial<
     UseMutationOptions<
       EnrollmentResponse,
-      Error,
+      HTTPError<PassuErrorResponse>,
       {
         eventId: string;
         randomKey: string;
@@ -106,7 +95,9 @@ export const useEnrollStudent = (
 // 3. 등록 학생 수 조회 API
 export const useEnrolledCount = (
   eventId: string,
-  options?: Partial<UseQueryOptions<ProductCountResponse, Error>>,
+  options?: Partial<
+    UseQueryOptions<ProductCountResponse, HTTPError<PassuErrorResponse>>
+  >,
 ) => {
   return useQuery({
     queryKey: ["enrolledCount", eventId],
@@ -117,10 +108,8 @@ export const useEnrolledCount = (
         );
         return response.json();
       } catch (error) {
-        // 422 에러 처리
-        if (error instanceof HTTPError && error.response.status === 422) {
-          const errorResponse: PassuErrorResponse = await error.response.json();
-          throw new Error(errorResponse.message);
+        if (error instanceof HTTPError && error.response.status === 404) {
+          return { result: true, message: "", data: 0 };
         }
         throw error;
       }
@@ -133,22 +122,15 @@ export const useEnrolledCount = (
 // 4. 이벤트 디테일 조회 API
 export const useEventDetail = (
   eventId: string,
-  options?: Partial<UseQueryOptions<EventInfoResponse, Error>>,
+  options?: Partial<
+    UseQueryOptions<EventInfoResponse, HTTPError<PassuErrorResponse>>
+  >,
 ) => {
   return useQuery({
     queryKey: ["eventDetail", eventId],
     queryFn: async (): Promise<EventInfoResponse> => {
-      try {
-        const response = await apiClient.get(`user-api/v2/events/${eventId}`);
-        return response.json();
-      } catch (error) {
-        // 422 에러 처리
-        if (error instanceof HTTPError && error.response.status === 422) {
-          const errorResponse: PassuErrorResponse = await error.response.json();
-          throw new Error(errorResponse.message);
-        }
-        throw error;
-      }
+      const response = await apiClient.get(`user-api/v2/events/${eventId}`);
+      return response.json();
     },
     enabled: !!eventId,
     ...options,

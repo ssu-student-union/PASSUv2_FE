@@ -58,7 +58,7 @@ function EventCardSkeleton() {
 }
 
 function App() {
-  const { data, isLoading, isError, error } = useEventList();
+  const { data, isLoading } = useEventList();
 
   const todayEvents = useMemo(
     () => (data?.result && data.data ? filterTodayEvents(data.data) : []),
@@ -108,22 +108,13 @@ function App() {
           </>
         )}
 
-        {isError && (
-          <div className="rounded-xl bg-white p-6 text-center">
-            <p className="text-red-500">
-              오류가 발생했습니다: {error?.message}
-            </p>
-          </div>
-        )}
-
-        {!isLoading && !isError && todayEvents.length === 0 && (
+        {!isLoading && todayEvents.length === 0 && (
           <div className="rounded-xl bg-white p-6 text-center">
             <p className="text-gray-500">오늘 예정된 행사가 없습니다.</p>
           </div>
         )}
 
         {!isLoading &&
-          !isError &&
           todayEvents.map((event) => (
             <Link
               key={event.id}
