@@ -50,6 +50,8 @@ function ResultPage() {
   const feeStatusLabel = (requireUnionFee: boolean) =>
     requireUnionFee ? "납부자, 미납자" : "납부자만";
 
+  console.log(eventDetail);
+
   const resultInfoRows = [
     { label: "행사명", value: eventDetail.name },
     { label: "행사 장소", value: eventDetail.location },
@@ -62,13 +64,14 @@ function ResultPage() {
       value: dayjs(eventDetail.endTime).format("YYYY/MM/DD"),
     },
     { label: "상품명", value: eventDetail.productName },
-    { label: "전체 수량", value: eventDetail.productQuantity.toString() },
+    {
+      label: "전체 수량",
+      value: eventDetail.productQuantity + (enrollCount?.data.count ?? 0),
+    },
     { label: "소진 수량", value: enrollCount?.data.count },
     {
       label: "잔여 수량",
-      value: enrollCount
-        ? eventDetail.productQuantity - enrollCount?.data.count
-        : eventDetail.productQuantity,
+      value: eventDetail.productQuantity,
     },
     {
       label: "대상자",

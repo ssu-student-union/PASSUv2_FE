@@ -81,6 +81,9 @@ function ProgressPage() {
     },
   });
 
+  const enrolledCount = enrollCount?.data.count ?? 0;
+  const totalCount = (eventDetail?.productQuantity ?? 0) + enrolledCount;
+
   const handleAuthentication = () => {
     if (inputValue.length === 4) {
       enrollStudent({ eventId: numberId, randomKey: inputValue });
@@ -233,7 +236,8 @@ function ProgressPage() {
             </div>
 
             <Chip variant="outline">
-              {enrollCount?.data.count}/{eventDetail?.productQuantity} (명)
+              {enrolledCount}/{totalCount}
+              (명)
             </Chip>
           </header>
 
