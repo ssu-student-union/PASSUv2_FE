@@ -2,8 +2,6 @@ import { http, HttpResponse, delay } from "msw";
 import {
   type RandomKeyResponse,
   type RandomKeyData,
-  type EnrollmentData,
-  type EnrollmentResponse,
   type PassuErrorResponse,
   type ProductCountResponse,
   type EventInfoData,
@@ -195,28 +193,6 @@ export const randomKeySuccessHandler = http.post<
   return HttpResponse.json(response, { status: 200 });
 });
 
-export const enrollStudentSuccessHandler = http.post<
-  { eventId: string },
-  undefined,
-  EnrollmentResponse
->("*/api/v1/event/:eventId/enroll", async ({ params }) => {
-  await delay(300);
-  const data: EnrollmentData = {
-    eventId: Number(params.eventId),
-    studentId: "20211234",
-    studentName: "홍길동",
-    enrollmentId: 12345,
-    timestamp: new Date().toISOString(),
-  };
-  const response: EnrollmentResponse = {
-    success: true,
-    message: "Student enrolled successfully",
-    detail: "Enrollment completed successfully",
-    data,
-  };
-  return HttpResponse.json(response, { status: 200 });
-});
-
 // ============================================
 // 실패 시나리오 핸들러
 // ============================================
@@ -269,18 +245,6 @@ export const randomKeyErrorHandler = http.post(
   },
 );
 
-export const enrollStudentErrorHandler = http.post(
-  "*/api/v1/event/:eventId/enroll",
-  async () => {
-    await delay(300);
-    const errorResponse: PassuErrorResponse = {
-      result: false,
-      message: "등록에 실패했습니다. 이미 등록된 학생이거나 자격이 없습니다.",
-    };
-    return HttpResponse.json(errorResponse, { status: 400 });
-  },
-);
-
 // ============================================
 // 핸들러 그룹
 // ============================================
@@ -292,7 +256,6 @@ export const successHandlers = [
   enrolledCountSuccessHandler,
   studentInfoSuccessHandler,
   randomKeySuccessHandler,
-  enrollStudentSuccessHandler,
 ];
 
 // 모든 실패 핸들러
@@ -301,7 +264,6 @@ export const errorHandlers = [
   eventDetailErrorHandler,
   studentInfoUnauthorizedHandler,
   randomKeyErrorHandler,
-  enrollStudentErrorHandler,
 ];
 
 // 빈 이벤트 목록 핸들러
