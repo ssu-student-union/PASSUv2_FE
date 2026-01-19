@@ -77,23 +77,3 @@ export interface RandomKeyData {
 }
 
 export type RandomKeyResponse = PassuResponse<RandomKeyData>;
-
-// Enrollment API (from /api/v1/event/{eventId}/enroll)
-export interface EnrollStudentRequest {
-  randomKey: string;
-}
-
-export interface EnrollmentData {
-  eventId: number;
-  studentId: string;
-  studentName: string;
-  enrollmentId: number;
-  timestamp: string;
-}
-
-export interface EnrollmentResponse {
-  message: string;
-  detail: string;
-  data: EnrollmentData;
-  success: boolean;
-}

@@ -2,9 +2,6 @@ import { http, HttpResponse } from "msw";
 import {
   type RandomKeyResponse,
   type RandomKeyData,
-  type EnrollStudentRequest,
-  type EnrollmentData,
-  type EnrollmentResponse,
   type PassuErrorResponse,
   type ProductCountResponse,
   type EventInfoData,
@@ -123,52 +120,6 @@ export const handlers = [
     const response: RandomKeyResponse = {
       result: true,
       message: "Random key issued successfully",
-      data,
-    };
-    return HttpResponse.json(response, { status: 200 });
-  }),
-
-  // 2. 학생 등록 API
-  http.post<
-    { eventId: string }, // Params
-    EnrollStudentRequest, // RequestBody
-    EnrollmentResponse | PassuErrorResponse
-  >("*/api/v1/event/:eventId/enroll", async ({ request, params }) => {
-    const { eventId } = params;
-    console.log(`Mock: Enrolling student for event ${eventId}`);
-
-    // Check for Authorization header
-    const authHeader = request.headers.get("Authorization");
-    if (!authHeader?.startsWith("Bearer ")) {
-      const errorResponse: PassuErrorResponse = {
-        result: false,
-        message: "Unauthorized",
-      };
-      return HttpResponse.json(errorResponse, { status: 401 });
-    }
-
-    const { randomKey } = await request.json();
-    console.log(`Mock: Using random key ${randomKey}`);
-
-    if (randomKey === "invalid") {
-      const errorResponse: PassuErrorResponse = {
-        result: false,
-        message: "Invalid random key",
-      };
-      return HttpResponse.json(errorResponse, { status: 400 });
-    }
-
-    const data: EnrollmentData = {
-      eventId: Number(eventId),
-      studentId: "20211234",
-      studentName: "홍길동",
-      enrollmentId: 12345,
-      timestamp: new Date().toISOString(),
-    };
-    const response: EnrollmentResponse = {
-      success: true,
-      message: "Student enrolled successfully",
-      detail: "Enrollment completed successfully",
       data,
     };
     return HttpResponse.json(response, { status: 200 });
