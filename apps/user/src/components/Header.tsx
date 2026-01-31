@@ -17,6 +17,7 @@ export const Header = ({ className, ...props }: HeaderProps) => {
   return (
     <header
       className={cn("flex w-full shrink-0 items-center px-6 py-4", className)}
+      style={{ viewTransitionName: "header" }}
       {...props}
     >
       <Link to="/" className="grow" aria-label="PASSU 홈으로 이동">

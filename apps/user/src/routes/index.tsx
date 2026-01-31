@@ -114,7 +114,7 @@ function App() {
                 active:scale-[0.98]
               `}
             >
-              <EventCard event={event} />
+              <EventCard event={event} enableTransition />
             </Link>
           ))}
       </main>

@@ -2,7 +2,11 @@
 @import "@passu/tailwind-config";
 @import "@passu/ui/styles.css";
 
-/* View Transition API styles */
+/* ============================================
+   View Transition API styles
+   ============================================ */
+
+/* Keyframe Animations */
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -27,6 +31,49 @@
   }
 }
 
+@keyframes slide-from-left {
+  from {
+    transform: translateX(-30px);
+  }
+}
+
+@keyframes slide-to-right {
+  to {
+    transform: translateX(30px);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+}
+
+@keyframes scale-out {
+  to {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+}
+
+@keyframes pop-in {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   Default Forward Navigation (기본 앞으로 가기)
+   ============================================ */
 ::view-transition-old(root) {
   animation:
     90ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
@@ -39,10 +86,81 @@
     300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
 }
 
-/* Reduce motion for users who prefer it */
+/* ============================================
+   Back Navigation (뒤로 가기)
+   ============================================ */
+html[data-nav-direction="back"] ::view-transition-old(root) {
+  animation:
+    90ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
+    300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-right;
+}
+
+html[data-nav-direction="back"] ::view-transition-new(root) {
+  animation:
+    210ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
+    300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-left;
+}
+
+/* ============================================
+   Header - 트랜지션에서 제외 (고정 요소)
+   ============================================ */
+.view-transition-header {
+  view-transition-name: header;
+}
+
+::view-transition-old(header),
+::view-transition-new(header) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* ============================================
+   Page Content 트랜지션
+   ============================================ */
+.view-transition-page-content {
+  view-transition-name: page-content;
+}
+
+/* ============================================
+   Event Card 트랜지션 (목록 → 상세)
+   ============================================ */
+/* view-transition-name은 컴포넌트에서 동적으로 설정 */
+
+/* ============================================
+   Enrolled Page - 축하 팝업 효과
+   ============================================ */
+.view-transition-enrolled {
+  view-transition-name: enrolled-content;
+}
+
+::view-transition-new(enrolled-content) {
+  animation: pop-in 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+::view-transition-old(enrolled-content) {
+  animation: fade-out 200ms ease-out;
+}
+
+/* ============================================
+   Footer Button 트랜지션
+   ============================================ */
+.view-transition-footer {
+  view-transition-name: footer-button;
+}
+
+::view-transition-old(footer-button),
+::view-transition-new(footer-button) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* ============================================
+   Accessibility - Reduce motion
+   ============================================ */
 @media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation: none;
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
 }

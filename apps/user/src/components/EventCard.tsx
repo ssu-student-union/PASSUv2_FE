@@ -6,6 +6,8 @@ import { formatDateTime } from "@/utils/date";
 interface EventCardProps {
   className?: string;
   event: EventInfoData;
+  /** 트랜지션 활성화 여부 (목록에서 상세로 전환 시 사용) */
+  enableTransition?: boolean;
 }
 
 const statusConfig: Record<
@@ -21,7 +23,11 @@ const statusConfig: Record<
   AFTER: { label: "행사 종료", variant: "destructive" },
 };
 
-export function EventCard({ className, event }: EventCardProps) {
+export function EventCard({
+  className,
+  event,
+  enableTransition = false,
+}: EventCardProps) {
   const { label, variant } = statusConfig[event.status] ?? statusConfig.BEFORE;
 
   return (
@@ -35,6 +41,11 @@ export function EventCard({ className, event }: EventCardProps) {
         "sm:gap-4 sm:p-5",
         className,
       )}
+      style={
+        enableTransition
+          ? { viewTransitionName: `event-card-${event.id}` }
+          : undefined
+      }
       aria-label={`${event.name} - ${label}`}
     >
       {/* Status Badge */}

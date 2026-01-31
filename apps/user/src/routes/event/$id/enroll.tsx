@@ -59,6 +59,7 @@ function EventEnrollPage() {
         size="footer"
         disabled={isIssuing || !randomKey}
         onClick={handleConfirm}
+        style={{ viewTransitionName: "footer-button" }}
       >
         확인 완료
       </Button>

@@ -65,7 +65,11 @@ function EventIdPage() {
             </p>
           )}
         </div>
-        <Button size="footer" onClick={handleParticipateClick}>
+        <Button
+          size="footer"
+          onClick={handleParticipateClick}
+          style={{ viewTransitionName: "footer-button" }}
+        >
           참여하기
         </Button>
       </div>
