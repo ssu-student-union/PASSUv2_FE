@@ -227,8 +227,8 @@ function ProgressPage() {
                       .join(", ")}
                     feeStatus={
                       eventDetail.requireUnionFee
-                        ? "납부자, 미납자"
-                        : "납부자만"
+                        ? "납부자만"
+                        : "납부자, 미납자"
                     }
                   />
                 )}

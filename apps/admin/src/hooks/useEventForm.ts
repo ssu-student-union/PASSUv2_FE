@@ -83,9 +83,9 @@ export function useEventForm(mode: "create" | "edit") {
 
   const onSubmit = (formData: EventFormValues) => {
     const participantValues = formData.participants.map((p) => p.value);
-    const requireUnionFee = formData.feeStatus.some(
-      (opt) => opt.value === "PAID",
-    );
+    const requireUnionFee =
+      formData.feeStatus.some((opt) => opt.value === "PAID") &&
+      !formData.feeStatus.some((opt) => opt.value === "UNPAID");
 
     const payload = {
       name: formData.title,
