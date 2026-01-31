@@ -12,7 +12,7 @@ import {
   EventRequireStatus,
 } from "@/model/api";
 
-// 오늘 날짜 기준의 mock 이벤트 데이터 생성
+// 오늘 날짜 기준의 mock 행사 데이터 생성
 function createMockEvents(): EventInfoData[] {
   const today = new Date();
   const formatDate = (date: Date) => {
@@ -77,7 +77,7 @@ function createMockEvents(): EventInfoData[] {
   ];
 }
 
-// 단일 이벤트 mock 데이터
+// 단일 행사 mock 데이터
 function createMockEvent(eventId: string): EventInfoData {
   const today = new Date();
   const formatDate = (date: Date) => {
@@ -88,7 +88,7 @@ function createMockEvent(eventId: string): EventInfoData {
     id: Number(eventId),
     name: "2026 신입생 환영회",
     description:
-      "새로운 학기를 맞이하여 신입생 환영회를 개최합니다. 다양한 이벤트와 선물이 준비되어 있으니 많은 참여 부탁드립니다!",
+      "새로운 학기를 맞이하여 신입생 환영회를 개최합니다. 다양한 행사와 선물이 준비되어 있으니 많은 참여 부탁드립니다!",
     product_name: "환영 키트",
     product_quantity: 500,
     product_enrolled_count: 123,
@@ -215,7 +215,7 @@ export const eventDetailErrorHandler = http.get(
     await delay(300);
     const errorResponse: PassuErrorResponse = {
       result: false,
-      message: "이벤트를 찾을 수 없습니다.",
+      message: "행사를 찾을 수 없습니다.",
     };
     return HttpResponse.json(errorResponse, { status: 404 });
   },
@@ -266,7 +266,7 @@ export const errorHandlers = [
   randomKeyErrorHandler,
 ];
 
-// 빈 이벤트 목록 핸들러
+// 빈 행사 목록 핸들러
 export const emptyEventListHandler = http.get<
   Record<string, never>,
   undefined,

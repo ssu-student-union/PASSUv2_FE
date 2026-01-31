@@ -19,7 +19,7 @@ function EventDetailPage() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
 
-  // 이벤트 상세 정보 조회
+  // 행사 상세 정보 조회
   const { data: eventData, isLoading: isEventLoading } = useEventDetail(id);
 
   // 등록 학생 수 조회
@@ -56,7 +56,7 @@ function EventDetailPage() {
     // 진행 중인 행사가 아닌 경우
     if (event.status !== "ONGOING") return false;
 
-    // 학적 상태 확인 (사용자의 status가 이벤트의 require_status 비트마스크에 포함되는지)
+    // 학적 상태 확인 (사용자의 status가 행사의 require_status 비트마스크에 포함되는지)
     const userStatusNum = Number(user.status);
     if (userStatusNum && !(event.require_status & userStatusNum)) return false;
 
@@ -73,12 +73,12 @@ function EventDetailPage() {
 
   // 로딩 상태
   if (isEventLoading) {
-    return <LoadingState message="이벤트 정보를 불러오는 중..." />;
+    return <LoadingState message="행사 정보를 불러오는 중..." />;
   }
 
-  // 이벤트 데이터가 없는 경우
+  // 행사 데이터가 없는 경우
   if (!eventData?.result) {
-    return <ErrorState message="이벤트를 찾을 수 없습니다." />;
+    return <ErrorState message="행사를 찾을 수 없습니다." />;
   }
 
   const event = eventData.data;
@@ -144,10 +144,10 @@ function EventDetailPage() {
         {isUserLoading
           ? "사용자 정보를 불러오는 중..."
           : isAlreadyEnrolled
-            ? "이미 참여한 이벤트입니다"
+            ? "이미 참여한 행사입니다"
             : canParticipate
               ? "참여하기"
-              : "참여할 수 없는 이벤트입니다"}
+              : "참여할 수 없는 행사입니다"}
       </Button>
       {!canParticipate && !isUserLoading && !isAlreadyEnrolled && (
         <span id="participate-hint" className="sr-only">

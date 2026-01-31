@@ -36,7 +36,7 @@ function EventDetailPage({ eventId }: EventDetailPageProps) {
       <div className="flex size-full flex-col">
         <Header />
         <div className="flex grow items-center justify-center">
-          <p className="txt-h2 text-gray-800">이벤트 정보를 불러오는 중...</p>
+          <p className="txt-h2 text-gray-800">행사 정보를 불러오는 중...</p>
         </div>
       </div>
     );
@@ -52,7 +52,7 @@ function EventDetailPage({ eventId }: EventDetailPageProps) {
           `}
         >
           <p className="txt-h2 text-gray-800">
-            이벤트를 불러오는 중 오류가 발생했습니다.
+            행사를 불러오는 중 오류가 발생했습니다.
           </p>
           <p className="mt-2 text-sm text-gray-600">{eventError.message}</p>
         </div>
@@ -72,7 +72,7 @@ function EventDetailPage({ eventId }: EventDetailPageProps) {
             flex grow flex-col items-center justify-center text-center
           `}
         >
-          <p className="txt-h2 text-gray-800">이벤트를 찾을 수 없습니다.</p>
+          <p className="txt-h2 text-gray-800">행사를 찾을 수 없습니다.</p>
         </div>
         <Button size="footer" onClick={() => alert("홈으로 이동")}>
           홈으로 돌아가기
@@ -131,7 +131,7 @@ function EventDetailPage({ eventId }: EventDetailPageProps) {
 }
 
 const meta: Meta<typeof EventDetailPage> = {
-  title: "Pages/이벤트 상세",
+  title: "Pages/행사 상세",
   component: EventDetailPage,
   parameters: {
     layout: "fullscreen",
@@ -145,7 +145,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Success: Story = {
-  name: "성공 - 이벤트 상세 표시",
+  name: "성공 - 행사 상세 표시",
   args: {
     eventId: "1",
   },
@@ -161,7 +161,7 @@ export const Success: Story = {
 };
 
 export const Error: Story = {
-  name: "실패 - 이벤트 조회 실패",
+  name: "실패 - 행사 조회 실패",
   args: {
     eventId: "999",
   },

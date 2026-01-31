@@ -14,7 +14,7 @@ import type {
   PassuErrorResponse,
 } from "@/model/api";
 
-// 0. 전체 이벤트 목록 조회 API
+// 0. 전체 행사 목록 조회 API
 export const useEventList = (
   options?: Partial<
     UseQueryOptions<EventListResponse, HTTPError<PassuErrorResponse>>
@@ -82,7 +82,7 @@ export const useEnrolledCount = (
   });
 };
 
-// 4. 이벤트 디테일 조회 API
+// 4. 행사 디테일 조회 API
 export const useEventDetail = (
   eventId: string,
   options?: Partial<
@@ -100,7 +100,7 @@ export const useEventDetail = (
   });
 };
 
-// 5. 학생 이벤트 등록 여부 조회 API (Bearer 토큰으로 인증)
+// 5. 학생 행사 등록 여부 조회 API (Bearer 토큰으로 인증)
 export const useIsEnrolled = (
   eventId: string,
   options?: Partial<
