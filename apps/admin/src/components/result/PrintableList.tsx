@@ -69,14 +69,10 @@ export const PrintableList = ({ ref }: PrintableListProps) => {
             enrollments.map((row, index) => (
               <tr key={row.enrollmentId} className="text-sm">
                 <td className="border-3 border-black px-2 py-1">{index + 1}</td>
-                <td
-                  className={`border-3 border-black px-2 py-1 whitespace-nowrap`}
-                >
+                <td className={`border-3 border-black px-2 py-1`}>
                   {row.studentName}
                 </td>
-                <td
-                  className={`border-3 border-black px-2 py-1 whitespace-nowrap`}
-                >
+                <td className={`border-3 border-black px-2 py-1`}>
                   {row.studentDepartment}
                 </td>
                 <td className="border-3 border-black px-2 py-1">
