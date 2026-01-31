@@ -13,7 +13,7 @@ export function EventFormPage({ mode }: Props) {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
   const { id } = useParams({ strict: false });
-  const { form, onSubmit, isEdit } = useEventForm(mode);
+  const { form, onSubmit, isEdit, errorMessage } = useEventForm(mode);
 
   const { mutate: deleteEvent } = useDeleteEvent({
     onSuccess: () => navigate({ to: "/" }),
@@ -48,30 +48,41 @@ export function EventFormPage({ mode }: Props) {
         >
           <EventFormFields form={form} />
         </div>
-
-        <div
-          className={`
-            flex w-full flex-col items-center gap-3
-            sm:flex-row sm:justify-center sm:gap-4
-            lg:gap-8
-          `}
-        >
-          <Button variantType="form-actions" variant="outline" asChild>
-            <Link to="/">뒤로가기</Link>
-          </Button>
-          {mode === "edit" && (
-            <Button
-              variantType="form-actions"
-              variant="outline"
-              type="button"
-              onClick={() => setOpenModal(true)}
-            >
-              행사 삭제
+        <div className="flex flex-col gap-2">
+          <div
+            className={`
+              flex w-full flex-col items-center gap-3
+              sm:flex-row sm:justify-center sm:gap-4
+              lg:gap-8
+            `}
+          >
+            <Button variantType="form-actions" variant="outline" asChild>
+              <Link to="/">뒤로가기</Link>
             </Button>
+            {mode === "edit" && (
+              <Button
+                variantType="form-actions"
+                variant="outline"
+                type="button"
+                onClick={() => setOpenModal(true)}
+              >
+                행사 삭제
+              </Button>
+            )}
+            <Button variantType="form-actions" type="submit">
+              완료
+            </Button>
+          </div>
+          {errorMessage && (
+            <p
+              className={`
+                text-center text-sm text-red-500
+                sm:txt-subtitle1
+              `}
+            >
+              {errorMessage}
+            </p>
           )}
-          <Button variantType="form-actions" type="submit">
-            완료
-          </Button>
         </div>
       </form>
 
