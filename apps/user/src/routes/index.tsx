@@ -107,7 +107,7 @@ function App() {
           todayEvents.map((event) => (
             <Link
               key={event.id}
-              to="/event/$id"
+              to="/event/$id/detail"
               params={{ id: String(event.id) }}
               className={`
                 block transition-transform
