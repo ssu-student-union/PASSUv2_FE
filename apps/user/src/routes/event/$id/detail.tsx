@@ -129,6 +129,7 @@ function EventDetailPage() {
                   return <Chip key="unknown">알 수 없음</Chip>;
               }
             })}
+            {event.require_union_fee && <Chip key="union_fee">납부자만</Chip>}
           </div>
           <Divider />
         </div>
