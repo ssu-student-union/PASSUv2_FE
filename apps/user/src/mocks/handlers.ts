@@ -16,7 +16,7 @@ import {
 function createMockEvents(): EventInfoData[] {
   const today = new Date();
   const formatDate = (date: Date) => {
-    return date.toISOString().replace("T", " ").slice(0, 19);
+    return date.toISOString();
   };
 
   return [

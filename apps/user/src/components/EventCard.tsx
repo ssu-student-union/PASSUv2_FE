@@ -1,7 +1,7 @@
 import { cn } from "@passu/ui/utils";
 import { Chip } from "@passu/ui/chip";
 import type { EventInfoData, EventStatus } from "@/model/api";
-import { formatEventDate } from "@/utils/date";
+import { formatDateTime } from "@/utils/date";
 
 interface EventCardProps {
   className?: string;
@@ -100,7 +100,7 @@ export function EventCard({ className, event }: EventCardProps) {
             sm:mt-2 sm:text-sm
           `}
         >
-          {formatEventDate(event.start_time)}
+          {formatDateTime(event.start_time)}
         </span>
       </div>
     </div>
