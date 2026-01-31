@@ -6,7 +6,7 @@ import type { EventInfoData } from "@/model/api";
 import { Skeleton } from "@passu/ui/skeleton";
 import { Separator } from "@passu/ui/separator";
 import { Header } from "@/components/Header";
-import { isSameDay } from "@/utils/date";
+import { isToday, formatDate } from "@/utils/date";
 import {
   eventListSuccessHandler,
   eventListErrorHandler,
@@ -16,19 +16,8 @@ import {
 } from "@/mocks/storybook-handlers";
 
 function filterTodayEvents(events: EventInfoData[]): EventInfoData[] {
-  const today = new Date();
-  return events.filter((event) => {
-    const eventDate = new Date(event.start_time);
-    return isSameDay(eventDate, today);
-  });
+  return events.filter((event) => isToday(event.start_time));
 }
-
-const todayDateFormatter = new Intl.DateTimeFormat("ko-KR", {
-  year: "numeric",
-  month: "numeric",
-  day: "numeric",
-  weekday: "short",
-});
 
 function EventCardSkeleton() {
   return (
@@ -68,7 +57,7 @@ function EventListPage() {
     [data],
   );
 
-  const todayDate = todayDateFormatter.format(new Date());
+  const todayDate = formatDate();
 
   return (
     <div className="flex min-h-screen flex-col">
