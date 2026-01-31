@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { useCreateEvent, useUpdateEvent, useEventDetail } from "@/api/event";
 import { useParams, useNavigate } from "@tanstack/react-router";
 import dayjs from "dayjs";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   FEE_OPTIONS,
   PARTICIPANT_OPTIONS,
@@ -10,6 +10,8 @@ import {
 } from "@/types/event";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import { HTTPError } from "ky";
+import type { ApiErrorResponse } from "@/types/api-response";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -18,6 +20,7 @@ export function useEventForm(mode: "create" | "edit") {
   const { id } = useParams({ strict: false });
   const navigate = useNavigate();
   const isEdit = mode === "edit";
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const form = useForm<EventFormValues>({
     mode: "onSubmit",
@@ -70,15 +73,28 @@ export function useEventForm(mode: "create" | "edit") {
     }
   }, [isEdit, eventDetail, reset]);
 
+  const handleError = async (error: Error) => {
+    let message = "요청 처리 중 오류가 발생했습니다.";
+
+    if (error instanceof HTTPError) {
+      try {
+        const parsed = await error.response.json<ApiErrorResponse>();
+        message = parsed.message ?? message;
+      } catch {
+        // 파싱 실패 시 기본 메시지 유지
+      }
+    }
+    setErrorMessage(message);
+  };
+
   const { mutate: createEvent } = useCreateEvent({
     onSuccess: () => navigate({ to: "/" }),
-    onError: (error) => {
-      console.error("생성 실패:", error);
-    },
+    onError: handleError,
   });
 
   const { mutate: updateEvent } = useUpdateEvent({
     onSuccess: () => navigate({ to: "/" }),
+    onError: handleError,
   });
 
   const onSubmit = (formData: EventFormValues) => {
@@ -110,5 +126,6 @@ export function useEventForm(mode: "create" | "edit") {
     form,
     onSubmit,
     isEdit,
+    errorMessage,
   };
 }
