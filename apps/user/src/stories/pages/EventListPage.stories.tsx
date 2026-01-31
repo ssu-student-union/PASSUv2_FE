@@ -133,7 +133,7 @@ function EventListPage() {
 }
 
 const meta: Meta<typeof EventListPage> = {
-  title: "Pages/이벤트 목록",
+  title: "Pages/행사 목록",
   component: EventListPage,
   parameters: {
     layout: "fullscreen",
@@ -144,7 +144,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Success: Story = {
-  name: "성공 - 이벤트 목록 표시",
+  name: "성공 - 행사 목록 표시",
   parameters: {
     msw: {
       handlers: {

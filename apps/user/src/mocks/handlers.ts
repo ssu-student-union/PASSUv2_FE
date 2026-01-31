@@ -12,7 +12,7 @@ import {
   EventRequireStatus,
 } from "@/model/api";
 
-// 오늘 날짜 기준의 mock 이벤트 데이터 생성
+// 오늘 날짜 기준의 mock 행사 데이터 생성
 function createMockEvents(): EventInfoData[] {
   const today = new Date();
   const formatDate = (date: Date) => {
@@ -78,7 +78,7 @@ function createMockEvents(): EventInfoData[] {
 }
 
 export const handlers = [
-  // 0. 전체 이벤트 목록 조회 API
+  // 0. 전체 행사 목록 조회 API
   http.get<
     Record<string, never>, // Params
     undefined, // RequestBody
@@ -150,7 +150,7 @@ export const handlers = [
     return HttpResponse.json(response, { status: 200 });
   }),
 
-  // 4. 이벤트 디테일 조회 API
+  // 4. 행사 디테일 조회 API
   http.get<
     { eventId: string }, // Params
     undefined, // RequestBody

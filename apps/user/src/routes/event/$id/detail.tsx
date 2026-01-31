@@ -4,7 +4,7 @@ import { Header } from "@/components/Header";
 import { Chip } from "@passu/ui/chip";
 import { Divider } from "@passu/ui/divider";
 import { useNavigate } from "@tanstack/react-router";
-import { useEventDetail, useEnrolledCount } from "@/api/event";
+import { useEventDetail, useEnrolledCount, useIsEnrolled } from "@/api/event";
 import { useUserInfo } from "@/api/user";
 import { EventRequireStatus } from "@/model/api";
 import { getRequireStatuses } from "@/utils/requireStatus";
@@ -19,7 +19,7 @@ function EventDetailPage() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
 
-  // 이벤트 상세 정보 조회
+  // 행사 상세 정보 조회
   const { data: eventData, isLoading: isEventLoading } = useEventDetail(id);
 
   // 등록 학생 수 조회
@@ -29,8 +29,21 @@ function EventDetailPage() {
   // 사용자 정보 조회
   const { data: userInfoData, isLoading: isUserLoading } = useUserInfo();
 
+  // 사용자의 등록 여부 확인
+  const { data: isEnrolledData } = useIsEnrolled(id, {
+    enabled: !!userInfoData?.result,
+  });
+
+  // 이미 등록된 사용자인지 확인
+  const isAlreadyEnrolled =
+    isEnrolledData?.result && isEnrolledData.data === true;
+
   const handleParticipateClick = () => {
-    void navigate({ to: "/event/$id/enroll", params: { id } });
+    if (isAlreadyEnrolled) {
+      void navigate({ to: "/event/$id/enrolled", params: { id } });
+    } else {
+      void navigate({ to: "/event/$id/enroll", params: { id } });
+    }
   };
 
   // 참여 가능 여부 확인
@@ -43,7 +56,7 @@ function EventDetailPage() {
     // 진행 중인 행사가 아닌 경우
     if (event.status !== "ONGOING") return false;
 
-    // 학적 상태 확인 (사용자의 status가 이벤트의 require_status 비트마스크에 포함되는지)
+    // 학적 상태 확인 (사용자의 status가 행사의 require_status 비트마스크에 포함되는지)
     const userStatusNum = Number(user.status);
     if (userStatusNum && !(event.require_status & userStatusNum)) return false;
 
@@ -60,12 +73,12 @@ function EventDetailPage() {
 
   // 로딩 상태
   if (isEventLoading) {
-    return <LoadingState message="이벤트 정보를 불러오는 중..." />;
+    return <LoadingState message="행사 정보를 불러오는 중..." />;
   }
 
-  // 이벤트 데이터가 없는 경우
+  // 행사 데이터가 없는 경우
   if (!eventData?.result) {
-    return <ErrorState message="이벤트를 찾을 수 없습니다." />;
+    return <ErrorState message="행사를 찾을 수 없습니다." />;
   }
 
   const event = eventData.data;
@@ -119,20 +132,24 @@ function EventDetailPage() {
       </div>
       <Button
         size="footer"
-        disabled={isUserLoading || !canParticipate}
+        disabled={isUserLoading || !!isAlreadyEnrolled || !canParticipate}
         onClick={handleParticipateClick}
         style={{ viewTransitionName: "footer-button" }}
         aria-describedby={
-          !canParticipate && !isUserLoading ? "participate-hint" : undefined
+          !canParticipate && !isUserLoading && !isAlreadyEnrolled
+            ? "participate-hint"
+            : undefined
         }
       >
         {isUserLoading
           ? "사용자 정보를 불러오는 중..."
-          : canParticipate
-            ? "참여하기"
-            : "참여할 수 없는 이벤트입니다"}
+          : isAlreadyEnrolled
+            ? "이미 참여한 행사입니다"
+            : canParticipate
+              ? "참여하기"
+              : "참여할 수 없는 행사입니다"}
       </Button>
-      {!canParticipate && !isUserLoading && (
+      {!canParticipate && !isUserLoading && !isAlreadyEnrolled && (
         <span id="participate-hint" className="sr-only">
           참여 조건을 충족하지 않습니다. 학적 상태나 학과 조건을 확인해주세요.
         </span>

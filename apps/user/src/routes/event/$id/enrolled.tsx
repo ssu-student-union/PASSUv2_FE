@@ -17,7 +17,7 @@ function EventEnrolledPage() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
 
-  // 이벤트 정보 조회
+  // 행사 정보 조회
   const { data: eventData, isLoading: isEventLoading } = useEventDetail(id);
 
   // 사용자 정보 조회
@@ -25,7 +25,7 @@ function EventEnrolledPage() {
 
   const handleSurveyClick = () => {
     // 실제 설문조사 URL로 이동하거나 외부 링크 처리
-    // 현재는 이벤트 목록으로 돌아가기
+    // 현재는 행사 목록으로 돌아가기
     void navigate({ to: "/" });
   };
 

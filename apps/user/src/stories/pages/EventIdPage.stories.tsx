@@ -45,7 +45,7 @@ function EventIdPage({ eventId, isLoggedIn = false }: EventIdPageProps) {
       <div className="flex size-full flex-col">
         <Header />
         <div className="flex grow items-center justify-center">
-          <p className="txt-h2 text-gray-800">이벤트 정보를 불러오는 중...</p>
+          <p className="txt-h2 text-gray-800">행사 정보를 불러오는 중...</p>
         </div>
       </div>
     );
@@ -61,7 +61,7 @@ function EventIdPage({ eventId, isLoggedIn = false }: EventIdPageProps) {
           `}
         >
           <p className="txt-h2 text-gray-800">
-            이벤트를 불러오는 중 오류가 발생했습니다.
+            행사를 불러오는 중 오류가 발생했습니다.
           </p>
           <p className="mt-2 text-sm text-gray-600">{error.message}</p>
         </div>
@@ -81,7 +81,7 @@ function EventIdPage({ eventId, isLoggedIn = false }: EventIdPageProps) {
             flex grow flex-col items-center justify-center text-center
           `}
         >
-          <p className="txt-h2 text-gray-800">이벤트를 찾을 수 없습니다.</p>
+          <p className="txt-h2 text-gray-800">행사를 찾을 수 없습니다.</p>
         </div>
         <Button size="footer" onClick={() => alert("홈으로 이동")}>
           홈으로 돌아가기
@@ -112,7 +112,7 @@ function EventIdPage({ eventId, isLoggedIn = false }: EventIdPageProps) {
           <ModalHeader>
             <ModalTitle>로그인 필요</ModalTitle>
             <ModalDescription>
-              이벤트에 참여하려면 로그인이 필요합니다.
+              행사에 참여하려면 로그인이 필요합니다.
             </ModalDescription>
           </ModalHeader>
           <ModalFooter>
@@ -128,7 +128,7 @@ function EventIdPage({ eventId, isLoggedIn = false }: EventIdPageProps) {
 }
 
 const meta: Meta<typeof EventIdPage> = {
-  title: "Pages/이벤트 진입",
+  title: "Pages/행사 진입",
   component: EventIdPage,
   parameters: {
     layout: "fullscreen",
@@ -174,7 +174,7 @@ export const SuccessNotLoggedIn: Story = {
 };
 
 export const Error: Story = {
-  name: "실패 - 이벤트 조회 실패",
+  name: "실패 - 행사 조회 실패",
   args: {
     eventId: "999",
   },

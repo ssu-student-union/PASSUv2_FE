@@ -26,7 +26,7 @@ function EventIdPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
-  // 이벤트 상세 정보 조회
+  // 행사 상세 정보 조회
   const { data: eventData, isLoading } = useEventDetail(id);
 
   const handleParticipateClick = () => {
@@ -45,12 +45,12 @@ function EventIdPage() {
 
   // 로딩 상태
   if (isLoading) {
-    return <LoadingState message="이벤트 정보를 불러오는 중..." />;
+    return <LoadingState message="행사 정보를 불러오는 중..." />;
   }
 
-  // 이벤트 데이터가 없는 경우
+  // 행사 데이터가 없는 경우
   if (!eventData?.result) {
-    return <ErrorState message="이벤트를 찾을 수 없습니다." />;
+    return <ErrorState message="행사를 찾을 수 없습니다." />;
   }
 
   return (
@@ -79,7 +79,7 @@ function EventIdPage() {
           <ModalHeader>
             <ModalTitle>로그인 필요</ModalTitle>
             <ModalDescription>
-              이벤트에 참여하려면 로그인이 필요합니다.
+              행사에 참여하려면 로그인이 필요합니다.
             </ModalDescription>
           </ModalHeader>
           <ModalFooter>

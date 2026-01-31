@@ -77,3 +77,6 @@ export interface RandomKeyData {
 }
 
 export type RandomKeyResponse = PassuResponse<RandomKeyData>;
+
+// Is Enrolled Response (from /user-api/v2/events/{event_id}/enrolled)
+export type IsEnrolledResponse = PassuResponse<boolean>;

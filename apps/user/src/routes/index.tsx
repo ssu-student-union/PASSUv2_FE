@@ -7,6 +7,7 @@ import { Skeleton } from "@passu/ui/skeleton";
 import { Separator } from "@passu/ui/separator";
 import { Header } from "@/components/Header";
 import { isToday, formatDate } from "@/utils/date";
+import { useUserInfo } from "@/api/user";
 
 export const Route = createFileRoute("/")({
   component: App,
@@ -48,6 +49,8 @@ function EventCardSkeleton() {
 
 function App() {
   const { data, isLoading } = useEventList();
+  const { data: userInfo } = useUserInfo();
+  const isLoggedIn = userInfo?.result === true;
 
   const todayEvents = useMemo(
     () => (data?.result && data.data ? filterTodayEvents(data.data) : []),
@@ -107,7 +110,7 @@ function App() {
           todayEvents.map((event) => (
             <Link
               key={event.id}
-              to="/event/$id"
+              to={isLoggedIn ? "/event/$id/detail" : "/event/$id"}
               params={{ id: String(event.id) }}
               className={`
                 block transition-transform
