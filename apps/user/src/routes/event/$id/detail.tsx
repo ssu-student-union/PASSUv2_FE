@@ -121,6 +121,7 @@ function EventDetailPage() {
         size="footer"
         disabled={isUserLoading || !canParticipate}
         onClick={handleParticipateClick}
+        style={{ viewTransitionName: "footer-button" }}
         aria-describedby={
           !canParticipate && !isUserLoading ? "participate-hint" : undefined
         }

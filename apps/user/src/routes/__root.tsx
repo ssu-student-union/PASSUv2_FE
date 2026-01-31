@@ -8,6 +8,7 @@ import {
 } from "@tanstack/react-query";
 import { ErrorBoundary } from "@suspensive/react";
 import { ErrorFallback } from "../components/ErrorFallback";
+import { useNavigationDirection } from "@/hooks/useNavigationDirection";
 
 // QueryClient 인스턴스 생성
 const queryClient = new QueryClient({
@@ -18,8 +19,11 @@ const queryClient = new QueryClient({
   },
 });
 
-export const Route = createRootRoute({
-  component: () => (
+function RootComponent() {
+  // Navigation direction 감지 (View Transition 방향 설정)
+  useNavigationDirection();
+
+  return (
     <>
       <QueryClientProvider client={queryClient}>
         <QueryErrorResetBoundary>
@@ -36,5 +40,9 @@ export const Route = createRootRoute({
       </QueryClientProvider>
       <TanStackRouterDevtools />
     </>
-  ),
+  );
+}
+
+export const Route = createRootRoute({
+  component: RootComponent,
 });

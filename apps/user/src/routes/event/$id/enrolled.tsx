@@ -40,7 +40,10 @@ function EventEnrolledPage() {
   return (
     <div className="flex size-full flex-col">
       <Header />
-      <div className="flex grow flex-col items-center justify-center gap-7">
+      <div
+        className="flex grow flex-col items-center justify-center gap-7"
+        style={{ viewTransitionName: "enrolled-content" }}
+      >
         <img
           alt="Party popper emoji"
           className="size-32"
@@ -59,7 +62,11 @@ function EventEnrolledPage() {
           )}
         </div>
       </div>
-      <Button size="footer" onClick={handleSurveyClick}>
+      <Button
+        size="footer"
+        onClick={handleSurveyClick}
+        style={{ viewTransitionName: "footer-button" }}
+      >
         설문조사 참여하기
       </Button>
     </div>
