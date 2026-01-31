@@ -3,6 +3,7 @@ import { Button } from "@passu/ui/button";
 import { Header } from "@/components/Header";
 import { useNavigate } from "@tanstack/react-router";
 import { useEventDetail } from "@/api/event";
+import { LoadingState } from "@/components/PageStates";
 
 export const Route = createFileRoute("/event/$id/enrolled")({
   component: EventEnrolledPage,
@@ -30,18 +31,7 @@ function EventEnrolledPage() {
 
   // 로딩 중일 때
   if (isEventLoading || isUserLoading) {
-    return (
-      <div className="flex size-full flex-col">
-        <Header />
-        <div
-          className="flex grow items-center justify-center"
-          aria-live="polite"
-          aria-busy={true}
-        >
-          <p className="text-gray-600">정보를 불러오는 중...</p>
-        </div>
-      </div>
-    );
+    return <LoadingState />;
   }
 
   const event = eventData?.result ? eventData.data : undefined;

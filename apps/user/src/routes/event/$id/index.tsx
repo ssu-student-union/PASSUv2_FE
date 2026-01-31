@@ -1,6 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { Button } from "@passu/ui/button";
-import { Header } from "@/components/Header";
 import {
   Modal,
   ModalContent,
@@ -14,6 +13,8 @@ import { accessTokenAtom } from "@/atoms/auth";
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useEventDetail } from "@/api/event";
+import { LoadingState, ErrorState } from "@/components/PageStates";
+import { Header } from "@/components/Header";
 
 export const Route = createFileRoute("/event/$id/")({
   component: EventIdPage,
@@ -44,37 +45,12 @@ function EventIdPage() {
 
   // 로딩 상태
   if (isLoading) {
-    return (
-      <div className="flex size-full flex-col">
-        <Header />
-        <div
-          className="flex grow items-center justify-center"
-          aria-live="polite"
-          aria-busy={true}
-        >
-          <p className="txt-h2 text-gray-800">이벤트 정보를 불러오는 중...</p>
-        </div>
-      </div>
-    );
+    return <LoadingState message="이벤트 정보를 불러오는 중..." />;
   }
 
   // 이벤트 데이터가 없는 경우
   if (!eventData?.result) {
-    return (
-      <div className="flex size-full flex-col">
-        <Header />
-        <div
-          className={`
-            flex grow flex-col items-center justify-center text-center
-          `}
-        >
-          <p className="txt-h2 text-gray-800">이벤트를 찾을 수 없습니다.</p>
-        </div>
-        <Button size="footer" asChild>
-          <Link to="/">홈으로 돌아가기</Link>
-        </Button>
-      </div>
-    );
+    return <ErrorState message="이벤트를 찾을 수 없습니다." />;
   }
 
   return (
