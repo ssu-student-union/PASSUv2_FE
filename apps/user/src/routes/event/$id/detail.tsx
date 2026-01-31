@@ -62,7 +62,11 @@ function EventDetailPage() {
     return (
       <div className="flex size-full flex-col">
         <Header />
-        <div className="flex grow items-center justify-center">
+        <div
+          className="flex grow items-center justify-center"
+          aria-live="polite"
+          aria-busy={true}
+        >
           <p className="txt-h2 text-gray-800">이벤트 정보를 불러오는 중...</p>
         </div>
       </div>
@@ -141,6 +145,9 @@ function EventDetailPage() {
         size="footer"
         disabled={isUserLoading || !canParticipate}
         onClick={handleParticipateClick}
+        aria-describedby={
+          !canParticipate && !isUserLoading ? "participate-hint" : undefined
+        }
       >
         {isUserLoading
           ? "사용자 정보를 불러오는 중..."
@@ -148,6 +155,11 @@ function EventDetailPage() {
             ? "참여하기"
             : "참여할 수 없는 이벤트입니다"}
       </Button>
+      {!canParticipate && !isUserLoading && (
+        <span id="participate-hint" className="sr-only">
+          참여 조건을 충족하지 않습니다. 학적 상태나 학과 조건을 확인해주세요.
+        </span>
+      )}
     </div>
   );
 }
