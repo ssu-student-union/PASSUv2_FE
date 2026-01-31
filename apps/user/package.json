@@ -25,6 +25,7 @@
     "@tanstack/react-router-devtools": "^1.121.16",
     "@tanstack/router-plugin": "^1.121.2",
     "@tanstack/zod-adapter": "^1.128.6",
+    "date-fns": "^4.1.0",
     "jotai": "^2.9.0",
     "ky": "^1.8.2",
     "motion": "^12.23.6",
