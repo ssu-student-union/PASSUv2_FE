@@ -29,6 +29,7 @@ import { cn } from "@passu/ui/utils";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Pause, Pencil, Play, Square } from "lucide-react";
 import { useEffect, useState } from "react";
+import { HTTPError } from "ky";
 
 export const Route = createFileRoute("/event/$id/progress")({
   beforeLoad: authGuard,
@@ -72,11 +73,27 @@ function ProgressPage() {
       });
       await refetchEnrollCount();
     },
-    onError: () => {
+    onError: async (error) => {
+      let message = "인증 실패. 다시 시도해주세요";
+
+      if (error instanceof HTTPError) {
+        try {
+          const parsed = (await error.response.json()) as unknown;
+          if (parsed && typeof parsed === "object" && "message" in parsed) {
+            const maybeMessage = (parsed as { message: string }).message;
+            if (typeof maybeMessage === "string") {
+              message = maybeMessage;
+            }
+          }
+        } catch {
+          // 파싱 실패 시 기본 메시지 유지
+        }
+      }
+
       setInputValue("");
       setAuthMessage({
         type: "error",
-        text: "인증 실패. 다시 시도해주세요",
+        text: message,
       });
     },
   });
