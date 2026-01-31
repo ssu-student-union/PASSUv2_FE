@@ -4,7 +4,7 @@ import { Header } from "@/components/Header";
 import { Chip } from "@passu/ui/chip";
 import { Divider } from "@passu/ui/divider";
 import { useNavigate } from "@tanstack/react-router";
-import { useEventDetail, useEnrolledCount } from "@/api/event";
+import { useEventDetail, useEnrolledCount, useIsEnrolled } from "@/api/event";
 import { useUserInfo } from "@/api/user";
 import { EventRequireStatus } from "@/model/api";
 import { getRequireStatuses } from "@/utils/requireStatus";
@@ -29,8 +29,21 @@ function EventDetailPage() {
   // 사용자 정보 조회
   const { data: userInfoData, isLoading: isUserLoading } = useUserInfo();
 
+  // 사용자의 등록 여부 확인
+  const { data: isEnrolledData } = useIsEnrolled(id, {
+    enabled: !!userInfoData?.result,
+  });
+
+  // 이미 등록된 사용자인지 확인
+  const isAlreadyEnrolled =
+    isEnrolledData?.result && isEnrolledData.data === true;
+
   const handleParticipateClick = () => {
-    void navigate({ to: "/event/$id/enroll", params: { id } });
+    if (isAlreadyEnrolled) {
+      void navigate({ to: "/event/$id/enrolled", params: { id } });
+    } else {
+      void navigate({ to: "/event/$id/enroll", params: { id } });
+    }
   };
 
   // 참여 가능 여부 확인
@@ -119,20 +132,24 @@ function EventDetailPage() {
       </div>
       <Button
         size="footer"
-        disabled={isUserLoading || !canParticipate}
+        disabled={isUserLoading || !!isAlreadyEnrolled || !canParticipate}
         onClick={handleParticipateClick}
         style={{ viewTransitionName: "footer-button" }}
         aria-describedby={
-          !canParticipate && !isUserLoading ? "participate-hint" : undefined
+          !canParticipate && !isUserLoading && !isAlreadyEnrolled
+            ? "participate-hint"
+            : undefined
         }
       >
         {isUserLoading
           ? "사용자 정보를 불러오는 중..."
-          : canParticipate
-            ? "참여하기"
-            : "참여할 수 없는 이벤트입니다"}
+          : isAlreadyEnrolled
+            ? "이미 참여한 이벤트입니다"
+            : canParticipate
+              ? "참여하기"
+              : "참여할 수 없는 이벤트입니다"}
       </Button>
-      {!canParticipate && !isUserLoading && (
+      {!canParticipate && !isUserLoading && !isAlreadyEnrolled && (
         <span id="participate-hint" className="sr-only">
           참여 조건을 충족하지 않습니다. 학적 상태나 학과 조건을 확인해주세요.
         </span>
