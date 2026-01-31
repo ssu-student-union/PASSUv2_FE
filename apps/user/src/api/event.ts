@@ -10,6 +10,7 @@ import type {
   ProductCountResponse,
   EventInfoResponse,
   EventListResponse,
+  IsEnrolledResponse,
   PassuErrorResponse,
 } from "@/model/api";
 
@@ -92,6 +93,26 @@ export const useEventDetail = (
     queryKey: ["eventDetail", eventId],
     queryFn: async (): Promise<EventInfoResponse> => {
       const response = await apiClient.get(`user-api/v2/events/${eventId}`);
+      return response.json();
+    },
+    enabled: !!eventId,
+    ...options,
+  });
+};
+
+// 5. 학생 이벤트 등록 여부 조회 API (Bearer 토큰으로 인증)
+export const useIsEnrolled = (
+  eventId: string,
+  options?: Partial<
+    UseQueryOptions<IsEnrolledResponse, HTTPError<PassuErrorResponse>>
+  >,
+) => {
+  return useQuery({
+    queryKey: ["isEnrolled", eventId],
+    queryFn: async (): Promise<IsEnrolledResponse> => {
+      const response = await authenticatedApiClient.get(
+        `user-api/v2/events/${eventId}/enrolled`,
+      );
       return response.json();
     },
     enabled: !!eventId,
