@@ -30,6 +30,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Pause, Pencil, Play, Square } from "lucide-react";
 import { useEffect, useState } from "react";
 import { HTTPError } from "ky";
+import type { ApiErrorResponse } from "@/types/api-response";
 
 export const Route = createFileRoute("/event/$id/progress")({
   beforeLoad: authGuard,
@@ -41,7 +42,8 @@ function ProgressPage() {
   const navigate = useNavigate();
   const numberId = Number(id);
 
-  const { data: eventDetail } = useEventDetail(numberId);
+  const { data: eventDetail, refetch: refetchEventDetail } =
+    useEventDetail(numberId);
 
   const [status, setStatus] = useState<EventStatus | null>(null);
   const [inputValue, setInputValue] = useState("");
@@ -71,20 +73,15 @@ function ProgressPage() {
         type: "success",
         text: `${res.data.studentName} 인증 성공!`,
       });
-      await refetchEnrollCount();
+      await Promise.all([refetchEnrollCount(), refetchEventDetail()]);
     },
     onError: async (error) => {
       let message = "인증 실패. 다시 시도해주세요";
 
       if (error instanceof HTTPError) {
         try {
-          const parsed = (await error.response.json()) as unknown;
-          if (parsed && typeof parsed === "object" && "message" in parsed) {
-            const maybeMessage = (parsed as { message: string }).message;
-            if (typeof maybeMessage === "string") {
-              message = maybeMessage;
-            }
-          }
+          const parsed = await error.response.json<ApiErrorResponse>();
+          message = parsed.message ?? message;
         } catch {
           // 파싱 실패 시 기본 메시지 유지
         }
