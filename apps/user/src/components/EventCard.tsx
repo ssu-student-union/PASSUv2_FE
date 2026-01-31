@@ -25,7 +25,7 @@ export function EventCard({ className, event }: EventCardProps) {
   const { label, variant } = statusConfig[event.status] ?? statusConfig.BEFORE;
 
   return (
-    <div
+    <article
       className={cn(
         "flex flex-col items-start gap-3 rounded-xl bg-white p-4",
         `
@@ -35,6 +35,7 @@ export function EventCard({ className, event }: EventCardProps) {
         "sm:gap-4 sm:p-5",
         className,
       )}
+      aria-label={`${event.name} - ${label}`}
     >
       {/* Status Badge */}
       <Chip
@@ -103,6 +104,6 @@ export function EventCard({ className, event }: EventCardProps) {
           {formatDateTime(event.start_time)}
         </span>
       </div>
-    </div>
+    </article>
   );
 }

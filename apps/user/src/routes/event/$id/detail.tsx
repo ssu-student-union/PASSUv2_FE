@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { Button } from "@passu/ui/button";
 import { Header } from "@/components/Header";
 import { Chip } from "@passu/ui/chip";
@@ -9,6 +9,7 @@ import { useUserInfo } from "@/api/user";
 import { EventRequireStatus } from "@/model/api";
 import { getRequireStatuses } from "@/utils/requireStatus";
 import { useMemo } from "react";
+import { LoadingState, ErrorState } from "@/components/PageStates";
 
 export const Route = createFileRoute("/event/$id/detail")({
   component: EventDetailPage,
@@ -59,33 +60,12 @@ function EventDetailPage() {
 
   // 로딩 상태
   if (isEventLoading) {
-    return (
-      <div className="flex size-full flex-col">
-        <Header />
-        <div className="flex grow items-center justify-center">
-          <p className="txt-h2 text-gray-800">이벤트 정보를 불러오는 중...</p>
-        </div>
-      </div>
-    );
+    return <LoadingState message="이벤트 정보를 불러오는 중..." />;
   }
 
   // 이벤트 데이터가 없는 경우
   if (!eventData?.result) {
-    return (
-      <div className="flex size-full flex-col">
-        <Header />
-        <div
-          className={`
-            flex grow flex-col items-center justify-center text-center
-          `}
-        >
-          <p className="txt-h2 text-gray-800">이벤트를 찾을 수 없습니다.</p>
-        </div>
-        <Button size="footer" asChild>
-          <Link to="/">홈으로 돌아가기</Link>
-        </Button>
-      </div>
-    );
+    return <ErrorState message="이벤트를 찾을 수 없습니다." />;
   }
 
   const event = eventData.data;
@@ -129,6 +109,7 @@ function EventDetailPage() {
                   return <Chip key="unknown">알 수 없음</Chip>;
               }
             })}
+            {event.require_union_fee && <Chip key="union_fee">납부자만</Chip>}
           </div>
           <Divider />
         </div>
@@ -140,6 +121,9 @@ function EventDetailPage() {
         size="footer"
         disabled={isUserLoading || !canParticipate}
         onClick={handleParticipateClick}
+        aria-describedby={
+          !canParticipate && !isUserLoading ? "participate-hint" : undefined
+        }
       >
         {isUserLoading
           ? "사용자 정보를 불러오는 중..."
@@ -147,6 +131,11 @@ function EventDetailPage() {
             ? "참여하기"
             : "참여할 수 없는 이벤트입니다"}
       </Button>
+      {!canParticipate && !isUserLoading && (
+        <span id="participate-hint" className="sr-only">
+          참여 조건을 충족하지 않습니다. 학적 상태나 학과 조건을 확인해주세요.
+        </span>
+      )}
     </div>
   );
 }
