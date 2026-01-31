@@ -38,7 +38,11 @@ function EventEnrollPage() {
   return (
     <div className="flex size-full flex-col">
       <Header />
-      <div className="flex grow flex-col items-center justify-center gap-8">
+      <div
+        className="flex grow flex-col items-center justify-center gap-8"
+        aria-live="polite"
+        aria-busy={isIssuing}
+      >
         <div className="text-center">
           <p className="text-8xl font-bold tracking-[-1.92px] text-black">
             {isIssuing ? "..." : (randomKey ?? "----")}

@@ -47,7 +47,11 @@ function EventIdPage() {
     return (
       <div className="flex size-full flex-col">
         <Header />
-        <div className="flex grow items-center justify-center">
+        <div
+          className="flex grow items-center justify-center"
+          aria-live="polite"
+          aria-busy={true}
+        >
           <p className="txt-h2 text-gray-800">이벤트 정보를 불러오는 중...</p>
         </div>
       </div>
