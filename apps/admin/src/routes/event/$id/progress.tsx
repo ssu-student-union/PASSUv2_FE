@@ -96,7 +96,7 @@ function ProgressPage() {
   });
 
   const enrolledCount = enrollCount?.data.count ?? 0;
-  const totalCount = (eventDetail?.productQuantity ?? 0) + enrolledCount;
+  const totalCount = eventDetail?.originalProductQuantity;
 
   const handleAuthentication = () => {
     if (inputValue.length === 4) {
