@@ -59,9 +59,7 @@ export function useEventForm(mode: "create" | "edit") {
           eventDetail.requireStatus.includes(opt.value),
         ),
         feeStatus: FEE_OPTIONS.filter((opt) =>
-          eventDetail.requireUnionFee
-            ? opt.value === "PAID"
-            : opt.value === "UNPAID",
+          eventDetail.requireUnionFee ? opt.value === "PAID" : true,
         ),
         description: eventDetail.description,
       });
