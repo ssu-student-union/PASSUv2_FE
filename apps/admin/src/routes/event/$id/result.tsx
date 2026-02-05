@@ -64,12 +64,12 @@ function ResultPage() {
     { label: "상품명", value: eventDetail.productName },
     {
       label: "전체 수량",
-      value: eventDetail.originalProductQuantity,
+      value: eventDetail.productQuantity,
     },
     { label: "소진 수량", value: enrollCount?.data.count },
     {
       label: "잔여 수량",
-      value: eventDetail.productQuantity,
+      value: eventDetail.productQuantity - (enrollCount?.data.count ?? 0),
     },
     {
       label: "대상자",
