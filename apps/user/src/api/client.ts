@@ -31,20 +31,3 @@ export const apiClient = ky.create({
     beforeError: [handleAuthError],
   },
 });
-
-// 인증이 필요한 API 클라이언트
-export const authenticatedApiClient = ky.create({
-  prefixUrl: API_BASE_URL,
-  hooks: {
-    beforeRequest: [
-      (request) => {
-        const accessToken = store.get(accessTokenAtom);
-        if (!accessToken) {
-          throw new Error("Access token is required");
-        }
-        request.headers.set("Authorization", `Bearer ${accessToken}`);
-      },
-    ],
-    beforeError: [handleAuthError],
-  },
-});

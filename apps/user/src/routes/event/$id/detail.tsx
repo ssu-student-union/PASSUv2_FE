@@ -102,7 +102,9 @@ function EventDetailPage() {
               <span>잔여수량</span>
               <span className="ml-1">
                 <span className="font-bold">
-                  {isCountLoading ? "..." : enrolledCount}
+                  {isCountLoading
+                    ? "..."
+                    : event.product_quantity - enrolledCount}
                 </span>
                 /{event.product_quantity} 명
               </span>
