@@ -4,7 +4,7 @@ import type {
   UseQueryOptions,
 } from "@tanstack/react-query";
 import { HTTPError } from "ky";
-import { authenticatedApiClient, apiClient } from "./client";
+import { apiClient } from "./client";
 import type {
   RandomKeyResponse,
   ProductCountResponse,
@@ -46,7 +46,7 @@ export const useIssueRandomKey = (
     }: {
       eventId: string;
     }): Promise<RandomKeyResponse> => {
-      const response = await authenticatedApiClient.post(
+      const response = await apiClient.post(
         `user-api/v2/events/${eventId}/issue-random-key`,
       );
       return response.json();
@@ -110,7 +110,7 @@ export const useIsEnrolled = (
   return useQuery({
     queryKey: ["isEnrolled", eventId],
     queryFn: async (): Promise<IsEnrolledResponse> => {
-      const response = await authenticatedApiClient.get(
+      const response = await apiClient.get(
         `user-api/v2/events/${eventId}/enrolled`,
       );
       return response.json();
