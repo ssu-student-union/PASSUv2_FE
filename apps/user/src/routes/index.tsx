@@ -13,8 +13,21 @@ export const Route = createFileRoute("/")({
   component: App,
 });
 
+const EVENT_STATUS_ORDER: Record<EventInfoData["status"], number> = {
+  ONGOING: 0, // 행사 중
+  PAUSE: 1, // 일시 정지
+  BEFORE: 2, // 시작 전
+  AFTER: 3, // 종료
+};
+
 function filterTodayEvents(events: EventInfoData[]): EventInfoData[] {
   return events.filter((event) => isToday(event.start_time));
+}
+
+function sortEventsByStatus(events: EventInfoData[]): EventInfoData[] {
+  return [...events].sort(
+    (a, b) => EVENT_STATUS_ORDER[a.status] - EVENT_STATUS_ORDER[b.status],
+  );
 }
 
 function EventCardSkeleton() {
@@ -53,7 +66,10 @@ function App() {
   const isLoggedIn = userInfo?.result === true;
 
   const todayEvents = useMemo(
-    () => (data?.result && data.data ? filterTodayEvents(data.data) : []),
+    () =>
+      data?.result && data.data
+        ? sortEventsByStatus(filterTodayEvents(data.data))
+        : [],
     [data],
   );
 
