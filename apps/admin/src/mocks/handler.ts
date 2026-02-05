@@ -17,7 +17,6 @@ export const mockEvent: EventData = {
   location: "슈파크 일대 (돌계단)",
   productName: "지코바 순살 양념구이(순한맛) + 밥 + 무알콜 맥주 음료",
   productQuantity: 600,
-  originalProductQuantity: 600,
   description: `[2025-1학기 야식 행사 안내]
 
 안녕하세요. 우리의 숭실에 확신을
@@ -166,7 +165,6 @@ export const eventHandlers = [
       ...body,
       id: 999,
       status: EventStatus.BEFORE,
-      originalProductQuantity: body.productQuantity,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -191,7 +189,6 @@ export const eventHandlers = [
       ...body,
       id: Number(params.eventId),
       status: EventStatus.BEFORE,
-      originalProductQuantity: body.productQuantity,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };

@@ -18,7 +18,6 @@ export interface EventData {
   location: string;
   productName: string;
   productQuantity: number;
-  originalProductQuantity: number;
   description: string;
   status: EventStatus;
   requireStatus: number[];
