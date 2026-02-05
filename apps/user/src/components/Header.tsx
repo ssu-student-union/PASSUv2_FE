@@ -7,11 +7,7 @@ import { useUserInfo } from "@/api/user";
 type HeaderProps = ComponentProps<"header">;
 
 export const Header = ({ className, ...props }: HeaderProps) => {
-  const { data: userInfo } = useUserInfo({
-    queryOptions: {
-      throwOnError: false,
-    },
-  });
+  const { data: userInfo } = useUserInfo();
   const name = userInfo?.result ? userInfo.data.name : null;
 
   return (

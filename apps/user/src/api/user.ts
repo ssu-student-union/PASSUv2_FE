@@ -28,6 +28,7 @@ export const useUserInfo = (options?: {
       );
       return response.json();
     },
+    throwOnError: false,
     ...queryOptions,
   });
 };
