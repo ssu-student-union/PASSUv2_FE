@@ -102,7 +102,8 @@ export function EventCard({
             sm:text-sm
           `}
         >
-          ({event.product_enrolled_count} / {event.product_quantity})
+          ({event.product_quantity - event.product_enrolled_count} /{" "}
+          {event.product_quantity})
         </span>
 
         {/* Start Time */}
