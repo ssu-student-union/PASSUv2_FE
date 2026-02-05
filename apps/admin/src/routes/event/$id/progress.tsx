@@ -42,8 +42,7 @@ function ProgressPage() {
   const navigate = useNavigate();
   const numberId = Number(id);
 
-  const { data: eventDetail, refetch: refetchEventDetail } =
-    useEventDetail(numberId);
+  const { data: eventDetail } = useEventDetail(numberId);
 
   const [status, setStatus] = useState<EventStatus | null>(null);
   const [inputValue, setInputValue] = useState("");
@@ -73,7 +72,7 @@ function ProgressPage() {
         type: "success",
         text: `${res.data.studentName} 인증 성공!`,
       });
-      await Promise.all([refetchEnrollCount(), refetchEventDetail()]);
+      await Promise.all([refetchEnrollCount()]);
     },
     onError: async (error) => {
       let message = "인증 실패. 다시 시도해주세요";
@@ -96,7 +95,7 @@ function ProgressPage() {
   });
 
   const enrolledCount = enrollCount?.data.count ?? 0;
-  const totalCount = (eventDetail?.productQuantity ?? 0) + enrolledCount;
+  const totalCount = eventDetail?.originalProductQuantity;
 
   const handleAuthentication = () => {
     if (inputValue.length === 4) {

@@ -8,13 +8,8 @@ import {
   PARTICIPANT_OPTIONS,
   type EventFormValues,
 } from "@/types/event";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
 import { HTTPError } from "ky";
 import type { ApiErrorResponse } from "@/types/api-response";
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 export function useEventForm(mode: "create" | "edit") {
   const { id } = useParams({ strict: false });
@@ -64,9 +59,7 @@ export function useEventForm(mode: "create" | "edit") {
           eventDetail.requireStatus.includes(opt.value),
         ),
         feeStatus: FEE_OPTIONS.filter((opt) =>
-          eventDetail.requireUnionFee
-            ? opt.value === "PAID"
-            : opt.value === "UNPAID",
+          eventDetail.requireUnionFee ? opt.value === "PAID" : true,
         ),
         description: eventDetail.description,
       });

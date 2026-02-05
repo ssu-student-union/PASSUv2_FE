@@ -82,7 +82,10 @@ export const PrintableList = ({ ref }: PrintableListProps) => {
                   {eventDetail?.productName}
                 </td>
                 <td className="border-3 border-black px-2 py-1">
-                  {dayjs(row.timestamp).format("YYYY-MM-DD HH:mm:ss")}
+                  {dayjs
+                    .utc(row.timestamp)
+                    .tz("Asia/Seoul")
+                    .format("YYYY-MM-DD HH:mm:ss")}
                 </td>
                 <td className="border-3 border-black px-2 py-1">1</td>
                 <td className="border-3 border-black px-2 py-1">
